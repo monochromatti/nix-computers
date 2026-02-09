@@ -19,7 +19,7 @@
 
       environment.systemPackages = with pkgs; [
         mas
-        orbstack
+        colima
       ];
 
       nix = {
