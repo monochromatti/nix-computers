@@ -43,6 +43,7 @@ let
 
         # Shell
         pkgs.eza
+        pkgs.ripgrep
 
         # Docs
         pkgs.pandoc
