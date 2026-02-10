@@ -91,6 +91,8 @@
         programs.fuzzel.enable = true;
       };
 
+      virtualisation.docker.enable = true;
+
       system.stateVersion = "24.05";
     };
 }
