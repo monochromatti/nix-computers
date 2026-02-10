@@ -55,12 +55,10 @@
                 path = getExe pkgs.ruff;
                 arguments = [ "server" ];
               };
-              formatter.command = [ "ruff format" ];
               initialization_options.settings.configuration = "ruff.toml";
             };
             nixd = {
               binary.path = getExe pkgs.nixd;
-              formatter.command = "nixfmt";
             };
             package-version-server = {
               binary.path = "package-version-server";
