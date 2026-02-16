@@ -34,8 +34,8 @@
       url = "github:fornybar/utgard";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    fornybar-ai-tools = {
-      url = "github:fornybar/fornybar-ai-tools";
+    fornybar-agents = {
+      url = "github:fornybar/agents";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

@@ -50,7 +50,7 @@ let
         pkgs.quarto
         latex
 
-        inputs.fornybar-ai-tools.packages.${pkgs.stdenv.hostPlatform.system}.default
+        inputs.fornybar-agents.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
     };
 
