@@ -28,6 +28,10 @@
         gc.automatic = true;
         optimise.automatic = true;
         settings = {
+          trusted-users = [
+            "root"
+            "monochromatti"
+          ];
           auto-optimise-store = false;
           experimental-features = [
             "nix-command"

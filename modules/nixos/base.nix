@@ -18,7 +18,13 @@
       i18n.defaultLocale = mkDefault "en_US.UTF-8";
 
       nix = {
-        settings.auto-optimise-store = true;
+        settings = {
+          auto-optimise-store = true;
+          trusted-users = [
+            "root"
+            "monochromatti"
+          ];
+        };
         gc.options = "--delete-older-than 14d";
       };
 
