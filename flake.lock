@@ -78,11 +78,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1771244368,
-        "narHash": "sha256-AWw1vJTZPnVAwhciyu90JYnBtdihX9XTkxi3dn3goOw=",
+        "lastModified": 1771506523,
+        "narHash": "sha256-MlyXYltKfidUYh57zDfK4j643Gv0ibAt+lxI9E8204M=",
         "owner": "fornybar",
         "repo": "agents",
-        "rev": "4e385cad149711c617358b57099596b1fb347676",
+        "rev": "157dd9c243a7021245c8de0d3de7cd9fe2cd48a8",
         "type": "github"
       },
       "original": {
