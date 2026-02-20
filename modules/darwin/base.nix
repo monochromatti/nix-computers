@@ -20,6 +20,7 @@
       environment.systemPackages = with pkgs; [
         mas
         colima
+        p7zip
       ];
 
       nix = {

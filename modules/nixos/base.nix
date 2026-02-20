@@ -47,6 +47,7 @@
           inetutils
           cachix
           lazygit
+          p7zip
         ];
 
         shells = [ pkgs.zsh ];
