@@ -71,26 +71,6 @@
         "type": "github"
       }
     },
-    "fornybar-agents": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1771506523,
-        "narHash": "sha256-MlyXYltKfidUYh57zDfK4j643Gv0ibAt+lxI9E8204M=",
-        "owner": "fornybar",
-        "repo": "agents",
-        "rev": "157dd9c243a7021245c8de0d3de7cd9fe2cd48a8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "fornybar",
-        "repo": "agents",
-        "type": "github"
-      }
-    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -402,7 +382,6 @@
     "root": {
       "inputs": {
         "flake-parts": "flake-parts",
-        "fornybar-agents": "fornybar-agents",
         "home-manager": "home-manager",
         "import-tree": "import-tree",
         "nix-darwin": "nix-darwin",

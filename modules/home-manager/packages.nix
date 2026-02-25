@@ -49,8 +49,6 @@ let
         pkgs.pandoc
         pkgs.quarto
         latex
-
-        inputs.fornybar-agents.packages.${pkgs.stdenv.hostPlatform.system}.default
       ];
     };
 
