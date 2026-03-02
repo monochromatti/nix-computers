@@ -23,10 +23,12 @@
         monochromatti
       ];
 
+      boot.kernelPackages = lib.mkForce pkgs.linuxPackages_6_18;
+
       swapDevices = [ { label = "swap"; } ];
 
       hardware = {
-        nvidia.package = lib.mkForce config.boot.kernelPackages.nvidiaPackages.production;
+        # nvidia.package = lib.mkForce config.boot.kernelPackages.nvidiaPackages.production;
         keyboard.zsa.enable = true;
       };
 
