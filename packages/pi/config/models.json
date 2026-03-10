@@ -1,0 +1,94 @@
+{
+  "providers": {
+    "anthropic": {
+      "baseUrl": "https://openai-fornybar-swe.services.ai.azure.com/anthropic",
+      "api": "anthropic-messages",
+      "apiKey": "AZURE_API_KEY",
+      "models": [
+        {
+          "id": "claude-haiku-4-5"
+        },
+        {
+          "id": "claude-opus-4-5"
+        },
+        {
+          "id": "claude-opus-4-6"
+        },
+        {
+          "id": "claude-sonnet-4-5"
+        },
+        {
+          "id": "claude-sonnet-4-6"
+        }
+      ]
+    },
+    "azure-openai": {
+      "baseUrl": "https://openai-fornybar-swe.services.ai.azure.com/openai/v1",
+      "api": "openai-responses",
+      "apiKey": "AZURE_API_KEY",
+      "models": [
+        {
+          "id": "codex-mini"
+        },
+        {
+          "id": "gpt-4.1"
+        },
+        {
+          "id": "gpt-4.1-mini"
+        },
+        {
+          "id": "gpt-4.1-nano"
+        },
+        {
+          "id": "gpt-4o"
+        },
+        {
+          "id": "gpt-5"
+        },
+        {
+          "id": "gpt-5-codex"
+        },
+        {
+          "id": "gpt-5-nano"
+        },
+        {
+          "id": "gpt-5.2"
+        },
+        {
+          "id": "gpt-5.2-codex"
+        },
+        {
+          "id": "gpt-5.3-codex"
+        },
+        {
+          "id": "model-router"
+        },
+        {
+          "id": "o4-mini"
+        }
+      ]
+    },
+    "azure-xai": {
+      "baseUrl": "https://openai-fornybar-swe.services.ai.azure.com/openai/v1",
+      "api": "openai-completions",
+      "apiKey": "AZURE_API_KEY",
+      "models": [
+        {
+          "id": "grok-4"
+        },
+        {
+          "id": "grok-4-1-fast-non-reasoning"
+        },
+        {
+          "id": "grok-4-fast"
+        },
+        {
+          "id": "grok-4-fast-non-reasoning"
+        },
+        {
+          "id": "grok-code-fast-1"
+        }
+      ]
+    }
+  }
+}
