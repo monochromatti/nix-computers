@@ -45,6 +45,9 @@ let
         pkgs.qemu
         upkgs.devenv
 
+        # Security
+        pkgs.bitwarden-desktop
+
         # Shell
         pkgs.eza
         pkgs.ripgrep
@@ -66,7 +69,6 @@ let
 
         # UI programs
         spotify
-        bitwarden-desktop
         kdePackages.okular
         libreoffice
         keymapp

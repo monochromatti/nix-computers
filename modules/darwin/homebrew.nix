@@ -3,8 +3,11 @@
   flake.modules.darwin.homebrew = {
     homebrew = {
       enable = true;
-      onActivation.cleanup = "zap";
-      taps = [ "homebrew/cask" ];
+      onActivation = {
+        autoUpdate = true;
+        upgrade = true;
+        cleanup = "zap";
+      };
       brews = [ "tw93/tap/mole" ];
       casks = [
         "discord"
@@ -24,10 +27,6 @@
         "ghostty"
         "loop"
       ];
-      masApps = {
-        "Pixelmator Pro" = 1289583905;
-        "Bitwarden" = 1352778147;
-      };
     };
   };
 }

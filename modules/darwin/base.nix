@@ -18,8 +18,6 @@
       nixpkgs.config.allowUnfree = true;
 
       environment.systemPackages = with pkgs; [
-        mas
-        colima
         p7zip
       ];
 
