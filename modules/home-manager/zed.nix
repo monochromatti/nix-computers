@@ -30,7 +30,6 @@
           "rainbow-csv"
           "terraform"
           "svelte"
-          "just"
         ];
         userSettings = {
           file_types = {
@@ -42,6 +41,7 @@
           };
           load_direnv = "shell_hook";
           edit_predictions = {
+            provider = "zed";
             mode = "subtle";
           };
           vim_mode = true;
