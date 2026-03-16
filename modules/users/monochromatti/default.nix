@@ -4,23 +4,43 @@ let
   users = inputs.self.lib.users;
 in
 {
-  flake.modules.homeManager.${username} = {
-    imports = with inputs.self.modules.homeManager; [
-      packages
-      shell
-      zed
-      aliases
-    ];
-    home = {
-      inherit username;
-      stateVersion = "24.05";
-      shellAliases = {
-        sync-yggdrasil = ''
-          gh repo sync && gh repo sync -b dev-base --force && gh repo sync -b dev --force
-        '';
+  flake.modules.homeManager.${username} =
+    { ... }:
+    {
+      imports =
+        (with inputs.self.modules.homeManager; [
+          packages
+          shell
+          zed
+          aliases
+        ])
+        ++ [
+          inputs.agents.homeModules.codex
+          inputs.agents.homeModules.opencode
+          inputs.agents.homeModules."claude-code"
+          inputs.agents.homeModules.pi
+        ];
+
+      xdg.enable = true;
+
+      programs.fornybar.codex.enable = true;
+      programs.fornybar.opencode.enable = true;
+      programs.fornybar."claude-code".enable = true;
+      programs.fornybar.pi = {
+        enable = true;
+        extensions = [ "npm:pi-amplike" ];
+      };
+
+      home = {
+        inherit username;
+        stateVersion = "24.05";
+        shellAliases = {
+          sync-yggdrasil = ''
+            gh repo sync && gh repo sync -b dev-base --force && gh repo sync -b dev --force
+          '';
+        };
       };
     };
-  };
 
   flake.modules.nixos.${username} =
     { ... }:
