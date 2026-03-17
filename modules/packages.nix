@@ -7,8 +7,6 @@
       ...
     }:
     {
-      packages = {
-        daily-hours = pkgs.callPackage ../packages/daily-hours { };
-      };
+      packages = { };
     };
 }

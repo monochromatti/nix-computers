@@ -32,6 +32,11 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    daily-hours = {
+      url = "github:monochromatti/daily-hours";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     # NixOS-specific inputs
     pc = {
       url = "github:fornybar/pc";

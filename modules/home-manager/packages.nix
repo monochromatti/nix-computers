@@ -1,4 +1,4 @@
-{ inputs, self, ... }:
+{ inputs, ... }:
 let
   commonPackages =
     {
@@ -7,7 +7,7 @@ let
     }:
     let
       latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
-      daily-hours = self.packages.${pkgs.stdenv.hostPlatform.system}.daily-hours;
+      daily-hours = inputs.daily-hours.packages.${pkgs.stdenv.hostPlatform.system}.default;
       upkgs = import inputs.nixpkgs-unstable {
         system = pkgs.stdenv.hostPlatform.system;
       };
