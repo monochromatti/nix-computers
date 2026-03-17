@@ -11,14 +11,13 @@
     import-tree.url = "github:vic/import-tree";
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
-    llm-agents = {
-      url = "github:numtide/llm-agents.nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    llm-agents.url = "github:numtide/llm-agents.nix";
     agents = {
       url = "github:fornybar/agents/wrappers";
       inputs.llm-agents.follows = "llm-agents";
+      inputs.nixpkgs.follows = "llm-agents/nixpkgs";
     };
+
     nix-darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-25.11";
       inputs.nixpkgs.follows = "nixpkgs";
