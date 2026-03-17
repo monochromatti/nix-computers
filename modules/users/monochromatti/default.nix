@@ -28,7 +28,13 @@ in
       programs.fornybar."claude-code".enable = true;
       programs.fornybar.pi = {
         enable = true;
-        extensions = [ "npm:pi-amplike" ];
+        extensions = [
+          "npm:pi-amplike"
+          "npm:pi-mcp-adapter"
+          "npm:pi-ask-user"
+          "npm:pi-move-session"
+          "npm:pi-markdown-preview"
+        ];
       };
 
       home = {
