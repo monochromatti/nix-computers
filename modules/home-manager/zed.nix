@@ -18,6 +18,7 @@
       programs.zed-editor = {
         enable = true;
         package = upkgs.zed-editor;
+        mutableUserSettings = false;
         extensions = [
           "nix"
           "toml"
@@ -61,7 +62,7 @@
               binary.path = getExe pkgs.nixd;
             };
             package-version-server = {
-              binary.path = "package-version-server";
+              binary.path = getExe pkgs.package-version-server;
             };
             ty = {
               binary = {

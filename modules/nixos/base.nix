@@ -13,6 +13,7 @@
         useGlobalPkgs = true;
         useUserPackages = true;
         backupFileExtension = "backup";
+        overwriteBackup = true;
       };
 
       i18n.defaultLocale = mkDefault "en_US.UTF-8";
