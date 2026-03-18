@@ -43,6 +43,7 @@ let
         pkgs.docker
         pkgs.azure-cli
         pkgs.qemu
+        upkgs.devenv
 
         # Shell
         pkgs.eza
