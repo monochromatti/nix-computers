@@ -95,11 +95,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1773750282,
-        "narHash": "sha256-q+94IfRrDxUH7ol1b9BF4ae9YIQtovxh+jGGMuUYd/Q=",
+        "lastModified": 1774025459,
+        "narHash": "sha256-IgVbNTtsN6Jkwozsj0J3yVKRbHomYQHwRm4UoRB0YyU=",
         "owner": "monochromatti",
         "repo": "daily-hours",
-        "rev": "f5d1b6eaafc4a33f65b4155952a83389d03e6d4d",
+        "rev": "bb3be76520c2600bb8c71de786d7febeb913a5ac",
         "type": "github"
       },
       "original": {
