@@ -11,6 +11,7 @@
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
+        backupFileExtension = "backup";
       };
 
       ids.gids.nixbld = 30000;
