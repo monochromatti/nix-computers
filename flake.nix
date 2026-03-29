@@ -13,7 +13,7 @@
 
     llm-agents.url = "github:numtide/llm-agents.nix";
     agents = {
-      url = "github:fornybar/agents/wrappers";
+      url = "github:fornybar/agents/rjd/wrapped-tools";
       inputs.llm-agents.follows = "llm-agents";
       inputs.nixpkgs.follows = "llm-agents/nixpkgs";
     };

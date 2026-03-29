@@ -5,41 +5,42 @@ let
 in
 {
   flake.modules.homeManager.${username} =
-    { ... }:
+    { pkgs, ... }:
+    let
+      agentLib = inputs.agents.lib;
+    in
     {
-      imports =
-        (with inputs.self.modules.homeManager; [
-          packages
-          shell
-          zed
-          aliases
-        ])
-        ++ [
-          inputs.agents.homeModules.codex
-          inputs.agents.homeModules.opencode
-          inputs.agents.homeModules."claude-code"
-          inputs.agents.homeModules.pi
-        ];
+      imports = with inputs.self.modules.homeManager; [
+        packages
+        shell
+        zed
+        aliases
+      ];
 
       xdg.enable = true;
-
-      programs.fornybar.codex.enable = true;
-      programs.fornybar.opencode.enable = true;
-      programs.fornybar."claude-code".enable = true;
-      programs.fornybar.pi = {
-        enable = true;
-        extensions = [
-          "npm:pi-amplike"
-          "npm:pi-mcp-adapter"
-          "npm:pi-ask-user"
-          "npm:pi-move-session"
-          "npm:pi-markdown-preview"
-        ];
-      };
 
       home = {
         inherit username;
         stateVersion = "24.05";
+        packages = [
+          (agentLib.presets.fornybar.codex { inherit pkgs; })
+          (agentLib.presets.fornybar.opencode { inherit pkgs; })
+          (agentLib.presets.fornybar.claudeCode { inherit pkgs; })
+          (agentLib.presets.fornybar.pi {
+            inherit pkgs;
+            extraConfigSets = [
+              {
+                extensions = [
+                  "npm:pi-amplike"
+                  "npm:pi-mcp-adapter"
+                  "npm:pi-ask-user"
+                  "npm:pi-move-session"
+                  "npm:pi-markdown-preview"
+                ];
+              }
+            ];
+          })
+        ];
         shellAliases = {
           sync-yggdrasil = ''
             gh repo sync && gh repo sync -b dev-base --force && gh repo sync -b dev --force
