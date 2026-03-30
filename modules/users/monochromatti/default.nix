@@ -31,11 +31,13 @@ in
             extraConfigSets = [
               {
                 extensions = [
-                  "npm:pi-amplike"
+                  "npm:pi-subagents"
+                  "npm:pi-web-access"
+                  "npm:pi-boomerang"
+                  "npm:pi-skill-palette"
                   "npm:pi-mcp-adapter"
-                  "npm:pi-ask-user"
                   "npm:pi-move-session"
-                  "npm:pi-markdown-preview"
+                  "npm:pi-prompt-template-model"
                 ];
               }
             ];
