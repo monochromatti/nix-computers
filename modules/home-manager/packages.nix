@@ -45,6 +45,9 @@ let
         pkgs.qemu
         upkgs.devenv
 
+        # AI
+        upkgs.rtk
+
         # Security
         pkgs.bitwarden-desktop
 

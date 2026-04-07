@@ -38,6 +38,7 @@ in
                   "npm:pi-mcp-adapter"
                   "npm:pi-move-session"
                   "npm:pi-prompt-template-model"
+                  "npm:pi-rtk-optimizer"
                 ];
               }
             ];
