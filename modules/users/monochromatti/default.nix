@@ -39,6 +39,7 @@ in
                   "npm:pi-move-session"
                   "npm:pi-prompt-template-model"
                   "npm:pi-rtk-optimizer"
+                  "git:github.com/monochromatti/pi-extensions"
                 ];
               }
             ];
