@@ -39,7 +39,6 @@ in
                   "npm:pi-mcp-adapter"
                   "npm:pi-move-session"
                   "npm:pi-prompt-template-model"
-                  "npm:pi-rtk-optimizer"
                   "npm:pi-ghostty"
                   "git:github.com/monochromatti/pi-extensions"
                 ];
