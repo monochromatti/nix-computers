@@ -9,19 +9,20 @@
         "nixpkgs": [
           "llm-agents",
           "nixpkgs"
-        ]
+        ],
+        "systems": "systems",
+        "wrappers": "wrappers"
       },
       "locked": {
-        "lastModified": 1774873386,
-        "narHash": "sha256-HC5RSrfAuk+B0OgkiXBWGWkag22ImjIosGvOLM43dQ8=",
+        "lastModified": 1776255180,
+        "narHash": "sha256-eb8gYGqniwuQ2rXhAlNdJ5uoSj/I5uBbs6gtEX1nZGA=",
         "owner": "fornybar",
         "repo": "agents",
-        "rev": "95183138b35fbffd379b642df9ef2ef1acd2eceb",
+        "rev": "c5d025edfb1eafa571632860c3757698c51df238",
         "type": "github"
       },
       "original": {
         "owner": "fornybar",
-        "ref": "rjd/wrapped-tools",
         "repo": "agents",
         "type": "github"
       }
@@ -32,7 +33,10 @@
           "agents",
           "nixpkgs"
         ],
-        "systems": "systems"
+        "systems": [
+          "agents",
+          "systems"
+        ]
       },
       "locked": {
         "lastModified": 1771437256,
@@ -613,6 +617,27 @@
       "original": {
         "owner": "fornybar",
         "repo": "utgard",
+        "type": "github"
+      }
+    },
+    "wrappers": {
+      "inputs": {
+        "nixpkgs": [
+          "agents",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775342883,
+        "narHash": "sha256-AkOIcYzvVtoLQzrvdEeSEH/dvgVxvbJcKpKGHu8l67w=",
+        "owner": "lassulus",
+        "repo": "wrappers",
+        "rev": "3819a607b845cc1ef492a6682970b17ac83ebdaf",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lassulus",
+        "repo": "wrappers",
         "type": "github"
       }
     }

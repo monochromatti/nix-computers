@@ -7,7 +7,7 @@ in
   flake.modules.homeManager.${username} =
     { pkgs, ... }:
     let
-      agentLib = inputs.agents.lib;
+      agentPackages = inputs.agents.packages.${pkgs.system};
     in
     {
       imports = with inputs.self.modules.homeManager; [
@@ -23,28 +23,23 @@ in
         inherit username;
         stateVersion = "24.05";
         packages = [
-          (agentLib.presets.fornybar.codex { inherit pkgs; })
-          (agentLib.presets.fornybar.opencode { inherit pkgs; })
-          (agentLib.presets.fornybar.claudeCode { inherit pkgs; })
-          (agentLib.presets.fornybar.pi {
-            inherit pkgs;
-            extraConfigSets = [
-              {
-                extensions = [
-                  "npm:pi-subagents"
-                  "npm:pi-intercom"
-                  "npm:pi-web-access"
-                  "npm:pi-boomerang"
-                  "npm:pi-skill-palette"
-                  "npm:pi-mcp-adapter"
-                  "npm:pi-move-session"
-                  "npm:pi-prompt-template-model"
-                  "npm:pi-ghostty"
-                  "git:github.com/monochromatti/pi-extensions"
-                ];
-              }
+          agentPackages.codex
+          agentPackages.opencode
+          agentPackages.claude
+          (agentPackages.pi.configuration.apply {
+            settings.packages = [
+              "npm:pi-subagents"
+              "npm:pi-intercom"
+              "npm:pi-web-access"
+              "npm:pi-boomerang"
+              "npm:pi-skill-palette"
+              "npm:pi-mcp-adapter"
+              "npm:pi-move-session"
+              "npm:pi-prompt-template-model"
+              "npm:pi-ghostty"
+              "git:github.com/monochromatti/pi-extensions"
             ];
-          })
+          }).wrapper
         ];
         shellAliases = {
           sync-yggdrasil = ''
