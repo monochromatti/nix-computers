@@ -37,19 +37,28 @@
         inputs.utgard.overlays.ty
       ];
 
-      environment.gnome.excludePackages = with pkgs; [
-        gnome-weather
-        gnome-music
-        gnome-tour
-        gnome-photos
-      ];
-
       services = {
-        displayManager.gdm.wayland = true;
+        greetd = {
+          enable = true;
+          settings = {
+            default_session.command = ''
+              ${pkgs.tuigreet}/bin/tuigreet \
+                --time \
+                --asterisks \
+                --user-menu \
+                --cmd niri-session
+            '';
+          };
+        };
         utgard.aruba-onboard.enable = true;
       };
 
+      environment.etc."greetd/environments".text = ''
+        niri-session
+      '';
+
       midgard.pc = {
+        desktop = null;
         hostName = "firefly";
         users = {
           monochromatti = {
@@ -86,7 +95,10 @@
             stdenv.cc.cc.lib
           ];
         };
-        niri.enable = true;
+        niri = {
+          enable = true;
+          package = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
+        };
       };
 
       home-manager.users.monochromatti = {

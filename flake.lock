@@ -445,7 +445,8 @@
         "pc": "pc",
         "sops-nix": "sops-nix_2",
         "treefmt-nix": "treefmt-nix_3",
-        "utgard": "utgard"
+        "utgard": "utgard",
+        "wrappers": "wrappers_2"
       }
     },
     "sops-nix": {
@@ -638,6 +639,26 @@
       },
       "original": {
         "owner": "lassulus",
+        "repo": "wrappers",
+        "type": "github"
+      }
+    },
+    "wrappers_2": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1776505856,
+        "narHash": "sha256-VbnOijrn4EdYYJwiNQFxQNXECKBa60U66UPxUQAGkBE=",
+        "owner": "Lassulus",
+        "repo": "wrappers",
+        "rev": "738d4bf81cbf306f6917c540a5b798110e3cf1e8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Lassulus",
         "repo": "wrappers",
         "type": "github"
       }

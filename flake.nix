@@ -11,6 +11,11 @@
     import-tree.url = "github:vic/import-tree";
     treefmt-nix.url = "github:numtide/treefmt-nix";
 
+    wrappers = {
+      url = "github:Lassulus/wrappers";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
     llm-agents.url = "github:numtide/llm-agents.nix";
     agents = {
       url = "github:fornybar/agents";
@@ -50,5 +55,16 @@
 
   outputs =
     inputs@{ flake-parts, import-tree, ... }:
-    flake-parts.lib.mkFlake { inherit inputs; } (import-tree ./modules);
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        (import-tree ./modules)
+      ];
+
+      perSystem =
+        { system, ... }:
+        {
+          _module.args.pkgs = inputs.nixpkgs.legacyPackages.${system};
+          _module.args.upkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
+        };
+    };
 }

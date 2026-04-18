@@ -5,9 +5,21 @@ let
 in
 {
   flake.modules.homeManager.${username} =
-    { pkgs, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     let
       agentPackages = inputs.agents.packages.${pkgs.system};
+      noctaliaWallpaper = toString ../../../dotfiles/wallpapers/arindam-saha-PwzISwC2kLs-unsplash.jpg;
+      noctaliaColorschemes = pkgs.fetchFromGitHub {
+        owner = "noctalia-dev";
+        repo = "noctalia-colorschemes";
+        rev = "d82d8994be9de097c713f02ec5426484e3666e4f";
+        hash = "sha256-zF8fYne7VoEspKADo7atnSKRXVwOZ8qn8xbDhdDQCFA=";
+      };
     in
     {
       imports = with inputs.self.modules.homeManager; [
@@ -17,9 +29,110 @@ in
         aliases
       ];
 
-      xdg.enable = true;
+      xdg = {
+        enable = true;
+        configFile = lib.optionalAttrs pkgs.stdenv.isLinux {
+          "ghostty/config".text = ''
+            theme = noctalia
+            font-family = JetBrains Mono
+            font-size = 13
+          '';
+
+          "noctalia/settings.json".text = builtins.toJSON inputs.self.desktop.noctalia.settings;
+
+          "qt6ct/qt6ct.conf".text = ''
+            [Appearance]
+            color_scheme_path=${config.home.homeDirectory}/.config/qt6ct/colors/noctalia.conf
+            custom_palette=true
+            icon_theme=Papirus-Dark
+            style=Fusion
+
+            [Fonts]
+            fixed="JetBrains Mono,11,-1,5,400,0,0,0,0,0"
+            general="Inter,11,-1,5,400,0,0,0,0,0"
+          '';
+        };
+      };
+
+      gtk = lib.mkIf pkgs.stdenv.isLinux {
+        enable = true;
+        font = {
+          name = "Inter";
+          package = pkgs.inter;
+          size = 10;
+        };
+        iconTheme = {
+          name = "Papirus-Dark";
+          package = pkgs.papirus-icon-theme;
+        };
+        theme = {
+          name = "adw-gtk3-dark";
+          package = pkgs.adw-gtk3;
+        };
+      };
+
+      fonts.fontconfig.enable = lib.mkIf pkgs.stdenv.isLinux true;
+
+      programs.fuzzel = lib.mkIf pkgs.stdenv.isLinux {
+        settings = {
+          main = {
+            include = "~/.config/fuzzel/themes/noctalia";
+            terminal = "ghostty -e";
+            layer = "overlay";
+            width = 44;
+            lines = 12;
+            inner-pad = 14;
+            horizontal-pad = 20;
+            vertical-pad = 18;
+            prompt = "\"❯ \"";
+            icons-enabled = true;
+            dpi-aware = "no";
+            font = "Inter:size=12";
+          };
+
+          border = {
+            radius = 12;
+            width = 2;
+          };
+        };
+      };
 
       home = {
+        sessionVariables = lib.optionalAttrs pkgs.stdenv.isLinux {
+          QT_QPA_PLATFORMTHEME = "qt6ct";
+        };
+
+        activation.noctaliaThemeStubs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+          mkdir -p \
+            "$HOME/.config/niri" \
+            "$HOME/.config/ghostty/themes" \
+            "$HOME/.config/fuzzel/themes" \
+            "$HOME/.config/qt6ct/colors" \
+            "$HOME/.cache/noctalia"
+
+          if [ ! -e "$HOME/.config/niri/noctalia.kdl" ]; then
+            cat > "$HOME/.config/niri/noctalia.kdl" <<'EOF'
+          // populated by Noctalia
+          EOF
+          fi
+
+          if [ ! -e "$HOME/.config/ghostty/themes/noctalia" ]; then
+            : > "$HOME/.config/ghostty/themes/noctalia"
+          fi
+
+          if [ ! -e "$HOME/.config/fuzzel/themes/noctalia" ]; then
+            : > "$HOME/.config/fuzzel/themes/noctalia"
+          fi
+
+          if [ ! -e "$HOME/.config/qt6ct/colors/noctalia.conf" ]; then
+            : > "$HOME/.config/qt6ct/colors/noctalia.conf"
+          fi
+
+          cat > "$HOME/.cache/noctalia/wallpapers.json" <<'EOF'
+          {"wallpapers":{},"defaultWallpaper":"${noctaliaWallpaper}","usedRandomWallpapers":{}}
+          EOF
+        '';
+
         inherit username;
         stateVersion = "24.05";
         packages = [
@@ -40,6 +153,10 @@ in
               "git:github.com/monochromatti/pi-extensions"
             ];
           }).wrapper
+        ]
+        ++ lib.optionals pkgs.stdenv.isLinux [
+          pkgs.nwg-look
+          pkgs.qt6Packages.qt6ct
         ];
         shellAliases = {
           sync-yggdrasil = ''

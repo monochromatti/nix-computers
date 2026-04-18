@@ -33,6 +33,11 @@
           "svelte"
         ];
         userSettings = {
+          theme = {
+            mode = "system";
+            light = "Noctalia Light";
+            dark = "Noctalia Dark";
+          };
           file_types = {
             "Markdown" = [ "qmd" ];
             "JSON" = [
