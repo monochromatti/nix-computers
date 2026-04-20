@@ -91,6 +91,52 @@ in
 
       fonts.fontconfig.enable = lib.mkIf pkgs.stdenv.isLinux true;
 
+      systemd.user.services = lib.mkIf pkgs.stdenv.isLinux {
+        elephant = {
+          Unit = {
+            Description = "Elephant backend for Walker";
+            PartOf = [ "graphical-session.target" ];
+            After = [ "graphical-session.target" ];
+          };
+
+          Service = {
+            ExecStart = "${unstablePkgs.elephant}/bin/elephant";
+            Restart = "on-failure";
+            RestartSec = 2;
+          };
+
+          Install.WantedBy = [ "graphical-session.target" ];
+        };
+
+        walker = {
+          Unit = {
+            Description = "Walker launcher service";
+            PartOf = [ "graphical-session.target" ];
+            After = [
+              "graphical-session.target"
+              "elephant.service"
+            ];
+            Wants = [ "elephant.service" ];
+          };
+
+          Service = {
+            Environment = [
+              "PATH=${
+                lib.makeBinPath [
+                  unstablePkgs.walker
+                  unstablePkgs.elephant
+                ]
+              }"
+            ];
+            ExecStart = "${unstablePkgs.walker}/bin/walker --gapplication-service";
+            Restart = "on-failure";
+            RestartSec = 2;
+          };
+
+          Install.WantedBy = [ "graphical-session.target" ];
+        };
+      };
+
       home = {
         sessionVariables = lib.optionalAttrs pkgs.stdenv.isLinux {
           QT_QPA_PLATFORMTHEME = "qt6ct";
@@ -147,6 +193,7 @@ in
         ++ lib.optionals pkgs.stdenv.isLinux [
           pkgs.nwg-look
           pkgs.qt6Packages.qt6ct
+          unstablePkgs.elephant
           unstablePkgs.walker
         ];
         shellAliases = {
