@@ -68,7 +68,7 @@ let
       home.packages = with pkgs; [
         # Terminal
         ghostty
-        xclip
+        wl-clipboard
 
         # UI programs
         spotify
