@@ -40,7 +40,7 @@
 
             direnv.disabled = false;
             status.disabled = false;
-            kubernetes.disabled = false;
+            kubernetes.disabled = true;
             terraform.disabled = false;
             aws.disabled = false;
             gcloud.disabled = false;
