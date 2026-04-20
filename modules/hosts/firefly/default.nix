@@ -42,7 +42,6 @@
       ];
 
       services = {
-        blueman.enable = true;
         greetd = {
           enable = true;
           settings = {
@@ -61,6 +60,10 @@
       environment.etc."greetd/environments".text = ''
         niri-session
       '';
+
+      environment.systemPackages = with pkgs; [
+        overskride
+      ];
 
       midgard.pc = {
         desktop = null;
@@ -106,7 +109,23 @@
         };
       };
 
-      home-manager.users.monochromatti = { };
+      home-manager.users.monochromatti = {
+        systemd.user.services.overskride = {
+          Unit = {
+            Description = "Overskride Bluetooth manager";
+            PartOf = [ "graphical-session.target" ];
+            After = [ "graphical-session.target" ];
+          };
+
+          Service = {
+            ExecStart = "${pkgs.overskride}/bin/overskride";
+            Restart = "on-failure";
+            RestartSec = 2;
+          };
+
+          Install.WantedBy = [ "graphical-session.target" ];
+        };
+      };
 
       virtualisation.docker.enable = true;
 
