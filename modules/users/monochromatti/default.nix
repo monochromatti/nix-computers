@@ -145,6 +145,7 @@ in
               "npm:pi-move-session"
               "npm:pi-prompt-template-model"
               "npm:pi-ghostty"
+              "npm:pi-thinking-steps"
               "git:github.com/monochromatti/pi-extensions"
             ];
           }).wrapper
