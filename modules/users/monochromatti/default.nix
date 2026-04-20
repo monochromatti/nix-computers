@@ -15,12 +15,6 @@ in
       agentPackages = inputs.agents.packages.${pkgs.system};
       unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system};
       noctaliaWallpaper = toString ../../../dotfiles/wallpapers/ign_unsplash27.png;
-      noctaliaColorschemes = pkgs.fetchFromGitHub {
-        owner = "noctalia-dev";
-        repo = "noctalia-colorschemes";
-        rev = "d82d8994be9de097c713f02ec5426484e3666e4f";
-        hash = "sha256-zF8fYne7VoEspKADo7atnSKRXVwOZ8qn8xbDhdDQCFA=";
-      };
     in
     {
       imports = with inputs.self.modules.homeManager; [
