@@ -29,6 +29,10 @@
 
       hardware = {
         # nvidia.package = lib.mkForce config.boot.kernelPackages.nvidiaPackages.production;
+        bluetooth = {
+          enable = true;
+          powerOnBoot = true;
+        };
         keyboard.zsa.enable = true;
       };
 
@@ -38,6 +42,7 @@
       ];
 
       services = {
+        blueman.enable = true;
         greetd = {
           enable = true;
           settings = {
