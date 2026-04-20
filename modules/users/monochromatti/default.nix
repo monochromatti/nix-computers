@@ -36,6 +36,8 @@ in
             theme = noctalia
             font-family = JetBrains Mono
             font-size = 13
+            window-padding-x = 8
+            window-padding-y = 8
           '';
 
           "noctalia/settings.json".text = builtins.toJSON inputs.self.desktop.noctalia.settings;
