@@ -30,7 +30,7 @@ in
           "ghostty/config".text = ''
             theme = noctalia
             font-family = JetBrains Mono
-            font-size = 13
+            font-size = 11
             window-padding-x = 8
             window-padding-y = 8
           '';
@@ -77,7 +77,7 @@ in
         font = {
           name = "Inter";
           package = pkgs.inter;
-          size = 10;
+          size = 11;
         };
         iconTheme = {
           name = "Papirus-Dark";
