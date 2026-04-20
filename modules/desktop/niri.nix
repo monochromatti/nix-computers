@@ -7,7 +7,6 @@
 
     input = {
       touchpad.natural-scroll = null;
-      mouse.natural-scroll = null;
     };
 
     layout = {
