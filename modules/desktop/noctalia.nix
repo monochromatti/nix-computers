@@ -34,6 +34,8 @@ in
       panelBackgroundOpacity = 0.92;
     };
 
+    location.weatherEnabled = false;
+
     dock.enabled = false;
 
     wallpaper = {
@@ -43,6 +45,7 @@ in
       setWallpaperOnAllMonitors = true;
       linkLightAndDarkWallpapers = true;
       fillMode = "crop";
+      useOriginalImages = true;
       useSolidColor = false;
       skipStartupTransition = true;
       automationEnabled = false;
