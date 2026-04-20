@@ -18,7 +18,7 @@ in
         {
           id = "CustomButton";
           icon = "rocket";
-          leftClickExec = "fuzzel";
+          leftClickExec = "walker";
           generalTooltipText = "Open launcher";
         }
         { id = "Clock"; }
@@ -66,7 +66,7 @@ in
           enabled = true;
         })
         [
-          "fuzzel"
+          "walker"
           "ghostty"
           "gtk"
           "qt"

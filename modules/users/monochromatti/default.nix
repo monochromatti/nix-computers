@@ -13,6 +13,7 @@ in
     }:
     let
       agentPackages = inputs.agents.packages.${pkgs.system};
+      unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system};
       noctaliaWallpaper = toString ../../../dotfiles/wallpapers/ign_unsplash27.png;
       noctaliaColorschemes = pkgs.fetchFromGitHub {
         owner = "noctalia-dev";
@@ -53,6 +54,27 @@ in
             fixed="JetBrains Mono,11,-1,5,400,0,0,0,0,0"
             general="Inter,11,-1,5,400,0,0,0,0,0"
           '';
+
+          "walker/config.toml".text = ''
+            force_keyboard_focus = true
+            close_when_open = true
+            click_to_close = true
+            theme = "noctalia"
+
+            [providers]
+            default = ["desktopapplications", "runner"]
+            empty = ["desktopapplications"]
+
+            [placeholders]
+            "default" = { input = "Search", list = "No Results" }
+            "desktopapplications" = { input = "Launch App", list = "No Applications" }
+
+            [keybinds]
+            close = ["Escape"]
+            next = ["Down"]
+            previous = ["Up"]
+          '';
+
         };
       };
 
@@ -75,30 +97,6 @@ in
 
       fonts.fontconfig.enable = lib.mkIf pkgs.stdenv.isLinux true;
 
-      programs.fuzzel = lib.mkIf pkgs.stdenv.isLinux {
-        settings = {
-          main = {
-            include = "~/.config/fuzzel/themes/noctalia";
-            terminal = "ghostty -e";
-            layer = "overlay";
-            width = 44;
-            lines = 12;
-            inner-pad = 14;
-            horizontal-pad = 20;
-            vertical-pad = 18;
-            prompt = "\"❯ \"";
-            icons-enabled = true;
-            dpi-aware = "no";
-            font = "Inter:size=12";
-          };
-
-          border = {
-            radius = 12;
-            width = 2;
-          };
-        };
-      };
-
       home = {
         sessionVariables = lib.optionalAttrs pkgs.stdenv.isLinux {
           QT_QPA_PLATFORMTHEME = "qt6ct";
@@ -108,7 +106,6 @@ in
           mkdir -p \
             "$HOME/.config/niri" \
             "$HOME/.config/ghostty/themes" \
-            "$HOME/.config/fuzzel/themes" \
             "$HOME/.config/qt6ct/colors" \
             "$HOME/.cache/noctalia"
 
@@ -120,10 +117,6 @@ in
 
           if [ ! -e "$HOME/.config/ghostty/themes/noctalia" ]; then
             : > "$HOME/.config/ghostty/themes/noctalia"
-          fi
-
-          if [ ! -e "$HOME/.config/fuzzel/themes/noctalia" ]; then
-            : > "$HOME/.config/fuzzel/themes/noctalia"
           fi
 
           if [ ! -e "$HOME/.config/qt6ct/colors/noctalia.conf" ]; then
@@ -159,6 +152,7 @@ in
         ++ lib.optionals pkgs.stdenv.isLinux [
           pkgs.nwg-look
           pkgs.qt6Packages.qt6ct
+          unstablePkgs.walker
         ];
         shellAliases = {
           sync-yggdrasil = ''

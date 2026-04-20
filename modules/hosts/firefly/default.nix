@@ -106,9 +106,7 @@
         };
       };
 
-      home-manager.users.monochromatti = {
-        programs.fuzzel.enable = true;
-      };
+      home-manager.users.monochromatti = { };
 
       virtualisation.docker.enable = true;
 
