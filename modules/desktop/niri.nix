@@ -8,6 +8,11 @@
 
     environment.QT_QPA_PLATFORMTHEME = "qt6ct";
 
+    cursor = {
+      xcursor-theme = "Adwaita";
+      xcursor-size = 24;
+    };
+
     input = {
       touchpad.natural-scroll = null;
     };

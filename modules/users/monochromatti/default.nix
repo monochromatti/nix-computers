@@ -89,6 +89,14 @@ in
         };
       };
 
+      home.pointerCursor = lib.mkIf pkgs.stdenv.isLinux {
+        gtk.enable = true;
+        x11.enable = true;
+        name = "Adwaita";
+        package = pkgs.adwaita-icon-theme;
+        size = 32;
+      };
+
       fonts.fontconfig.enable = lib.mkIf pkgs.stdenv.isLinux true;
 
       systemd.user.services = lib.mkIf pkgs.stdenv.isLinux {
