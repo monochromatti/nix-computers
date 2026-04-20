@@ -13,7 +13,7 @@ in
     }:
     let
       agentPackages = inputs.agents.packages.${pkgs.system};
-      noctaliaWallpaper = toString ../../../dotfiles/wallpapers/arindam-saha-PwzISwC2kLs-unsplash.jpg;
+      noctaliaWallpaper = toString ../../../dotfiles/wallpapers/ign_unsplash27.png;
       noctaliaColorschemes = pkgs.fetchFromGitHub {
         owner = "noctalia-dev";
         repo = "noctalia-colorschemes";
