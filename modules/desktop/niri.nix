@@ -22,6 +22,23 @@
       }
     ];
 
-    outputs."eDP-1".scale = 1.15;
+    outputs = {
+      "eDP-1" = {
+        scale = 1.15;
+        position._attrs = {
+          x = 1725;
+          y = 0;
+        };
+      };
+
+      "DP-1" = {
+        mode = "5120x1440@29.979";
+        scale = 1;
+        position._attrs = {
+          x = 0;
+          y = -1440;
+        };
+      };
+    };
   };
 }
