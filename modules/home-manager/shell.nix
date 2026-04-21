@@ -17,7 +17,7 @@
           enable = true;
           enableZshIntegration = true;
           settings = {
-            format = "$username$hostname$directory$git_branch$git_state$git_status$cmd_duration$line_break$python$character";
+            format = "$username$hostname$directory$git_branch$git_state$git_status$cmd_duration\${custom.nix_develop}$line_break$python$character";
 
             directory.style = "blue";
 
@@ -59,6 +59,17 @@
               style = "bright-black";
               detect_extensions = [ ];
               detect_files = [ ];
+            };
+
+            custom.nix_develop = {
+              description = "Shown only when inside an actual nix develop shell";
+              when = ''
+                [ -n "$IN_NIX_SHELL" ] &&
+                [ -n "$NIX_BUILD_TOP" ]
+              '';
+              command = "true";
+              format = "[❄️]($style) ";
+              style = "blue";
             };
           };
         };
