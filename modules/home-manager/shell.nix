@@ -81,6 +81,17 @@
 
         direnv = {
           enable = true;
+          package =
+            if pkgs.stdenv.isDarwin then
+              pkgs.direnv.overrideAttrs (_: {
+                checkPhase = ''
+                  runHook preCheck
+                  make test-go test-bash test-zsh
+                  runHook postCheck
+                '';
+              })
+            else
+              pkgs.direnv;
           enableZshIntegration = true;
           nix-direnv.enable = true;
           silent = true;
