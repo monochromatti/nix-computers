@@ -12,8 +12,9 @@ in
       ...
     }:
     let
-      agentPackages = inputs.agents.packages.${pkgs.system};
-      unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${pkgs.system};
+      system = pkgs.stdenv.hostPlatform.system;
+      agentPackages = inputs.agents.packages.${system};
+      unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
       noctaliaWallpaper = toString ../../../dotfiles/wallpapers/ign_unsplash27.png;
     in
     {
