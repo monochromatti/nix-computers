@@ -4,219 +4,22 @@ let
   users = inputs.self.lib.users;
 in
 {
-  flake.modules.homeManager.${username} =
-    {
-      config,
-      pkgs,
-      lib,
-      ...
-    }:
-    let
-      system = pkgs.stdenv.hostPlatform.system;
-      agentPackages = inputs.agents.packages.${system};
-      unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
-      noctaliaWallpaper = toString ../../../dotfiles/wallpapers/ign_unsplash27.png;
-    in
-    {
-      imports = with inputs.self.modules.homeManager; [
-        packages
-        shell
-        zed
-        aliases
-      ];
+  flake.modules.homeManager.${username} = {
+    imports = with inputs.self.modules.homeManager; [
+      packages
+      shell
+      zed
+      aliases
+      agents
+      linux
+      userdirs
+    ];
 
-      xdg = {
-        enable = true;
-        configFile = lib.optionalAttrs pkgs.stdenv.isLinux {
-          "ghostty/config".text = ''
-            theme = noctalia
-            font-family = JetBrains Mono
-            font-size = 11
-            window-padding-x = 8
-            window-padding-y = 8
-          '';
-
-          "noctalia/settings.json".text = builtins.toJSON inputs.self.desktop.noctalia.settings;
-
-          "qt6ct/qt6ct.conf".text = ''
-            [Appearance]
-            color_scheme_path=${config.home.homeDirectory}/.config/qt6ct/colors/noctalia.conf
-            custom_palette=true
-            icon_theme=Papirus-Dark
-            style=Fusion
-
-            [Fonts]
-            fixed="JetBrains Mono,11,-1,5,400,0,0,0,0,0"
-            general="Inter,11,-1,5,400,0,0,0,0,0"
-          '';
-
-          "walker/config.toml".text = ''
-            force_keyboard_focus = true
-            close_when_open = true
-            click_to_close = true
-            theme = "noctalia"
-
-            [providers]
-            default = ["desktopapplications", "runner"]
-            empty = ["desktopapplications"]
-
-            [placeholders]
-            "default" = { input = "Search", list = "No Results" }
-            "desktopapplications" = { input = "Launch App", list = "No Applications" }
-
-            [keybinds]
-            close = ["Escape"]
-            next = ["Down"]
-            previous = ["Up"]
-          '';
-
-        };
-      };
-
-      gtk = lib.mkIf pkgs.stdenv.isLinux {
-        enable = true;
-        font = {
-          name = "Inter";
-          package = pkgs.inter;
-          size = 11;
-        };
-        iconTheme = {
-          name = "Papirus-Dark";
-          package = pkgs.papirus-icon-theme;
-        };
-        theme = {
-          name = "adw-gtk3-dark";
-          package = pkgs.adw-gtk3;
-        };
-      };
-
-      home.pointerCursor = lib.mkIf pkgs.stdenv.isLinux {
-        gtk.enable = true;
-        x11.enable = true;
-        name = "Adwaita";
-        package = pkgs.adwaita-icon-theme;
-        size = 32;
-      };
-
-      fonts.fontconfig.enable = lib.mkIf pkgs.stdenv.isLinux true;
-
-      systemd.user.services = lib.mkIf pkgs.stdenv.isLinux {
-        elephant = {
-          Unit = {
-            Description = "Elephant backend for Walker";
-            PartOf = [ "graphical-session.target" ];
-            After = [ "graphical-session.target" ];
-          };
-
-          Service = {
-            ExecStart = "${unstablePkgs.elephant}/bin/elephant";
-            Restart = "on-failure";
-            RestartSec = 2;
-          };
-
-          Install.WantedBy = [ "graphical-session.target" ];
-        };
-
-        walker = {
-          Unit = {
-            Description = "Walker launcher service";
-            PartOf = [ "graphical-session.target" ];
-            After = [
-              "graphical-session.target"
-              "elephant.service"
-            ];
-            Wants = [ "elephant.service" ];
-          };
-
-          Service = {
-            Environment = [
-              "PATH=${
-                lib.makeBinPath [
-                  unstablePkgs.walker
-                  unstablePkgs.elephant
-                ]
-              }"
-            ];
-            ExecStart = "${unstablePkgs.walker}/bin/walker --gapplication-service";
-            Restart = "on-failure";
-            RestartSec = 2;
-          };
-
-          Install.WantedBy = [ "graphical-session.target" ];
-        };
-      };
-
-      home = {
-        sessionVariables = lib.optionalAttrs pkgs.stdenv.isLinux {
-          QT_QPA_PLATFORMTHEME = "qt6ct";
-        };
-
-        activation.noctaliaThemeStubs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-          mkdir -p \
-            "$HOME/.config/niri" \
-            "$HOME/.config/ghostty/themes" \
-            "$HOME/.config/qt6ct/colors" \
-            "$HOME/.cache/noctalia"
-
-          if [ ! -e "$HOME/.config/niri/noctalia.kdl" ]; then
-            cat > "$HOME/.config/niri/noctalia.kdl" <<'EOF'
-          // populated by Noctalia
-          EOF
-          fi
-
-          if [ ! -e "$HOME/.config/ghostty/themes/noctalia" ]; then
-            : > "$HOME/.config/ghostty/themes/noctalia"
-          fi
-
-          if [ ! -e "$HOME/.config/qt6ct/colors/noctalia.conf" ]; then
-            : > "$HOME/.config/qt6ct/colors/noctalia.conf"
-          fi
-
-          cat > "$HOME/.cache/noctalia/wallpapers.json" <<'EOF'
-          {"wallpapers":{},"defaultWallpaper":"${noctaliaWallpaper}","usedRandomWallpapers":{}}
-          EOF
-        '';
-
-        inherit username;
-        stateVersion = "24.05";
-        packages = [
-          agentPackages.codex
-          agentPackages.opencode
-          agentPackages.claude
-          (agentPackages.pi.configuration.apply {
-            settings = {
-              defaultProvider = "azure-openai-responses";
-              defaultModel = "gpt-5.4-mini";
-              defaultThinkingLevel = "medium";
-              packages = [
-                "npm:pi-subagents"
-                "npm:pi-intercom"
-                "npm:pi-web-access"
-                "npm:pi-boomerang"
-                "npm:pi-skill-palette"
-                "npm:pi-mcp-adapter"
-                "npm:pi-move-session"
-                "npm:pi-prompt-template-model"
-                "npm:pi-ghostty"
-                "npm:pi-thinking-steps"
-                "git:github.com/monochromatti/pi-extensions"
-              ];
-            };
-          }).wrapper
-        ]
-        ++ lib.optionals pkgs.stdenv.isLinux [
-          pkgs.nwg-look
-          pkgs.qt6Packages.qt6ct
-          unstablePkgs.elephant
-          unstablePkgs.walker
-        ];
-        shellAliases = {
-          sync-yggdrasil = ''
-            gh repo sync && gh repo sync -b dev-base --force && gh repo sync -b dev --force
-          '';
-        };
-      };
+    home = {
+      inherit username;
+      stateVersion = "24.05";
     };
+  };
 
   flake.modules.nixos.${username} =
     { ... }:
@@ -225,26 +28,7 @@ in
         inputs.self.modules.homeManager.${username}
       ];
 
-      home-manager.users.${username} = {
-        home = {
-          homeDirectory = users.${username}.home.linux;
-          shellAliases = {
-            start-vidar-prod = ''
-              az vm start --subscription 584a2d66-5adc-45d5-b796-9d69d54154d6 --resource-group asgard --name vidar
-            '';
-            stop-vidar-prod = ''
-              az vm deallocate --subscription 584a2d66-5adc-45d5-b796-9d69d54154d6 --resource-group asgard --name vidar
-            '';
-            start-vidar-dev = ''
-              az vm start --subscription 5111c8c6-28f3-4b11-a07f-0aef3ed4721d --resource-group asgard --name vidar
-            '';
-            stop-vidar-dev = ''
-              az vm deallocate --subscription 5111c8c6-28f3-4b11-a07f-0aef3ed4721d --resource-group asgard --name vidar
-            '';
-          };
-        };
-        xdg.configFile."user-dirs.dirs".source = ../../../dotfiles/user-dirs.dirs;
-      };
+      home-manager.users.${username}.home.homeDirectory = users.${username}.home.linux;
     };
 
   flake.modules.darwin.${username} =
