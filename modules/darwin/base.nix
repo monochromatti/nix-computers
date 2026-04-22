@@ -6,6 +6,7 @@
       imports = [
         inputs.home-manager.darwinModules.home-manager
         inputs.sops-nix.darwinModules.sops
+        inputs.self.modules.darwin.ai
       ];
 
       home-manager = {

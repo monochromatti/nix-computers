@@ -8,7 +8,6 @@ in
     imports = with inputs.self.modules.homeManager; [
       packages
       zed
-      agents
       linux
       userdirs
     ];
