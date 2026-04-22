@@ -16,14 +16,6 @@
       xdg = {
         enable = true;
         configFile = lib.optionalAttrs pkgs.stdenv.isLinux {
-          "ghostty/config".text = ''
-            theme = noctalia
-            font-family = JetBrains Mono
-            font-size = 11
-            window-padding-x = 8
-            window-padding-y = 8
-          '';
-
           "noctalia/settings.json".text = builtins.toJSON inputs.self.desktop.noctalia.settings;
 
           "qt6ct/qt6ct.conf".text = ''
@@ -168,7 +160,6 @@
           noctaliaThemeStubs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             mkdir -p \
               "$HOME/.config/niri" \
-              "$HOME/.config/ghostty/themes" \
               "$HOME/.config/qt6ct/colors" \
               "$HOME/.cache/noctalia"
 
@@ -176,10 +167,6 @@
               cat > "$HOME/.config/niri/noctalia.kdl" <<'EOF'
             // populated by Noctalia
             EOF
-            fi
-
-            if [ ! -e "$HOME/.config/ghostty/themes/noctalia" ]; then
-              : > "$HOME/.config/ghostty/themes/noctalia"
             fi
 
             if [ ! -e "$HOME/.config/qt6ct/colors/noctalia.conf" ]; then

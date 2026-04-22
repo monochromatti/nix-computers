@@ -7,6 +7,7 @@ in
   flake.modules.homeManager.${username} = {
     imports = with inputs.self.modules.homeManager; [
       packages
+      ghostty
       zed
       linux
       userdirs

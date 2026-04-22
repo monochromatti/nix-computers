@@ -157,7 +157,8 @@ in
         enable = true;
         enableAutosuggestions = true;
         enableSyntaxHighlighting = true;
-        interactiveShellInit = zshBaseInit + ''
+        interactiveShellInit = zshBaseInit;
+        promptInit = ''
           if [[ $TERM != "dumb" ]]; then
             eval "$(starship init zsh)"
           fi

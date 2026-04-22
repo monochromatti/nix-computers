@@ -67,7 +67,6 @@ let
     {
       home.packages = with pkgs; [
         # Terminal
-        ghostty
         wl-clipboard
 
         # UI programs
