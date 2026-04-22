@@ -16,6 +16,14 @@
             defaultProvider = "azure-openai-responses";
             defaultModel = "gpt-5.4-mini";
             defaultThinkingLevel = "medium";
+            subagents.agentOverrides = {
+              "context-builder".model = "azure-openai-responses/gpt-5.4";
+              planner.model = "azure-openai-responses/gpt-5.4";
+              researcher.model = "azure-openai-responses/gpt-5.4";
+              reviewer.model = "azure-openai-responses/gpt-5.3-codex";
+              scout.model = "azure-openai-responses/gpt-5.4-mini";
+              worker.model = "azure-openai-responses/gpt-5.4";
+            };
             packages = [
               "npm:pi-subagents"
               "npm:pi-intercom"
