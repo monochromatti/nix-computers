@@ -5,6 +5,7 @@
   flake.modules.darwin.macarius = {
     imports = with inputs.self.modules.darwin; [
       base
+      shell
       homebrew
       secrets
 

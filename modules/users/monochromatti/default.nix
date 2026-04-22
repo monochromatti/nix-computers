@@ -7,13 +7,13 @@ in
   flake.modules.homeManager.${username} = {
     imports = with inputs.self.modules.homeManager; [
       packages
-      shell
       zed
-      aliases
       agents
       linux
       userdirs
     ];
+
+    programs.home-manager.enable = true;
 
     home = {
       inherit username;
