@@ -17,7 +17,22 @@
 
       ids.gids.nixbld = 30000;
 
-      nixpkgs.config.allowUnfree = true;
+      nixpkgs = {
+        config.allowUnfree = true;
+        overlays = [
+          (final: prev: {
+            python3Packages = prev.python3Packages.overrideScope (
+              _pyFinal: pyPrev: {
+                ffmpeg-python = pyPrev.ffmpeg-python.overridePythonAttrs (_: {
+                  # Work around Darwin check failure in ffmpeg-python
+                  # (ffmpeg -version exits with SIGKILL in nixpkgs 25.11).
+                  doCheck = false;
+                });
+              }
+            );
+          })
+        ];
+      };
 
       environment.systemPackages = with pkgs; [
         p7zip
