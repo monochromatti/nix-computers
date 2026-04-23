@@ -45,7 +45,17 @@
             theme = "noctalia"
 
             [providers]
-            default = ["desktopapplications", "runner"]
+            default = [
+              "providerlist",
+              "desktopapplications",
+              "runner",
+              "calc",
+              "files",
+              "niri",
+              "bluetooth",
+              "wireplumber",
+              "menus",
+            ]
             empty = ["desktopapplications"]
 
             [placeholders]
