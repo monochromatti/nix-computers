@@ -17,11 +17,8 @@
         niri =
           let
             lib = pkgs.lib;
-            noctaliaExe = lib.getExe config.packages.noctalia-shell;
             userNoctaliaConfig = "${self.lib.users.monochromatti.home.linux}/.config/niri/noctalia.kdl";
-            settings = self.desktop.niri.settings // {
-              spawn-at-startup = [ noctaliaExe ];
-            };
+            settings = self.desktop.niri.settings;
             defaultConfig = pkgs.writeText "niri-default-config.kdl" (
               builtins.replaceStrings [ "spawn-at-startup \"waybar\"" ] [ "// spawn-at-startup \"waybar\"" ] (
                 builtins.readFile "${pkgs.niri.src}/resources/default-config.kdl"

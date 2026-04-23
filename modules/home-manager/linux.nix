@@ -88,6 +88,22 @@
       fonts.fontconfig.enable = lib.mkIf pkgs.stdenv.isLinux true;
 
       systemd.user.services = lib.mkIf pkgs.stdenv.isLinux {
+        noctalia = {
+          Unit = {
+            Description = "Noctalia shell";
+            PartOf = [ "graphical-session.target" ];
+            After = [ "graphical-session.target" ];
+          };
+
+          Service = {
+            ExecStart = "${inputs.self.packages.${system}.noctalia-shell}/bin/noctalia-shell";
+            Restart = "on-failure";
+            RestartSec = 2;
+          };
+
+          Install.WantedBy = [ "graphical-session.target" ];
+        };
+
         elephant = {
           Unit = {
             Description = "Elephant backend for Walker";
