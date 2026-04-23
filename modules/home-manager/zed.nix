@@ -35,8 +35,8 @@
         userSettings = {
           theme = {
             mode = "system";
-            light = "Noctalia Light";
-            dark = "Noctalia Dark";
+            light = "Nord Light";
+            dark = "Nord Dark";
           };
           file_types = {
             "Markdown" = [ "qmd" ];
