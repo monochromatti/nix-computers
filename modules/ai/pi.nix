@@ -101,17 +101,9 @@
 
                 mkdir -p "$HOME/.pi/agent"
 
-                # Merge generated models.json with local overrides.
+                # Keep models.json Nix-managed.
                 models_target="$HOME/.pi/agent/models.json"
-                merge_inputs=("${toString config."models.json".path}")
-
-                if [ -f "$models_target" ]; then
-                  merge_inputs+=("$models_target")
-                fi
-
-                tmp_models="$(mktemp)"
-                jq -s 'reduce .[] as $item ({}; . * $item)' "''${merge_inputs[@]}" > "$tmp_models"
-                mv "$tmp_models" "$models_target"
+                ln -sfn ${toString config."models.json".path} "$models_target"
 
                 # Keep settings.json Nix-managed.
                 settings_target="$HOME/.pi/agent/settings.json"
