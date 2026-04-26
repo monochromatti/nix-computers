@@ -2,6 +2,7 @@
 let
   starshipSettings = {
     format = "$username$hostname$directory$git_branch$git_state$git_status$cmd_duration\${custom.nix_develop}$line_break$python$character";
+    command_timeout = 2000;
 
     directory.style = "blue";
 
