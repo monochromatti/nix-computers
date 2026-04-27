@@ -10,6 +10,9 @@
     let
       system = pkgs.stdenv.hostPlatform.system;
       unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
+      noctaliaShell = "${inputs.self.packages.${system}.noctalia-shell}/bin/noctalia-shell";
+      niri = "${inputs.self.packages.${system}.niri}/bin/niri";
+      systemctl = "${pkgs.systemd}/bin/systemctl";
       noctaliaWallpaper = toString ../../dotfiles/wallpapers/ign_unsplash27.png;
     in
     {
@@ -24,6 +27,60 @@
                 "dark": {
                   "name": "matugen",
                   "iconTheme": "Papirus-Dark"
+                }
+              },
+              "providers": {
+                "power": {
+                  "entrypoints": {
+                    "lock": {
+                      "preferences": {
+                        "customProgram": "${noctaliaShell} ipc --any-display -n call sessionMenu lock",
+                        "confirm": false
+                      }
+                    },
+                    "suspend": {
+                      "preferences": {
+                        "customProgram": "${noctaliaShell} ipc --any-display -n call sessionMenu lockAndSuspend",
+                        "confirm": true
+                      }
+                    },
+                    "sleep": {
+                      "preferences": {
+                        "customProgram": "${noctaliaShell} ipc --any-display -n call sessionMenu lockAndSuspend",
+                        "confirm": true
+                      }
+                    },
+                    "hibernate": {
+                      "preferences": {
+                        "customProgram": "${systemctl} hibernate",
+                        "confirm": true
+                      }
+                    },
+                    "reboot": {
+                      "preferences": {
+                        "customProgram": "${systemctl} reboot",
+                        "confirm": true
+                      }
+                    },
+                    "soft-reboot": {
+                      "preferences": {
+                        "customProgram": "${systemctl} soft-reboot",
+                        "confirm": true
+                      }
+                    },
+                    "power-off": {
+                      "preferences": {
+                        "customProgram": "${systemctl} poweroff",
+                        "confirm": true
+                      }
+                    },
+                    "logout": {
+                      "preferences": {
+                        "customProgram": "${niri} msg action quit --skip-confirmation",
+                        "confirm": true
+                      }
+                    }
+                  }
                 }
               }
             }
