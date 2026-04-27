@@ -1,4 +1,4 @@
-{ inputs, ... }:
+{ inputs, self, ... }:
 {
   perSystem =
     { pkgs, ... }:
@@ -36,6 +36,10 @@
                 "npm:pi-caveman"
                 "npm:pi-mcp-adapter"
                 "git:github.com/monochromatti/pi-extensions"
+              ];
+              skills = [
+                "${inputs.agents}/.agents/skills"
+                "${self}/.agents/skills"
               ];
             };
           in
