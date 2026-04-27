@@ -3,13 +3,8 @@
     "agents": {
       "inputs": {
         "blueprint": "blueprint",
-        "llm-agents": [
-          "llm-agents"
-        ],
-        "nixpkgs": [
-          "llm-agents",
-          "nixpkgs"
-        ],
+        "llm-agents": ["llm-agents"],
+        "nixpkgs": ["llm-agents", "nixpkgs"],
         "systems": "systems",
         "wrappers": "wrappers"
       },
@@ -29,14 +24,8 @@
     },
     "blueprint": {
       "inputs": {
-        "nixpkgs": [
-          "agents",
-          "nixpkgs"
-        ],
-        "systems": [
-          "agents",
-          "systems"
-        ]
+        "nixpkgs": ["agents", "nixpkgs"],
+        "systems": ["agents", "systems"]
       },
       "locked": {
         "lastModified": 1776249299,
@@ -54,14 +43,8 @@
     },
     "blueprint_2": {
       "inputs": {
-        "nixpkgs": [
-          "llm-agents",
-          "nixpkgs"
-        ],
-        "systems": [
-          "llm-agents",
-          "systems"
-        ]
+        "nixpkgs": ["llm-agents", "nixpkgs"],
+        "systems": ["llm-agents", "systems"]
       },
       "locked": {
         "lastModified": 1776249299,
@@ -79,23 +62,11 @@
     },
     "bun2nix": {
       "inputs": {
-        "flake-parts": [
-          "llm-agents",
-          "flake-parts"
-        ],
+        "flake-parts": ["llm-agents", "flake-parts"],
         "import-tree": "import-tree_2",
-        "nixpkgs": [
-          "llm-agents",
-          "nixpkgs"
-        ],
-        "systems": [
-          "llm-agents",
-          "systems"
-        ],
-        "treefmt-nix": [
-          "llm-agents",
-          "treefmt-nix"
-        ]
+        "nixpkgs": ["llm-agents", "nixpkgs"],
+        "systems": ["llm-agents", "systems"],
+        "treefmt-nix": ["llm-agents", "treefmt-nix"]
       },
       "locked": {
         "lastModified": 1776192490,
@@ -115,9 +86,7 @@
     "daily-hours": {
       "inputs": {
         "flake-parts": "flake-parts",
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1775648809,
@@ -171,10 +140,7 @@
     },
     "flake-parts_3": {
       "inputs": {
-        "nixpkgs-lib": [
-          "llm-agents",
-          "nixpkgs"
-        ]
+        "nixpkgs-lib": ["llm-agents", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1775087534,
@@ -192,9 +158,7 @@
     },
     "home-manager": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1775425411,
@@ -266,9 +230,7 @@
     },
     "nix-darwin": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1772129556,
@@ -346,6 +308,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-master": {
+      "locked": {
+        "lastModified": 1777270315,
+        "narHash": "sha256-yKB4G6cKsQsWN7M6rZGk6gkJPDNPIzT05y4qzRyCDlI=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "6368eda62c9775c38ef7f714b2555a741c20c72d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "nixpkgs-unstable": {
       "locked": {
         "lastModified": 1776877367,
@@ -410,9 +388,7 @@
     },
     "pc": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": ["nixpkgs"],
         "sops-nix": "sops-nix",
         "treefmt-nix": "treefmt-nix_2"
       },
@@ -441,6 +417,7 @@
         "nix-darwin": "nix-darwin",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs": "nixpkgs_2",
+        "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "pc": "pc",
         "sops-nix": "sops-nix_2",
@@ -451,10 +428,7 @@
     },
     "sops-nix": {
       "inputs": {
-        "nixpkgs": [
-          "pc",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["pc", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1772048434,
@@ -471,9 +445,7 @@
     },
     "sops-nix_2": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1776771786,
@@ -521,10 +493,7 @@
     },
     "treefmt-nix": {
       "inputs": {
-        "nixpkgs": [
-          "llm-agents",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["llm-agents", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1775636079,
@@ -542,10 +511,7 @@
     },
     "treefmt-nix_2": {
       "inputs": {
-        "nixpkgs": [
-          "pc",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["pc", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1770228511,
@@ -581,10 +547,7 @@
     },
     "treefmt-nix_4": {
       "inputs": {
-        "nixpkgs": [
-          "utgard",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["utgard", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1772660329,
@@ -602,9 +565,7 @@
     },
     "utgard": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ],
+        "nixpkgs": ["nixpkgs"],
         "nixpkgs-unstable": "nixpkgs-unstable_2",
         "treefmt-nix": "treefmt-nix_4"
       },
@@ -624,10 +585,7 @@
     },
     "wrappers": {
       "inputs": {
-        "nixpkgs": [
-          "agents",
-          "nixpkgs"
-        ]
+        "nixpkgs": ["agents", "nixpkgs"]
       },
       "locked": {
         "lastModified": 1776505856,
@@ -645,9 +603,7 @@
     },
     "wrappers_2": {
       "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
+        "nixpkgs": ["nixpkgs"]
       },
       "locked": {
         "lastModified": 1776505856,
