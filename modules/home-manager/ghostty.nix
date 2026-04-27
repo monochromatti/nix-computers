@@ -13,7 +13,8 @@
           window-padding-x = 8;
           window-padding-y = 8;
           cursor-style = "block";
-        } // lib.optionalAttrs pkgs.stdenv.isLinux {
+        }
+        // lib.optionalAttrs pkgs.stdenv.isLinux {
           font-size = 11;
         };
       };
