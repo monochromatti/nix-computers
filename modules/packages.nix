@@ -53,6 +53,15 @@
                 }
               }
 
+              window-rule {
+                match app-id="^dev\\.zed\\.Zed$"
+                draw-border-with-background false
+
+                background-effect {
+                  blur true
+                }
+              }
+
               layer-rule {
                 match layer="top"
                 match layer="overlay"

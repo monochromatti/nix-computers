@@ -38,6 +38,22 @@
             light = "Nord Light";
             dark = "Nord Dark";
           };
+          theme_overrides = {
+            "Nord Dark" = {
+              "background.appearance" = "transparent";
+              background = "#2e3440D1";
+              "title_bar.background" = "#2e3440D1";
+              "title_bar.inactive_background" = "#252a34D1";
+              "status_bar.background" = "#2e3440D1";
+            };
+            "Nord Light" = {
+              "background.appearance" = "transparent";
+              background = "#eceff4D1";
+              "title_bar.background" = "#eceff4D1";
+              "title_bar.inactive_background" = "#dfe4edD1";
+              "status_bar.background" = "#eceff4D1";
+            };
+          };
           file_types = {
             "Markdown" = [ "qmd" ];
             "JSON" = [
