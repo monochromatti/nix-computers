@@ -4,6 +4,11 @@ let
 in
 {
   flake.desktop.noctalia.settings = {
+    # Keep in sync with Noctalia's current settings schema. Without this,
+    # Noctalia reruns all migrations on every start against a read-only
+    # Home Manager symlinked settings.json.
+    settingsVersion = 59;
+
     general = {
       radiusRatio = 1.0;
       iRadiusRatio = 1.0;
@@ -14,18 +19,29 @@ in
       backgroundOpacity = 0.9;
       frameRadius = 12;
       widgetSpacing = 6;
-      widgets.left = [
-        {
-          id = "CustomButton";
-          icon = "rocket";
-          leftClickExec = "vicinae toggle";
-          generalTooltipText = "Open launcher";
-        }
-        { id = "Clock"; }
-        { id = "SystemMonitor"; }
-        { id = "ActiveWindow"; }
-        { id = "MediaMini"; }
-      ];
+      widgets = {
+        left = [
+          {
+            id = "CustomButton";
+            icon = "rocket";
+            leftClickExec = "vicinae toggle";
+            generalTooltipText = "Open launcher";
+          }
+          { id = "Clock"; }
+          { id = "SystemMonitor"; }
+          { id = "ActiveWindow"; }
+          { id = "MediaMini"; }
+        ];
+        center = [ { id = "Workspace"; } ];
+        right = [
+          { id = "Tray"; }
+          { id = "NotificationHistory"; }
+          { id = "Battery"; }
+          { id = "Volume"; }
+          { id = "Brightness"; }
+          { id = "ControlCenter"; }
+        ];
+      };
     };
 
     ui = {
