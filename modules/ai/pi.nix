@@ -13,8 +13,8 @@
           let
             settings = {
               defaultProvider = "azure-openai-responses";
-              defaultModel = "azure-openai-responses/gpt-5.5:low";
-              defaultThinkingLevel = "medium";
+              defaultModel = "gpt-5.5";
+              defaultThinkingLevel = "low";
               subagents.agentOverrides = {
                 "context-builder".model = "azure-openai-responses/gpt-5.5";
                 oracle.model = "azure-openai-responses/gpt-5.5";
@@ -48,6 +48,11 @@
           {
             config = {
               inherit settings;
+
+              models.providers.azure-openai-responses = {
+                baseUrl = "https://openai-fornybar-swe.services.ai.azure.com/openai/v1";
+                apiKey = "AZURE_API_KEY";
+              };
             };
           }
         )).wrapper;
