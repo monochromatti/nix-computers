@@ -17,6 +17,17 @@
         enable = true;
         configFile = lib.optionalAttrs pkgs.stdenv.isLinux {
           "noctalia/settings.json".text = builtins.toJSON inputs.self.desktop.noctalia.settings;
+          "vicinae/settings.json".text = ''
+            {
+              "imports": ["${config.home.homeDirectory}/.local/share/vicinae/themes/matugen.toml"],
+              "theme": {
+                "dark": {
+                  "name": "matugen",
+                  "iconTheme": "Papirus-Dark"
+                }
+              }
+            }
+          '';
 
           "qt6ct/qt6ct.conf".text = ''
             [Appearance]
