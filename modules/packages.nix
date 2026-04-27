@@ -51,12 +51,6 @@
               }
 
               layer-rule {
-                background-effect {
-                  blur true
-                }
-              }
-
-              layer-rule {
                 match namespace="^noctalia-wallpaper*"
                 place-within-backdrop true
               }
