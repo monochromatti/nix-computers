@@ -3,7 +3,10 @@
   flake.desktop.niri.settings = {
     binds = {
       "Mod+T".spawn = "ghostty";
-      "Mod+D".spawn = "walker";
+      "Mod+D".spawn = [
+        "vicinae"
+        "toggle"
+      ];
     };
 
     environment.QT_QPA_PLATFORMTHEME = "qt6ct";

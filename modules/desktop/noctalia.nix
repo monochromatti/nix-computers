@@ -18,7 +18,7 @@ in
         {
           id = "CustomButton";
           icon = "rocket";
-          leftClickExec = "walker";
+          leftClickExec = "vicinae toggle";
           generalTooltipText = "Open launcher";
         }
         { id = "Clock"; }
@@ -66,7 +66,6 @@ in
           enabled = true;
         })
         [
-          "walker"
           "ghostty"
           "gtk"
           "qt"

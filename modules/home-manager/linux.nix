@@ -30,35 +30,6 @@
             general="Inter,11,-1,5,400,0,0,0,0,0"
           '';
 
-          "walker/config.toml".text = ''
-            force_keyboard_focus = true
-            close_when_open = true
-            click_to_close = true
-            theme = "noctalia"
-
-            [providers]
-            default = [
-              "providerlist",
-              "desktopapplications",
-              "runner",
-              "calc",
-              "files",
-              "niri",
-              "bluetooth",
-              "wireplumber",
-              "menus",
-            ]
-            empty = ["desktopapplications"]
-
-            [placeholders]
-            "default" = { input = "Search", list = "No Results" }
-            "desktopapplications" = { input = "Launch App", list = "No Applications" }
-
-            [keybinds]
-            close = ["Escape"]
-            next = ["Down"]
-            previous = ["Up"]
-          '';
         };
       };
 
@@ -106,45 +77,21 @@
           Install.WantedBy = [ "graphical-session.target" ];
         };
 
-        elephant = {
+        vicinae = {
           Unit = {
-            Description = "Elephant backend for Walker";
+            Description = "Vicinae launcher daemon";
+            Documentation = [ "https://docs.vicinae.com" ];
             PartOf = [ "graphical-session.target" ];
             After = [ "graphical-session.target" ];
+            Requires = [ "dbus.socket" ];
           };
 
           Service = {
-            ExecStart = "${unstablePkgs.elephant}/bin/elephant";
-            Restart = "on-failure";
-            RestartSec = 2;
-          };
-
-          Install.WantedBy = [ "graphical-session.target" ];
-        };
-
-        walker = {
-          Unit = {
-            Description = "Walker launcher service";
-            PartOf = [ "graphical-session.target" ];
-            After = [
-              "graphical-session.target"
-              "elephant.service"
-            ];
-            Wants = [ "elephant.service" ];
-          };
-
-          Service = {
-            Environment = [
-              "PATH=${
-                lib.makeBinPath [
-                  unstablePkgs.walker
-                  unstablePkgs.elephant
-                ]
-              }"
-            ];
-            ExecStart = "${unstablePkgs.walker}/bin/walker --gapplication-service";
-            Restart = "on-failure";
-            RestartSec = 2;
+            ExecStart = "${unstablePkgs.vicinae}/bin/vicinae server --replace";
+            ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
+            Restart = "always";
+            RestartSec = 60;
+            KillMode = "process";
           };
 
           Install.WantedBy = [ "graphical-session.target" ];
@@ -182,8 +129,7 @@
         packages = lib.optionals pkgs.stdenv.isLinux [
           pkgs.nwg-look
           pkgs.qt6Packages.qt6ct
-          unstablePkgs.elephant
-          unstablePkgs.walker
+          unstablePkgs.vicinae
         ];
       };
     };
