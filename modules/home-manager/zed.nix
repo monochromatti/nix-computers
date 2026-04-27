@@ -3,12 +3,21 @@
   flake.modules.homeManager.zed =
     { pkgs, ... }:
     let
+      system = pkgs.stdenv.hostPlatform.system;
+      opacity = inputs.self.desktop.opacity;
       upkgs = import inputs.nixpkgs-unstable {
-        system = pkgs.stdenv.hostPlatform.system;
+        inherit system;
         overlays = [ inputs.utgard.overlays.ty ];
       };
+      inherit (pkgs.lib)
+        getExe
+        getExe'
+        fixedWidthString
+        toHexString
+        ;
+      alpha = fixedWidthString 2 "0" (toHexString (builtins.floor (opacity * 255.0)));
+      transparent = color: "${color}${alpha}";
     in
-    with pkgs.lib;
     {
       home.packages = with pkgs; [
         package-version-server
@@ -41,17 +50,17 @@
           theme_overrides = {
             "Nord Dark" = {
               "background.appearance" = "transparent";
-              background = "#2e3440D1";
-              "title_bar.background" = "#2e3440D1";
-              "title_bar.inactive_background" = "#252a34D1";
-              "status_bar.background" = "#2e3440D1";
+              background = transparent "#2e3440";
+              "title_bar.background" = transparent "#2e3440";
+              "title_bar.inactive_background" = transparent "#252a34";
+              "status_bar.background" = transparent "#2e3440";
             };
             "Nord Light" = {
               "background.appearance" = "transparent";
-              background = "#eceff4D1";
-              "title_bar.background" = "#eceff4D1";
-              "title_bar.inactive_background" = "#dfe4edD1";
-              "status_bar.background" = "#eceff4D1";
+              background = transparent "#eceff4";
+              "title_bar.background" = transparent "#eceff4";
+              "title_bar.inactive_background" = transparent "#dfe4ed";
+              "status_bar.background" = transparent "#eceff4";
             };
           };
           file_types = {

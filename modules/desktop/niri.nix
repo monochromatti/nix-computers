@@ -1,5 +1,10 @@
 { ... }:
+let
+  opacity = 0.90;
+in
 {
+  flake.desktop.opacity = opacity;
+
   flake.desktop.niri.settings = {
     binds = {
       "Mod+T".spawn = "ghostty";

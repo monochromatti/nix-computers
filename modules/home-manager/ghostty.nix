@@ -1,7 +1,14 @@
-{ ... }:
+{ inputs, ... }:
 {
   flake.modules.homeManager.ghostty =
-    { pkgs, lib, ... }:
+    {
+      pkgs,
+      lib,
+      ...
+    }:
+    let
+      opacity = inputs.self.desktop.opacity;
+    in
     {
       xdg.enable = true;
 
@@ -13,7 +20,7 @@
           window-padding-x = 8;
           window-padding-y = 8;
           cursor-style = "block";
-          background-opacity = 0.82;
+          background-opacity = opacity;
           background-opacity-cells = true;
         }
         // lib.optionalAttrs pkgs.stdenv.isLinux {
