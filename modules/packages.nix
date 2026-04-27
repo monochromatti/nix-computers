@@ -45,6 +45,9 @@
               }
 
               window-rule {
+                match app-id="^com\\.mitchellh\\.ghostty$"
+                draw-border-with-background false
+
                 background-effect {
                   blur true
                 }

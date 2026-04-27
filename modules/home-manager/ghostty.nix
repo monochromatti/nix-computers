@@ -13,6 +13,8 @@
           window-padding-x = 8;
           window-padding-y = 8;
           cursor-style = "block";
+          background-opacity = 0.82;
+          background-opacity-cells = true;
         }
         // lib.optionalAttrs pkgs.stdenv.isLinux {
           font-size = 11;
