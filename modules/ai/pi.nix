@@ -13,15 +13,17 @@
           let
             settings = {
               defaultProvider = "azure-openai-responses";
-              defaultModel = "gpt-5.4-mini";
+              defaultModel = "azure-openai-responses/gpt-5.5:low";
               defaultThinkingLevel = "medium";
               subagents.agentOverrides = {
-                "context-builder".model = "azure-openai-responses/gpt-5.4";
-                planner.model = "azure-openai-responses/gpt-5.4";
-                researcher.model = "azure-openai-responses/gpt-5.4";
-                reviewer.model = "azure-openai-responses/gpt-5.3-codex";
+                "context-builder".model = "azure-openai-responses/gpt-5.5";
+                oracle.model = "azure-openai-responses/gpt-5.5";
+                "oracle-executor".model = "azure-openai-responses/gpt-5.5";
+                planner.model = "azure-openai-responses/gpt-5.5";
+                researcher.model = "azure-openai-responses/gpt-5.5";
+                reviewer.model = "azure-openai-responses/gpt-5.5";
                 scout.model = "azure-openai-responses/gpt-5.4-mini";
-                worker.model = "azure-openai-responses/gpt-5.4";
+                worker.model = "azure-openai-responses/gpt-5.5";
               };
               packages = [
                 "npm:pi-subagents"
