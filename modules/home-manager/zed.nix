@@ -29,6 +29,7 @@
         package = upkgs.zed-editor;
         mutableUserSettings = false;
         extensions = [
+          "nord"
           "nix"
           "toml"
           "mermaid"
