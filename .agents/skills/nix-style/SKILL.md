@@ -1,7 +1,7 @@
 ---
 name: nix-style
-description: "Use when writing or reviewing Nix code for this user/repo. Primes agents on this user's Nix language taste: function shape, currying vs attrsets, nesting, scope, data transforms, conditionals, merges, paths, shell snippets, and package expressions. Not a generic NixOS/flakes design guide."
-compatibility: "NixOS, nix-darwin, Home Manager, flake-based Nix repositories."
+description: "Primes agents on this user's Nix language taste: function shape, currying vs attrsets, nesting, scope, data transforms, conditionals, merges, paths, shell snippets, and package expressions. Not a generic NixOS/flakes design guide."
+disable-model-invocation: true
 ---
 
 # Nix Language Style
