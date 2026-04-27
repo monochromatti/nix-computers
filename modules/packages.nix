@@ -37,16 +37,25 @@
                 background-color "transparent"
               }
 
+              blur {
+                passes 2
+                offset 3.0
+                noise 0.03
+                saturation 1.0
+              }
+
               window-rule {
                 background-effect {
                   blur true
                 }
+              }
 
-                popups {
-                  geometry-corner-radius 12
-                  background-effect {
-                    blur true
-                  }
+              layer-rule {
+                match layer="top"
+                match layer="overlay"
+
+                background-effect {
+                  xray false
                 }
               }
 
