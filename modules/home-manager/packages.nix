@@ -91,6 +91,7 @@ let
 
         # Other
         gpu-screen-recorder
+        sqlite
       ];
     };
 in
