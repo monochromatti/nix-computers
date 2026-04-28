@@ -1,8 +1,23 @@
-{ ... }:
+{ inputs, ... }:
 let
   wallpaperDir = toString ../../dotfiles/wallpapers;
 in
 {
+  perSystem =
+    {
+      pkgs,
+      upkgs,
+      ...
+    }:
+    {
+      packages = pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
+        noctalia-shell = inputs.wrappers.lib.wrapPackage {
+          inherit pkgs;
+          package = upkgs.noctalia-shell;
+        };
+      };
+    };
+
   flake.desktop.noctalia.settings = {
     # Keep in sync with Noctalia's current settings schema. Without this,
     # Noctalia reruns all migrations on every start against a read-only
