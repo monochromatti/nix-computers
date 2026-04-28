@@ -6,5 +6,3 @@ function y() {
     fi
     rm -f -- "$tmp"
 }
-
-amp() { nix run github:numtide/llm-agents.nix#amp -- "$@"; }
