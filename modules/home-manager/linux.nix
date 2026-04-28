@@ -9,7 +9,7 @@
     }:
     let
       system = pkgs.stdenv.hostPlatform.system;
-      unstablePkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
+      upkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
       noctaliaShell = "${inputs.self.packages.${system}.noctalia-shell}/bin/noctalia-shell";
       niri = "${inputs.self.packages.${system}.niri}/bin/niri";
       systemctl = "${pkgs.systemd}/bin/systemctl";
@@ -155,7 +155,7 @@
           };
 
           Service = {
-            ExecStart = "${unstablePkgs.vicinae}/bin/vicinae server --replace";
+            ExecStart = "${upkgs.vicinae}/bin/vicinae server --replace";
             ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
             Restart = "always";
             RestartSec = 60;
@@ -198,7 +198,7 @@
           inputs.self.packages.${system}.noctalia-shell
           pkgs.nwg-look
           pkgs.qt6Packages.qt6ct
-          unstablePkgs.vicinae
+          upkgs.vicinae
         ];
       };
     };
