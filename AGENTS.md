@@ -17,6 +17,10 @@ This is a flake-based personal systems configuration repository for:
 
 The repository follows a modular style centered around `modules/` and assembled through `flake-parts` in `flake.nix`.
 
+## Design Principles
+
+1. Prefer dendritic Nix structure: treat each non-entry Nix file as a flake-parts/top-level module for one semantic feature, with that feature providing any NixOS, nix-darwin, Home Manager, or shared aspects it needs. Compose hosts from reusable features instead of scattering feature logic into host-specific trees.
+
 ## Structure
 
 1. `flake.nix`: flake inputs and top-level outputs assembly.
