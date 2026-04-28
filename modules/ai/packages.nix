@@ -14,6 +14,7 @@
           agentPackages.opencode
           agentPackages.claude
           config.packages.pi
+          config.packages.pi-dev
         ];
       };
     };
