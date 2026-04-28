@@ -56,6 +56,7 @@ let
         pkgs.ripgrep
 
         # Docs
+        pkgs.glow
         pkgs.pandoc
         pkgs.quarto
         latex
