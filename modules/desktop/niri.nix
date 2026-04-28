@@ -12,6 +12,29 @@ in
         "vicinae"
         "toggle"
       ];
+      "Mod+L".spawn = [
+        "noctalia-shell"
+        "ipc"
+        "--any-display"
+        "-n"
+        "call"
+        "sessionMenu"
+        "lock"
+      ];
+      "Mod+Shift+S".screenshot = null;
+      "Super+Shift+S".screenshot = null;
+      "XF86ScreenSaver".spawn = [
+        "noctalia-shell"
+        "ipc"
+        "--any-display"
+        "-n"
+        "call"
+        "sessionMenu"
+        "lock"
+      ];
+      "Print".screenshot = null;
+      "Shift+Print".screenshot-screen = null;
+      "Ctrl+Print".screenshot-window = null;
     };
 
     environment.QT_QPA_PLATFORMTHEME = "qt6ct";

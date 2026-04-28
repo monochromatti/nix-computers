@@ -195,6 +195,7 @@
         };
 
         packages = lib.optionals pkgs.stdenv.isLinux [
+          inputs.self.packages.${system}.noctalia-shell
           pkgs.nwg-look
           pkgs.qt6Packages.qt6ct
           unstablePkgs.vicinae
