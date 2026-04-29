@@ -3,10 +3,10 @@
   imports = [ inputs.treefmt-nix.flakeModule ];
 
   perSystem =
-    { system, ... }:
+    { pkgs, ... }:
     {
       treefmt = {
-        pkgs = import inputs.nixpkgs { inherit system; };
+        inherit pkgs;
         projectRootFile = "flake.nix";
         programs.nixfmt.enable = true;
       };

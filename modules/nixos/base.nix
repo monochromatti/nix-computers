@@ -1,7 +1,12 @@
 { inputs, ... }:
 {
   flake.modules.nixos.base =
-    { pkgs, lib, ... }:
+    {
+      pkgs,
+      lib,
+      upkgs,
+      ...
+    }:
     with lib;
     {
       imports = [
@@ -15,6 +20,9 @@
         useUserPackages = true;
         backupFileExtension = "backup";
         overwriteBackup = true;
+        extraSpecialArgs = {
+          inherit upkgs;
+        };
       };
 
       i18n.defaultLocale = mkDefault "en_US.UTF-8";

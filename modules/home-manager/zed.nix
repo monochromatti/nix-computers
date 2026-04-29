@@ -1,14 +1,9 @@
 { inputs, ... }:
 {
   flake.modules.homeManager.zed =
-    { pkgs, ... }:
+    { pkgs, upkgs, ... }:
     let
-      system = pkgs.stdenv.hostPlatform.system;
       opacity = inputs.self.desktop.opacity;
-      upkgs = import inputs.nixpkgs-unstable {
-        inherit system;
-        overlays = [ inputs.utgard.overlays.ty ];
-      };
       inherit (pkgs.lib)
         getExe
         getExe'

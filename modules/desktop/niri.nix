@@ -6,14 +6,14 @@ in
   flake.desktop.opacity = opacity;
 
   perSystem =
-    { pkgs, ... }:
+    { pkgs, mpkgs, ... }:
     {
       packages = pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
         niri =
           let
             lib = pkgs.lib;
             userNoctaliaConfig = "${self.lib.users.monochromatti.home.linux}/.config/niri/noctalia.kdl";
-            niri = inputs.nixpkgs-master.legacyPackages.${pkgs.stdenv.hostPlatform.system}.niri;
+            niri = mpkgs.niri;
             settings = self.desktop.niri.settings;
             defaultConfig = pkgs.writeText "niri-default-config.kdl" (
               builtins.replaceStrings [ "spawn-at-startup \"waybar\"" ] [ "// spawn-at-startup \"waybar\"" ] (

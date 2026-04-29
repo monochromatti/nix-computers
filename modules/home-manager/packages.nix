@@ -3,14 +3,12 @@ let
   commonPackages =
     {
       pkgs,
+      upkgs,
       ...
     }:
     let
       latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
       daily-hours = inputs.daily-hours.packages.${pkgs.stdenv.hostPlatform.system}.default;
-      upkgs = import inputs.nixpkgs-unstable {
-        system = pkgs.stdenv.hostPlatform.system;
-      };
     in
     {
       home.packages = [

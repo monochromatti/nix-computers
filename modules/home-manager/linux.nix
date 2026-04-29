@@ -5,11 +5,11 @@
       config,
       pkgs,
       lib,
+      upkgs,
       ...
     }:
     let
       system = pkgs.stdenv.hostPlatform.system;
-      upkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
       noctaliaShell = "${inputs.self.packages.${system}.noctalia-shell}/bin/noctalia-shell";
       niri = "${inputs.self.packages.${system}.niri}/bin/niri";
       systemctl = "${pkgs.systemd}/bin/systemctl";

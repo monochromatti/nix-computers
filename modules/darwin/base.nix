@@ -1,7 +1,7 @@
 { inputs, ... }:
 {
   flake.modules.darwin.base =
-    { pkgs, ... }:
+    { pkgs, upkgs, ... }:
     {
       imports = [
         inputs.home-manager.darwinModules.home-manager
@@ -13,6 +13,9 @@
         useGlobalPkgs = true;
         useUserPackages = true;
         backupFileExtension = "backup";
+        extraSpecialArgs = {
+          inherit upkgs;
+        };
       };
 
       ids.gids.nixbld = 30000;

@@ -60,12 +60,5 @@
       imports = [
         (import-tree ./modules)
       ];
-
-      perSystem =
-        { system, ... }:
-        {
-          _module.args.pkgs = inputs.nixpkgs.legacyPackages.${system};
-          _module.args.upkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
-        };
     };
 }
