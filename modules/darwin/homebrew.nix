@@ -24,7 +24,6 @@
         "keka"
         "soundsource"
         "visual-studio-code"
-        "ghostty"
         "loop"
       ];
     };

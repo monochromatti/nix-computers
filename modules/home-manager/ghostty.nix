@@ -32,7 +32,7 @@
 
       programs.ghostty = {
         enable = true;
-        package = if pkgs.stdenv.isLinux then pkgs.ghostty else null;
+        package = if pkgs.stdenv.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
         settings =
           commonSettings
           // lib.optionalAttrs pkgs.stdenv.isLinux linuxSettings
