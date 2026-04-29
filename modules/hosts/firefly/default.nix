@@ -15,6 +15,7 @@
         shell
         secrets
         packages
+        niri
 
         inputs.pc.nixosModules.hdw-hp-zbook-firefly_g11
         inputs.pc.nixosModules.default
@@ -112,6 +113,8 @@
         };
       };
 
+      midgard.niri.settings = lib.recursiveUpdate inputs.self.desktop.niri.settings inputs.self.desktop.niri.hostSettings.firefly;
+
       programs = {
         nix-ld = {
           enable = true;
@@ -119,10 +122,7 @@
             stdenv.cc.cc.lib
           ];
         };
-        niri = {
-          enable = true;
-          package = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.niri;
-        };
+        niri.enable = true;
       };
 
       home-manager.users.monochromatti = {

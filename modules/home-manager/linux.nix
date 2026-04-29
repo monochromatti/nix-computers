@@ -11,7 +11,7 @@
     let
       system = pkgs.stdenv.hostPlatform.system;
       noctaliaShell = "${inputs.self.packages.${system}.noctalia-shell}/bin/noctalia-shell";
-      niri = "${inputs.self.packages.${system}.niri}/bin/niri";
+      niri = "${pkgs.niri}/bin/niri";
       systemctl = "${pkgs.systemd}/bin/systemctl";
       noctaliaWallpaper = toString ../../dotfiles/wallpapers/ign_unsplash27.png;
     in
