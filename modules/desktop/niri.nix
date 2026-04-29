@@ -15,11 +15,11 @@ in
             userNoctaliaConfig = "${self.lib.users.monochromatti.home.linux}/.config/niri/noctalia.kdl";
             niri = mpkgs.niri;
             settings = self.desktop.niri.settings;
-            defaultConfig = pkgs.writeText "niri-default-config.kdl" (
-              builtins.replaceStrings [ "spawn-at-startup \"waybar\"" ] [ "// spawn-at-startup \"waybar\"" ] (
-                builtins.readFile "${niri.src}/resources/default-config.kdl"
-              )
-            );
+            defaultConfig = pkgs.runCommand "niri-default-config.kdl" { } ''
+              cp ${niri.src}/resources/default-config.kdl $out
+              substituteInPlace $out \
+                --replace-fail 'spawn-at-startup "waybar"' '// spawn-at-startup "waybar"'
+            '';
             base = inputs.wrappers.wrapperModules.niri.apply {
               inherit pkgs settings;
               package = lib.mkForce niri;
