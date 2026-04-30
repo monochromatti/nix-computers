@@ -22,11 +22,15 @@
           "noctalia/settings.json".text = builtins.toJSON inputs.self.desktop.noctalia.settings;
           "vicinae/settings.json".text = ''
             {
-              "imports": ["${config.home.homeDirectory}/.local/share/vicinae/themes/matugen.toml"],
               "theme": {
                 "dark": {
-                  "name": "matugen",
-                  "iconTheme": "Papirus-Dark"
+                  "name": "nord",
+                  "icon_theme": "Papirus-Dark"
+                }
+              },
+              "launcher_window": {
+                "layer_shell": {
+                  "enabled": false
                 }
               },
               "providers": {
@@ -97,8 +101,8 @@
             fixed="JetBrains Mono,11,-1,5,400,0,0,0,0,0"
             general="Inter,11,-1,5,400,0,0,0,0,0"
           '';
-
         };
+
       };
 
       gtk = lib.mkIf pkgs.stdenv.isLinux {
@@ -155,7 +159,7 @@
           };
 
           Service = {
-            ExecStart = "${upkgs.vicinae}/bin/vicinae server --replace";
+            ExecStart = "${upkgs.vicinae}/bin/vicinae server --replace --config ${config.xdg.configHome}/vicinae/settings.json";
             ExecReload = "${pkgs.coreutils}/bin/kill -HUP $MAINPID";
             Restart = "always";
             RestartSec = 60;

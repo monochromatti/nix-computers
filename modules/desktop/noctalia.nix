@@ -102,6 +102,7 @@ in
           "qt"
           "kcolorscheme"
           "niri"
+          "vicinae"
           "zed"
           "zenBrowser"
         ];
