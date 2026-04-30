@@ -17,6 +17,7 @@ in
         paths = [
           config.packages.pi
           config.packages.pi-dev
+          pkgs.playwright-test
         ];
       };
     };
