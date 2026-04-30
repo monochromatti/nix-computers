@@ -11,14 +11,16 @@
           "nixpkgs"
         ],
         "systems": "systems",
-        "wrappers": "wrappers"
+        "wrappers": [
+          "wrappers"
+        ]
       },
       "locked": {
-        "lastModified": 1777539618,
-        "narHash": "sha256-k4YMUUXvteRniWLkZ5ePbbDJiYhJjxlh8eCqrmLdHjQ=",
+        "lastModified": 1777542460,
+        "narHash": "sha256-8Dc7sXms81PeAxlFqbYPErztZat6kORdl2kM7L70uUQ=",
         "owner": "fornybar",
         "repo": "agents",
-        "rev": "a140a4cb61c0b79cabe6a839ea7cbab44b95654e",
+        "rev": "5a6231a60a61f3b01126a5007d6a58efdb631d8e",
         "type": "github"
       },
       "original": {
@@ -463,7 +465,7 @@
         "sops-nix": "sops-nix_2",
         "treefmt-nix": "treefmt-nix_3",
         "utgard": "utgard",
-        "wrappers": "wrappers_2"
+        "wrappers": "wrappers"
       }
     },
     "sops-nix": {
@@ -642,36 +644,15 @@
     "wrappers": {
       "inputs": {
         "nixpkgs": [
-          "agents",
           "nixpkgs"
         ]
       },
       "locked": {
-        "lastModified": 1776505856,
-        "narHash": "sha256-VbnOijrn4EdYYJwiNQFxQNXECKBa60U66UPxUQAGkBE=",
-        "owner": "lassulus",
-        "repo": "wrappers",
-        "rev": "738d4bf81cbf306f6917c540a5b798110e3cf1e8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "lassulus",
-        "repo": "wrappers",
-        "type": "github"
-      }
-    },
-    "wrappers_2": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1776505856,
-        "narHash": "sha256-VbnOijrn4EdYYJwiNQFxQNXECKBa60U66UPxUQAGkBE=",
+        "lastModified": 1777405024,
+        "narHash": "sha256-aFlRAeukwsJXd4b/0uLUTQaKo5wroOfVnoxTxi9sPVA=",
         "owner": "Lassulus",
         "repo": "wrappers",
-        "rev": "738d4bf81cbf306f6917c540a5b798110e3cf1e8",
+        "rev": "cac6a55af3e4ebcabec478348ddd0fe032650834",
         "type": "github"
       },
       "original": {

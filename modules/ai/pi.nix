@@ -1,6 +1,5 @@
 {
   inputs,
-  lib,
   self,
   ...
 }:
@@ -75,21 +74,15 @@
         };
       };
 
-      packages.pi-dev =
-        (mkPi {
-          imports = [ baseSettingsModule ];
-          config = {
-            binName = "pi-dev";
-            filesToExclude = [ "bin/pi" ];
-            settings = {
-              inherit skills extensions;
-            };
+      packages.pi-dev = mkPi {
+        imports = [ baseSettingsModule ];
+        config = {
+          binName = "pi-dev";
+          filesToExclude = [ "bin/pi" ];
+          settings = {
+            inherit skills extensions;
           };
-        }).overrideAttrs
-          (old: {
-            meta = lib.attrsets.recursiveUpdate (old.meta or { }) {
-              mainProgram = "pi-dev";
-            };
-          });
+        };
+      };
     };
 }
