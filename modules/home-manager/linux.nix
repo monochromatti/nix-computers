@@ -13,7 +13,7 @@
       noctaliaShell = "${inputs.self.packages.${system}.noctalia-shell}/bin/noctalia-shell";
       niri = "${pkgs.niri}/bin/niri";
       systemctl = "${pkgs.systemd}/bin/systemctl";
-      noctaliaWallpaper = toString ../../dotfiles/wallpapers/ign_unsplash27.png;
+      noctaliaWallpaper = toString ../../dotfiles/wallpapers/aishot-4712.jpg;
     in
     {
       xdg = {
