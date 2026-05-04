@@ -8,6 +8,7 @@
       shell
       secrets
       packages
+      hardware
       niri
 
       inputs.pc.nixosModules.hdw-hp-zbook-firefly_g11

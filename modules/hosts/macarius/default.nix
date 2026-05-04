@@ -8,6 +8,7 @@
       shell
       homebrew
       secrets
+      hardware
 
       monochromatti
     ];
