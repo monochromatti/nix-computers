@@ -12,15 +12,7 @@
       mkPi =
         module:
         (inputs.agents.packages.${system}.pi.configuration.apply {
-          imports = [
-            {
-              config.models.providers.azure-openai-responses = {
-                baseUrl = "https://openai-fornybar-swe.services.ai.azure.com/openai/v1";
-                apiKey = "AZURE_API_KEY";
-              };
-            }
-            module
-          ];
+          imports = [ module ];
         }).wrapper;
 
       baseSettingsModule = {
@@ -29,16 +21,6 @@
           defaultModel = "gpt-5.5";
           defaultThinkingLevel = "low";
           mcp.enabled = [ "linear" ];
-          subagents.agentOverrides = {
-            "context-builder".model = "azure-openai-responses/gpt-5.5";
-            oracle.model = "azure-openai-responses/gpt-5.5";
-            "oracle-executor".model = "azure-openai-responses/gpt-5.5";
-            planner.model = "azure-openai-responses/gpt-5.5";
-            researcher.model = "azure-openai-responses/gpt-5.5";
-            reviewer.model = "azure-openai-responses/gpt-5.5";
-            scout.model = "azure-openai-responses/gpt-5.4-mini";
-            worker.model = "azure-openai-responses/gpt-5.5";
-          };
         };
       };
 
