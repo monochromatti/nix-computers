@@ -57,6 +57,7 @@
       ];
 
       skills = [
+        "~/.agents/skills"
         "${inputs.agents}/.agents/skills"
         "${self}/.agents/skills"
       ];
