@@ -9,10 +9,12 @@ let
     let
       latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
       daily-hours = inputs.daily-hours.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      niri-stack = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.niri-stack;
     in
     {
       home.packages = [
         daily-hours
+        niri-stack
 
         # Nix
         pkgs.nixfmt-rfc-style

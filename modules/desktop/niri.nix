@@ -5,6 +5,12 @@ in
 {
   flake.desktop.opacity = opacity;
 
+  perSystem =
+    { pkgs, ... }:
+    {
+      packages.niri-stack = pkgs.callPackage ../../packages/niri-stack/package.nix { };
+    };
+
   flake.modules.nixos.niri =
     {
       config,
