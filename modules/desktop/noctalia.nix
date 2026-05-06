@@ -11,10 +11,35 @@ in
     }:
     {
       packages = pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
-        noctalia-shell = inputs.wrappers.lib.wrapPackage {
-          inherit pkgs;
-          package = upkgs.noctalia-shell;
-        };
+        noctalia-shell =
+          let
+            # Workaround for workspace pill duplication on monitor hotplug.
+            # noctalia-qs 0.0.10 (in nixpkgs-unstable) has a bug in
+            # ObjectModel::diffUpdate that corrupts the workspace model on
+            # permutation events (e.g. niri migrating workspaces between
+            # outputs). Fixed upstream in v0.0.11+ via noctalia-qs PR #35.
+            # See noctalia-shell issue #2463; nixpkgs PR #505125 will retire
+            # this override once merged into nixpkgs-unstable.
+            noctaliaQsFixed = upkgs.noctalia-qs.overrideAttrs (_: rec {
+              version = "0.0.12";
+              src = pkgs.fetchFromGitHub {
+                owner = "noctalia-dev";
+                repo = "noctalia-qs";
+                tag = "v${version}";
+                hash = "sha256-79JP2QTdvp1jg7HGxAW+xzhzhLnlKUi8yGXq9nDCeH0=";
+              };
+              # 0001-fix-unneccessary-reloads.patch already upstream as
+              # fce16b9d in 0.0.11, would fail to apply.
+              patches = [ ];
+            });
+            noctaliaShellFixed = upkgs.noctalia-shell.override {
+              noctalia-qs = noctaliaQsFixed;
+            };
+          in
+          inputs.wrappers.lib.wrapPackage {
+            inherit pkgs;
+            package = noctaliaShellFixed;
+          };
       };
     };
 
