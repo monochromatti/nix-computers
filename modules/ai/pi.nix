@@ -25,8 +25,6 @@
       };
 
       extensions = [
-        "npm:pi-subagents"
-        "npm:pi-intercom"
         "npm:pi-web-access"
         "npm:pi-boomerang"
         "npm:pi-skill-palette"
