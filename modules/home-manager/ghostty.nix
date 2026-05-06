@@ -8,6 +8,7 @@
     }:
     let
       opacity = inputs.self.desktop.opacity;
+      fontSize = inputs.self.desktop.font.size;
 
       commonSettings = {
         font-family = "JetBrains Mono";
@@ -19,7 +20,7 @@
       };
 
       linuxSettings = {
-        font-size = 11;
+        font-size = fontSize;
       };
 
       darwinSettings = {

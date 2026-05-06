@@ -6,8 +6,15 @@ in
   options.flake.desktop = lib.mkOption {
     type = lib.types.submodule {
       freeformType = lib.types.attrsOf lib.types.anything;
-      options.opacity = lib.mkOption {
-        type = lib.types.float;
+      options = {
+        opacity = lib.mkOption {
+          type = lib.types.float;
+        };
+
+        font.size = lib.mkOption {
+          type = lib.types.ints.positive;
+          default = 12;
+        };
       };
     };
     default = { };

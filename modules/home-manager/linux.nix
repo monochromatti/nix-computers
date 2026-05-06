@@ -10,6 +10,7 @@
     }:
     let
       system = pkgs.stdenv.hostPlatform.system;
+      fontSize = inputs.self.desktop.font.size;
       noctaliaShell = "${inputs.self.packages.${system}.noctalia-shell}/bin/noctalia-shell";
       niri = "${pkgs.niri}/bin/niri";
       systemctl = "${pkgs.systemd}/bin/systemctl";
@@ -98,8 +99,8 @@
             style=Fusion
 
             [Fonts]
-            fixed="JetBrains Mono,11,-1,5,400,0,0,0,0,0"
-            general="Inter,11,-1,5,400,0,0,0,0,0"
+            fixed="JetBrains Mono,${toString fontSize},-1,5,400,0,0,0,0,0"
+            general="Inter,${toString fontSize},-1,5,400,0,0,0,0,0"
           '';
         };
 
@@ -110,7 +111,7 @@
         font = {
           name = "Inter";
           package = pkgs.inter;
-          size = 11;
+          size = fontSize;
         };
         iconTheme = {
           name = "Papirus-Dark";
