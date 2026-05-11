@@ -99,7 +99,12 @@ in
         default = self.desktop.niri.settings;
       };
 
-      config.programs.niri.package = mkNiri config.midgard.niri.settings;
+      config = {
+        programs.niri.package = mkNiri config.midgard.niri.settings;
+
+        # Noctalia Battery widget reads device state via UPower.
+        services.upower.enable = true;
+      };
     };
 
   flake.desktop.niri.settings = {
