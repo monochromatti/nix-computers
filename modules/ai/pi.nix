@@ -5,7 +5,7 @@
 }:
 {
   perSystem =
-    { pkgs, ... }:
+    { pkgs, lib, ... }:
     let
       system = pkgs.stdenv.hostPlatform.system;
 
@@ -16,11 +16,29 @@
         }).wrapper;
 
       baseSettingsModule = {
-        config.settings = {
-          defaultProvider = "azure-openai-responses";
-          defaultModel = "gpt-5.3-codex";
-          defaultThinkingLevel = "medium";
-          mcp.enabled = [ "linear" ];
+        config = {
+          mcp = {
+            enabled = [
+              "linear"
+              "playwright"
+            ];
+            registry.playwright = {
+              transport = "stdio";
+              command = "npx";
+              args = [
+                "-y"
+                "@playwright/mcp@latest"
+                "--executable-path"
+                (lib.getExe pkgs.chromium)
+              ];
+            };
+          };
+
+          settings = {
+            defaultProvider = "azure-openai-responses";
+            defaultModel = "gpt-5.3-codex";
+            defaultThinkingLevel = "medium";
+          };
         };
       };
 
