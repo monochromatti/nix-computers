@@ -1,2 +1,4 @@
 .DS_Store
 nix.conf
+*.wsl
+*.wsl.sha256
