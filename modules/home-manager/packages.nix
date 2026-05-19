@@ -1,20 +1,17 @@
 { inputs, ... }:
-let
-  commonPackages =
+{
+  flake.modules.homeManager.development =
     {
       pkgs,
       upkgs,
       ...
     }:
     let
-      latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
       daily-hours = inputs.daily-hours.packages.${pkgs.stdenv.hostPlatform.system}.default;
-      niri-stack = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.niri-stack;
     in
     {
       home.packages = [
         daily-hours
-        niri-stack
 
         # Nix
         pkgs.nixfmt-rfc-style
@@ -33,37 +30,104 @@ let
         # JavaScript
         upkgs.nodejs_24
 
-        # Graphics
-        pkgs.d2
-        pkgs.silicon
-
         # Dev
         pkgs.gh
         pkgs.git
-        pkgs.docker
-        pkgs.azure-cli
-        pkgs.qemu
         upkgs.devenv
 
         # AI
         upkgs.rtk
+      ];
+    };
 
-        # Security
-        pkgs.bitwarden-desktop
+  flake.modules.homeManager.terminal =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [
+        eza
+        ripgrep
+        fd
+        fzf
+        zoxide
+        yazi
+        jq
+        nil
+      ];
+    };
 
-        # Shell
-        pkgs.eza
-        pkgs.ripgrep
+  flake.modules.homeManager.documents =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [
+        glow
+        pandoc
+      ];
+    };
 
-        # Docs
-        pkgs.glow
-        pkgs.pandoc
+  flake.modules.homeManager.publishing =
+    { pkgs, ... }:
+    let
+      latex = pkgs.texliveMedium.withPackages (ps: with ps; [ arara ]);
+    in
+    {
+      home.packages = [
         pkgs.quarto
         latex
       ];
     };
 
-  linuxPackages =
+  flake.modules.homeManager.diagrams =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [
+        d2
+        silicon
+      ];
+    };
+
+  flake.modules.homeManager.containers =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [
+        docker
+        docker-compose
+      ];
+    };
+
+  flake.modules.homeManager.cloud =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [
+        azure-cli
+      ];
+    };
+
+  flake.modules.homeManager.virtualization =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [
+        qemu
+      ];
+    };
+
+  flake.modules.homeManager.desktop =
+    { pkgs, ... }:
+    let
+      niri-stack = inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.niri-stack;
+    in
+    {
+      home.packages = [ niri-stack ];
+    };
+
+  flake.modules.homeManager.security =
+    { pkgs, ... }:
+    {
+      home.packages = with pkgs; [
+        bitwarden-desktop
+      ];
+    };
+
+  flake.modules.homeManager.apps =
     { pkgs, ... }:
     {
       home.packages = with pkgs; [
@@ -83,9 +147,6 @@ let
         inkscape
         gimp
 
-        # Docker
-        docker-compose
-
         # NATS
         natscli
         nsc
@@ -95,11 +156,39 @@ let
         sqlite
       ];
     };
-in
-{
-  flake.modules.homeManager.packages = commonPackages;
+
+  flake.modules.homeManager.wsl = {
+    imports = with inputs.self.modules.homeManager; [
+      development
+      terminal
+      documents
+    ];
+  };
+
+  flake.modules.homeManager.workstation = {
+    imports = with inputs.self.modules.homeManager; [
+      development
+      terminal
+      documents
+      publishing
+      diagrams
+      containers
+      cloud
+      virtualization
+    ];
+  };
+
+  flake.modules.homeManager.packages = {
+    imports = with inputs.self.modules.homeManager; [
+      workstation
+      desktop
+      security
+    ];
+  };
 
   flake.modules.nixos.packages = {
-    home-manager.sharedModules = [ linuxPackages ];
+    home-manager.sharedModules = [
+      inputs.self.modules.homeManager.apps
+    ];
   };
 }
