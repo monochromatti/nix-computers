@@ -28,6 +28,8 @@
               args = [
                 "-y"
                 "@playwright/mcp@latest"
+              ]
+              ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
                 "--executable-path"
                 (lib.getExe pkgs.chromium)
               ];
