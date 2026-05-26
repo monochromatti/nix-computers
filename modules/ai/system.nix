@@ -1,11 +1,18 @@
 { inputs, ... }:
 let
   aiModule =
-    { pkgs, ... }:
     {
-      environment.systemPackages = [
-        inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.ai
-      ];
+      pkgs,
+      lib,
+      ...
+    }:
+    let
+      system = pkgs.stdenv.hostPlatform.system;
+      # Some NixOS targets, such as the Lima dev VM, do not build the AI package.
+      aiPackage = lib.attrByPath [ "packages" system "ai" ] null inputs.self;
+    in
+    {
+      environment.systemPackages = lib.optionals (aiPackage != null) [ aiPackage ];
     };
 in
 {

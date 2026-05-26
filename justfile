@@ -16,3 +16,4 @@ package-wsl out="vindos.wsl":
 # Upload local artifacts to existing GitHub release tag.
 upload-wsl tag out="vindos.wsl":
   gh release upload {{tag}} {{out}} {{out}}.sha256 --clobber
+

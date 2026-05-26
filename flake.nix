@@ -53,8 +53,13 @@
       url = "github:nix-community/NixOS-WSL/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    nixos-lima = {
+      url = "github:nixos-lima/nixos-lima";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.nixpkgs-unstable.follows = "nixpkgs-unstable";
+    };
     utgard = {
-      url = "github:fornybar/utgard";
+      url = "git+https://github.com/fornybar/utgard.git";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
