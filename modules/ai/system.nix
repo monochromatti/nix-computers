@@ -19,7 +19,9 @@ in
   perSystem =
     { pkgs, config, ... }:
     {
-      packages."delta-duck-query" = pkgs.callPackage ../../packages/delta-duck-query/package.nix { };
+      packages."delta-duck-query" = pkgs.callPackage ../../packages/delta-duck-query/package.nix {
+        uvloom = inputs.uvloom;
+      };
 
       packages.ai = pkgs.buildEnv {
         name = "ai";

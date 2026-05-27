@@ -1,0 +1,17 @@
+[project]
+name = "delta-duck-query"
+version = "0.1.0"
+description = "Minimal CLI for querying Delta Lake with DuckDB"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "azure-identity",
+  "duckdb",
+]
+
+[project.scripts]
+delta-duck-query = "delta_duck_query.cli:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

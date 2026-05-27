@@ -549,6 +549,56 @@
         "type": "github"
       }
     },
+    "pyproject-build-systems": {
+      "inputs": {
+        "nixpkgs": [
+          "uvloom",
+          "nixpkgs"
+        ],
+        "pyproject-nix": [
+          "uvloom",
+          "pyproject-nix"
+        ],
+        "uv2nix": [
+          "uvloom",
+          "uv2nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1776659114,
+        "narHash": "sha256-qapCOQmR++yZSY43dzrp3wCrkOTLpod+ONtJWBk6iKU=",
+        "owner": "pyproject-nix",
+        "repo": "build-system-pkgs",
+        "rev": "ffaa2161dd5d63e0e94591f86b54fc239660fb2e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pyproject-nix",
+        "repo": "build-system-pkgs",
+        "type": "github"
+      }
+    },
+    "pyproject-nix": {
+      "inputs": {
+        "nixpkgs": [
+          "uvloom",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1776715674,
+        "narHash": "sha256-Gs1VnEkCkkRZxJQAC/Dhz0Jbfi22mFXChbtNg9w/Ybg=",
+        "owner": "pyproject-nix",
+        "repo": "pyproject.nix",
+        "rev": "69f57f27e52a87c54e28138a75ec741cd46663c9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pyproject-nix",
+        "repo": "pyproject.nix",
+        "type": "github"
+      }
+    },
     "root": {
       "inputs": {
         "agents": "agents",
@@ -568,6 +618,7 @@
         "sops-nix": "sops-nix_2",
         "treefmt-nix": "treefmt-nix_3",
         "utgard": "utgard",
+        "uvloom": "uvloom",
         "wrappers": "wrappers"
       }
     },
@@ -757,6 +808,54 @@
       "original": {
         "type": "git",
         "url": "https://github.com/fornybar/utgard.git"
+      }
+    },
+    "uv2nix": {
+      "inputs": {
+        "nixpkgs": [
+          "uvloom",
+          "nixpkgs"
+        ],
+        "pyproject-nix": [
+          "uvloom",
+          "pyproject-nix"
+        ]
+      },
+      "locked": {
+        "lastModified": 1777895960,
+        "narHash": "sha256-KebDsQd+A7pm++Tp0744EjULttHvz1wbKqNKkMA/088=",
+        "owner": "pyproject-nix",
+        "repo": "uv2nix",
+        "rev": "5ad90d48b80ecc920ca2247d53f46beba302e186",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pyproject-nix",
+        "repo": "uv2nix",
+        "type": "github"
+      }
+    },
+    "uvloom": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ],
+        "pyproject-build-systems": "pyproject-build-systems",
+        "pyproject-nix": "pyproject-nix",
+        "uv2nix": "uv2nix"
+      },
+      "locked": {
+        "lastModified": 1779869172,
+        "narHash": "sha256-B4pQZsnqXqYc53viN+7AeiAemb7P4kxFmyNmNpdYPH4=",
+        "owner": "fornybar",
+        "repo": "uvloom",
+        "rev": "0125db61a660e10912da711cd26035d952b5ad90",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fornybar",
+        "repo": "uvloom",
+        "type": "github"
       }
     },
     "wrappers": {

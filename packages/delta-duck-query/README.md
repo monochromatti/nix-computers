@@ -1,14 +1,10 @@
 # delta-duck-query
 
-Small CLI to query Delta Lake from DuckDB, based on auth/query pattern in `fornybar/hops`:
+Minimal CLI to query Delta Lake via DuckDB.
 
-- Uses DuckDB extensions: `delta`, `azure`, `httpfs`
-- Uses `delta_scan(...)` for Delta tables
-- Uses Azure access-token auth via DuckDB `CREATE SECRET`
-- Supports secret refs like hops `FlexibleSecretStr` style:
-  - raw value
-  - file path
-  - KeyVault URI: `https://<vault>.vault.azure.net/secrets/<name>[/version]`
+- DuckDB extensions: `delta`, `azure`, `httpfs`
+- Azure auth via `DefaultAzureCredential` → DuckDB `CREATE SECRET`
+- Account inferred from `abfss://` URL when possible
 
 ## Usage
 
@@ -18,13 +14,10 @@ delta-duck-query \
   --query 'select * from delta_scan($source_path) limit 10'
 ```
 
-With KeyVault-backed account name:
+Local / non-Azure:
 
 ```bash
-delta-duck-query \
-  --source-path 'abfss://container@account.dfs.core.windows.net/path/to/table' \
-  --account-ref 'https://myvault.vault.azure.net/secrets/deltalake-account' \
-  --query 'select count(*) as n from delta_scan($source_path)'
+delta-duck-query --source-path ./local-table --no-auth
 ```
 
-If `--token-ref` missing, tool gets token via `DefaultAzureCredential` for scope `https://storage.azure.com/.default`.
+Output: JSON array to stdout.
