@@ -1,8 +1,9 @@
-{ inputs, ... }:
+{ config, ... }:
 let
+  flake = config.flake;
   secretsFile = ./secrets.yaml;
   nixAccessTokensPath = "/etc/nix/access-tokens.conf";
-  users = inputs.self.lib.users;
+  users = flake.lib.users;
 
   secretsModule =
     {

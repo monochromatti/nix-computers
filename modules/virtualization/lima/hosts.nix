@@ -1,16 +1,16 @@
 {
-  inputs,
   lib,
   config,
   ...
 }:
 let
-  cfg = config.limaHosts;
+  flake = config.flake;
+  cfg = config.virtualization.lima.guests;
 
   mkLauncher =
     pkgs: upkgs: name: host:
     pkgs.writeShellApplication {
-      name = host.packageName;
+      name = host.commandName;
       runtimeInputs = [
         pkgs.coreutils
         pkgs.git
@@ -53,10 +53,7 @@ let
         }
 
         apply_config() {
-          guest_repo="/tmp/$(basename "$host_repo")"
-          limactl shell --workdir / "$instance" -- rm -rf "$guest_repo"
-          limactl copy --recursive "$host_repo" "$instance":/tmp/
-          limactl shell --workdir / "$instance" -- sudo nixos-rebuild switch --flake "$guest_repo#${name}"
+          limactl shell --workdir "$host_repo" "$instance" -- sudo nixos-rebuild switch --flake ".#${name}"
           mark_bootstrapped
         }
 
@@ -78,7 +75,7 @@ let
             shift
             ensure_started
             ensure_bootstrapped
-            exec limactl shell --workdir ${host.guestHome} "$instance" "$@"
+            exec limactl shell --workdir ${host.workdir} "$instance" "$@"
             ;;
           rebuild)
             shift
@@ -100,16 +97,16 @@ let
           *)
             ensure_started
             ensure_bootstrapped
-            exec limactl shell --workdir ${host.guestHome} "$instance" "$@"
+            exec limactl shell --workdir ${host.workdir} "$instance" "$@"
             ;;
         esac
       '';
     };
 
-  darwinHosts = lib.filterAttrs (_: host: host.hostSystem == "aarch64-darwin") cfg;
+  darwinGuests = lib.filterAttrs (_: guest: guest.system == "aarch64-darwin") cfg;
 in
 {
-  options.limaHosts = lib.mkOption {
+  options.virtualization.lima.guests = lib.mkOption {
     default = { };
     type = lib.types.attrsOf (
       lib.types.submodule (
@@ -120,11 +117,11 @@ in
               type = lib.types.str;
               default = name;
             };
-            packageName = lib.mkOption {
+            commandName = lib.mkOption {
               type = lib.types.str;
               default = name;
             };
-            hostSystem = lib.mkOption { type = lib.types.str; };
+            system = lib.mkOption { type = lib.types.str; };
             template = lib.mkOption {
               type = lib.types.str;
               default = "github:nixos-lima";
@@ -133,7 +130,7 @@ in
               type = lib.types.str;
               default = "NIX_COMPUTERS_REPO";
             };
-            guestHome = lib.mkOption { type = lib.types.str; };
+            workdir = lib.mkOption { type = lib.types.str; };
             bootstrapMarker = lib.mkOption {
               type = lib.types.str;
               default = "/var/lib/${name}/bootstrap-v1";
@@ -153,29 +150,30 @@ in
         ...
       }:
       let
-        systemHosts = lib.filterAttrs (_: host: host.hostSystem == system) darwinHosts;
+        systemGuests = lib.filterAttrs (_: guest: guest.system == system) darwinGuests;
       in
       {
         packages = lib.mapAttrs' (
-          name: host: lib.nameValuePair host.packageName (mkLauncher pkgs upkgs name host)
-        ) systemHosts;
+          name: guest: lib.nameValuePair guest.commandName (mkLauncher pkgs upkgs name guest)
+        ) systemGuests;
 
         apps = lib.mapAttrs' (
-          _name: host:
-          lib.nameValuePair host.packageName {
+          _name: guest:
+          lib.nameValuePair guest.commandName {
             type = "app";
-            program = "${inputs.self.packages.${system}.${host.packageName}}/bin/${host.packageName}";
+            program = "${flake.packages.${system}.${guest.commandName}}/bin/${guest.commandName}";
+            meta.description = "Manage and enter Lima instance ${guest.instanceName}";
           }
-        ) systemHosts;
+        ) systemGuests;
       };
 
     flake.modules.darwin = lib.mapAttrs' (
-      name: host:
-      lib.nameValuePair name (
+      name: guest:
+      lib.nameValuePair "lima-${name}" (
         { pkgs, upkgs, ... }:
         {
           environment.systemPackages = [
-            inputs.self.packages.${pkgs.stdenv.hostPlatform.system}.${host.packageName}
+            flake.packages.${pkgs.stdenv.hostPlatform.system}.${guest.commandName}
             upkgs.lima
           ];
 
@@ -183,6 +181,6 @@ in
           nix.settings.builders-use-substitutes = true;
         }
       )
-    ) darwinHosts;
+    ) darwinGuests;
   };
 }

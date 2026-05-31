@@ -1,4 +1,7 @@
-{ inputs, ... }:
+{ config, ... }:
+let
+  flake = config.flake;
+in
 {
   flake.modules.homeManager.ghostty =
     {
@@ -7,8 +10,8 @@
       ...
     }:
     let
-      opacity = inputs.self.desktop.opacity;
-      fontSize = inputs.self.desktop.font.size;
+      opacity = flake.desktop.opacity;
+      fontSize = flake.desktop.font.size;
 
       commonSettings = {
         font-family = "JetBrains Mono";

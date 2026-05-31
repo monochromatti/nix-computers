@@ -1,19 +1,22 @@
-{ inputs, ... }:
+{ config, ... }:
+let
+  flake = config.flake;
+in
 {
-  imports = [ ./homunculus.nix ];
+  imports = [ ./linux.nix ];
 
-  flake.darwinConfigurations = inputs.self.lib.mkDarwin "aarch64-darwin" "macarius";
+  flake.darwinConfigurations = flake.lib.mkDarwin "aarch64-darwin" "macarius";
 
   flake.modules.darwin.macarius = {
     imports = [
-      inputs.self.modules.darwin.base
-      inputs.self.modules.darwin.shell
-      inputs.self.modules.darwin.homebrew
-      inputs.self.modules.darwin.secrets
-      inputs.self.modules.darwin.hardware
-      inputs.self.modules.darwin.homunculus
+      flake.modules.darwin.base
+      flake.modules.darwin.shell
+      flake.modules.darwin.homebrew
+      flake.modules.darwin.secrets
+      flake.modules.darwin.hardware
+      flake.modules.darwin."lima-linux"
 
-      inputs.self.modules.darwin.monochromatti
+      flake.modules.darwin.monochromatti
     ];
 
     sops.secrets.github-token = {

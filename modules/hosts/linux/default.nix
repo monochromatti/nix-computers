@@ -1,16 +1,19 @@
-{ inputs, ... }:
+{ config, ... }:
+let
+  flake = config.flake;
+in
 {
-  flake.nixosConfigurations = inputs.self.lib.mkNixos "aarch64-linux" "homunculus";
+  flake.nixosConfigurations = flake.lib.mkNixos "aarch64-linux" "linux";
 
-  flake.modules.nixos.homunculus =
+  flake.modules.nixos.linux =
     { pkgs, ... }:
     {
       imports = [
-        inputs.self.modules.nixos.lima
-        inputs.self.modules.nixos.shell
+        flake.modules.nixos.lima
+        flake.modules.nixos.shell
       ];
 
-      networking.hostName = "homunculus";
+      networking.hostName = "linux";
 
       security.sudo.wheelNeedsPassword = false;
 

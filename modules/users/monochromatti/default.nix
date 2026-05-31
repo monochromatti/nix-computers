@@ -1,11 +1,12 @@
-{ inputs, ... }:
+{ config, ... }:
 let
+  flake = config.flake;
   username = "monochromatti";
-  users = inputs.self.lib.users;
+  users = flake.lib.users;
 in
 {
   flake.modules.homeManager.${username} = {
-    imports = with inputs.self.modules.homeManager; [
+    imports = with flake.modules.homeManager; [
       packages
       ghostty
       zed
@@ -25,7 +26,7 @@ in
     { ... }:
     {
       home-manager.sharedModules = [
-        inputs.self.modules.homeManager.${username}
+        flake.modules.homeManager.${username}
       ];
 
       home-manager.users.${username}.home.homeDirectory = users.${username}.home.linux;
@@ -35,7 +36,7 @@ in
     { ... }:
     {
       home-manager.sharedModules = [
-        inputs.self.modules.homeManager.${username}
+        flake.modules.homeManager.${username}
       ];
 
       users.users.${username} = {

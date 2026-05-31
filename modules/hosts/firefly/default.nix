@@ -1,9 +1,12 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
+let
+  flake = config.flake;
+in
 {
-  flake.nixosConfigurations = inputs.self.lib.mkNixos "x86_64-linux" "firefly";
+  flake.nixosConfigurations = flake.lib.mkNixos "x86_64-linux" "firefly";
 
   flake.modules.nixos.firefly = {
-    imports = with inputs.self.modules.nixos; [
+    imports = with flake.modules.nixos; [
       base
       shell
       secrets

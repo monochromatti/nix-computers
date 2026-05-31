@@ -1,7 +1,10 @@
-{ inputs, ... }:
+{ config, ... }:
+let
+  flake = config.flake;
+in
 {
   flake.modules.nixos.shell = {
-    imports = with inputs.self.modules.nixos; [
+    imports = with flake.modules.nixos; [
       shellPackages
       shellAliases
       direnv
@@ -11,7 +14,7 @@
   };
 
   flake.modules.darwin.shell = {
-    imports = with inputs.self.modules.darwin; [
+    imports = with flake.modules.darwin; [
       shellPackages
       shellAliases
       direnv

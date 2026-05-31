@@ -1,9 +1,12 @@
-{ inputs, ... }:
+{ config, ... }:
+let
+  flake = config.flake;
+in
 {
   flake.modules.homeManager.zed =
     { pkgs, upkgs, ... }:
     let
-      opacity = inputs.self.desktop.opacity;
+      opacity = flake.desktop.opacity;
       inherit (pkgs.lib)
         getExe
         getExe'

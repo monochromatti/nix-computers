@@ -1,5 +1,6 @@
-{ inputs, self, ... }:
+{ config, inputs, ... }:
 let
+  flake = config.flake;
   opacity = 0.95;
 in
 {
@@ -21,7 +22,7 @@ in
     }:
     let
       niri = mpkgs.niri;
-      userNoctaliaConfig = "${self.lib.users.monochromatti.home.linux}/.config/niri/noctalia.kdl";
+      userNoctaliaConfig = "${flake.lib.users.monochromatti.home.linux}/.config/niri/noctalia.kdl";
       defaultConfig = pkgs.runCommand "niri-default-config.kdl" { } ''
         cp ${niri.src}/resources/default-config.kdl $out
         substituteInPlace $out \
@@ -96,7 +97,7 @@ in
     {
       options.midgard.niri.settings = lib.mkOption {
         type = lib.types.attrsOf lib.types.anything;
-        default = self.desktop.niri.settings;
+        default = flake.desktop.niri.settings;
       };
 
       config = {

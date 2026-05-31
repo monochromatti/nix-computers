@@ -1,9 +1,12 @@
-{ self, ... }:
+{ config, ... }:
+let
+  flake = config.flake;
+in
 {
   perSystem =
     { system, ... }:
     let
-      packageSets = self.lib.mkPackageSets system;
+      packageSets = flake.lib.mkPackageSets system;
     in
     {
       _module.args.pkgs = packageSets.pkgs;

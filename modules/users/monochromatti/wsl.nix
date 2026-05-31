@@ -1,11 +1,12 @@
-{ inputs, ... }:
+{ config, ... }:
 let
+  flake = config.flake;
   username = "monochromatti";
 in
 {
   flake.modules.homeManager."${username}-wsl" = {
     imports = [
-      inputs.self.modules.homeManager.wsl
+      flake.modules.homeManager.wsl
     ];
 
     programs = {
@@ -28,7 +29,7 @@ in
 
   flake.modules.nixos."${username}-wsl" = {
     home-manager.sharedModules = [
-      inputs.self.modules.homeManager."${username}-wsl"
+      flake.modules.homeManager."${username}-wsl"
     ];
 
     home-manager.users.${username}.home.homeDirectory = "/home/${username}";

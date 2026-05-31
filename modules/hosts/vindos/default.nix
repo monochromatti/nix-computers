@@ -1,13 +1,16 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
+let
+  flake = config.flake;
+in
 {
-  flake.nixosConfigurations = inputs.self.lib.mkNixos "x86_64-linux" "vindos";
+  flake.nixosConfigurations = flake.lib.mkNixos "x86_64-linux" "vindos";
 
   flake.modules.nixos.vindos = {
     imports = [
       inputs.nixos-wsl.nixosModules.default
-      inputs.self.modules.nixos.base
-      inputs.self.modules.nixos.shell
-      inputs.self.modules.nixos."monochromatti-wsl"
+      flake.modules.nixos.base
+      flake.modules.nixos.shell
+      flake.modules.nixos."monochromatti-wsl"
     ];
 
     wsl = {

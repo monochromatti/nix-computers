@@ -1,4 +1,7 @@
-{ inputs, ... }:
+{ config, ... }:
+let
+  flake = config.flake;
+in
 {
   flake.modules.nixos.firefly.imports = [
     (
@@ -29,7 +32,7 @@
           overskride
         ];
 
-        midgard.niri.settings = lib.recursiveUpdate inputs.self.desktop.niri.settings inputs.self.desktop.niri.hostSettings.firefly;
+        midgard.niri.settings = lib.recursiveUpdate flake.desktop.niri.settings flake.desktop.niri.hostSettings.firefly;
 
         programs.niri.enable = true;
 

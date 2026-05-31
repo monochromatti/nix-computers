@@ -4,12 +4,13 @@ let
     {
       pkgs,
       lib,
+      flake,
       ...
     }:
     let
       system = pkgs.stdenv.hostPlatform.system;
       # Some NixOS targets, such as the Lima dev VM, do not build the AI package.
-      aiPackage = lib.attrByPath [ "packages" system "ai" ] null inputs.self;
+      aiPackage = lib.attrByPath [ "packages" system "ai" ] null flake;
     in
     {
       environment.systemPackages = lib.optionals (aiPackage != null) [ aiPackage ];

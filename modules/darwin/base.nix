@@ -1,4 +1,7 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
+let
+  flake = config.flake;
+in
 {
   flake.modules.darwin.base =
     { pkgs, upkgs, ... }:
@@ -6,7 +9,7 @@
       imports = [
         inputs.home-manager.darwinModules.home-manager
         inputs.sops-nix.darwinModules.sops
-        inputs.self.modules.darwin.ai
+        flake.modules.darwin.ai
       ];
 
       home-manager = {
@@ -23,7 +26,7 @@
       nixpkgs = {
         config.allowUnfree = true;
         overlays = [
-          (final: prev: {
+          (_final: prev: {
             python3Packages = prev.python3Packages.overrideScope (
               _pyFinal: pyPrev: {
                 ffmpeg-python = pyPrev.ffmpeg-python.overridePythonAttrs (_: {

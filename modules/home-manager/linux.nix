@@ -1,4 +1,7 @@
-{ inputs, ... }:
+{ config, ... }:
+let
+  flake = config.flake;
+in
 {
   flake.modules.homeManager.linux =
     {
@@ -10,8 +13,8 @@
     }:
     let
       system = pkgs.stdenv.hostPlatform.system;
-      fontSize = inputs.self.desktop.font.size;
-      noctaliaShell = "${inputs.self.packages.${system}.noctalia-shell}/bin/noctalia-shell";
+      fontSize = flake.desktop.font.size;
+      noctaliaShell = "${flake.packages.${system}.noctalia-shell}/bin/noctalia-shell";
       niri = "${pkgs.niri}/bin/niri";
       systemctl = "${pkgs.systemd}/bin/systemctl";
       noctaliaWallpaper = toString ../../dotfiles/wallpapers/aishot-4712.jpg;
@@ -20,7 +23,7 @@
       xdg = {
         enable = true;
         configFile = lib.optionalAttrs pkgs.stdenv.isLinux {
-          "noctalia/settings.json".text = builtins.toJSON inputs.self.desktop.noctalia.settings;
+          "noctalia/settings.json".text = builtins.toJSON flake.desktop.noctalia.settings;
           "vicinae/settings.json".text = ''
             {
               "theme": {
@@ -142,7 +145,7 @@
           };
 
           Service = {
-            ExecStart = "${inputs.self.packages.${system}.noctalia-shell}/bin/noctalia-shell";
+            ExecStart = "${flake.packages.${system}.noctalia-shell}/bin/noctalia-shell";
             Restart = "on-failure";
             RestartSec = 2;
           };
@@ -200,7 +203,7 @@
         };
 
         packages = lib.optionals pkgs.stdenv.isLinux [
-          inputs.self.packages.${system}.noctalia-shell
+          flake.packages.${system}.noctalia-shell
           pkgs.nwg-look
           pkgs.qt6Packages.qt6ct
           upkgs.vicinae

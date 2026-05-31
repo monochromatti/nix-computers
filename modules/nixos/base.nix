@@ -1,4 +1,7 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
+let
+  flake = config.flake;
+in
 {
   flake.modules.nixos.base =
     {
@@ -12,7 +15,7 @@
       imports = [
         inputs.home-manager.nixosModules.home-manager
         inputs.sops-nix.nixosModules.sops
-        inputs.self.modules.nixos.ai
+        flake.modules.nixos.ai
       ];
 
       home-manager = {

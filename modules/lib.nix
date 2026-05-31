@@ -1,5 +1,6 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
 let
+  flake = config.flake;
   mkPackageSets = system: {
     pkgs = inputs.nixpkgs.legacyPackages.${system};
     upkgs = import inputs.nixpkgs-unstable {
@@ -14,10 +15,11 @@ let
     (builtins.removeAttrs (mkPackageSets system) [ "pkgs" ])
     // {
       inherit inputs;
+      flake = config.flake;
+      self = inputs.self;
       inherit (inputs)
         home-manager
         nixos-hardware
-        self
         sops-nix
         ;
     };
@@ -40,7 +42,7 @@ in
       ${name} = inputs.nixpkgs.lib.nixosSystem {
         specialArgs = mkSpecialArgs system;
         modules = [
-          inputs.self.modules.nixos.${name}
+          flake.modules.nixos.${name}
           { nixpkgs.hostPlatform = system; }
         ];
       };
@@ -50,7 +52,7 @@ in
       ${name} = inputs.nix-darwin.lib.darwinSystem {
         specialArgs = mkSpecialArgs system;
         modules = [
-          inputs.self.modules.darwin.${name}
+          flake.modules.darwin.${name}
           { nixpkgs.hostPlatform = system; }
         ];
       };
