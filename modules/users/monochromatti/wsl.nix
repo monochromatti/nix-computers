@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, inputs, ... }:
 let
   flake = config.flake;
   username = "monochromatti";
@@ -28,9 +28,19 @@ in
   };
 
   flake.modules.nixos."${username}-wsl" = {
+    imports = [
+      inputs.hjem.nixosModules.default
+      flake.modules.nixos.userdirs
+    ];
+
     home-manager.sharedModules = [
       flake.modules.homeManager."${username}-wsl"
     ];
+
+    hjem.users.${username} = {
+      user = username;
+      directory = "/home/${username}";
+    };
 
     home-manager.users.${username}.home.homeDirectory = "/home/${username}";
   };

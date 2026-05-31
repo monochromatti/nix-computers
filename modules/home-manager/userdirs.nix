@@ -1,10 +1,6 @@
 { ... }:
 {
-  flake.modules.homeManager.userdirs =
-    { pkgs, lib, ... }:
-    {
-      xdg.configFile = lib.optionalAttrs pkgs.stdenv.isLinux {
-        "user-dirs.dirs".source = ../../dotfiles/user-dirs.dirs;
-      };
-    };
+  flake.modules.nixos.userdirs = {
+    hjem.users.monochromatti.xdg.config.files."user-dirs.dirs".source = ../../dotfiles/user-dirs.dirs;
+  };
 }

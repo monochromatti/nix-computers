@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, inputs, ... }:
 let
   flake = config.flake;
   username = "monochromatti";
@@ -11,7 +11,6 @@ in
       ghostty
       zed
       linux
-      userdirs
     ];
 
     programs.home-manager.enable = true;
@@ -25,9 +24,19 @@ in
   flake.modules.nixos.${username} =
     { ... }:
     {
+      imports = [
+        inputs.hjem.nixosModules.default
+        flake.modules.nixos.userdirs
+      ];
+
       home-manager.sharedModules = [
         flake.modules.homeManager.${username}
       ];
+
+      hjem.users.${username} = {
+        user = username;
+        directory = users.${username}.home.linux;
+      };
 
       home-manager.users.${username}.home.homeDirectory = users.${username}.home.linux;
     };
@@ -35,6 +44,10 @@ in
   flake.modules.darwin.${username} =
     { ... }:
     {
+      imports = [
+        inputs.hjem.darwinModules.default
+      ];
+
       home-manager.sharedModules = [
         flake.modules.homeManager.${username}
       ];
@@ -45,6 +58,11 @@ in
       };
 
       system.primaryUser = username;
+
+      hjem.users.${username} = {
+        user = username;
+        directory = users.${username}.home.darwin;
+      };
 
       home-manager.users.${username} = { };
     };
