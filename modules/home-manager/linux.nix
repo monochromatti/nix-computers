@@ -1,4 +1,4 @@
-{ config, ... }:
+{ config, inputs, ... }:
 let
   flake = config.flake;
 in
@@ -15,6 +15,46 @@ in
       system = pkgs.stdenv.hostPlatform.system;
       fontSize = flake.desktop.font.size;
       noctaliaShell = "${flake.packages.${system}.noctalia-shell}/bin/noctalia-shell";
+      dailyHours = inputs.daily-hours.packages.${system}.default;
+      dailyHoursWorkStatus = pkgs.writeShellScript "daily-hours-work-status" ''
+        state="$(${dailyHours}/bin/daily-hours work status 2>/dev/null || printf off)"
+        state="''${state%%[[:space:]]*}"
+
+        case "$state" in
+          on)
+            printf '%s\n' '{"text":"Work","icon":"briefcase","tooltip":"Work time tracking is on","color":"primary"}'
+            ;;
+          *)
+            printf '%s\n' '{"text":"Off","icon":"briefcase-off","tooltip":"Work time tracking is off","color":"error"}'
+            ;;
+        esac
+      '';
+      noctaliaSettings =
+        let
+          base = flake.desktop.noctalia.settings;
+        in
+        lib.recursiveUpdate base {
+          bar.widgets.right = [
+            {
+              id = "CustomButton";
+              ipcIdentifier = "daily-hours-work";
+              showIcon = true;
+              icon = "briefcase";
+              textCommand = dailyHoursWorkStatus;
+              textIntervalMs = 3000;
+              parseJson = true;
+              leftClickExec = "${dailyHours}/bin/daily-hours work toggle --source noctalia && ${noctaliaShell} ipc --any-display -n call cb refresh daily-hours-work";
+              leftClickUpdateText = false;
+              generalTooltipText = "Toggle work time tracking";
+              showExecTooltip = false;
+              maxTextLength = {
+                horizontal = 4;
+                vertical = 0;
+              };
+            }
+          ]
+          ++ base.bar.widgets.right;
+        };
       niri = "${pkgs.niri}/bin/niri";
       systemctl = "${pkgs.systemd}/bin/systemctl";
       noctaliaWallpaper = toString ../../dotfiles/wallpapers/aishot-4712.jpg;
@@ -23,7 +63,7 @@ in
       xdg = {
         enable = true;
         configFile = lib.optionalAttrs pkgs.stdenv.isLinux {
-          "noctalia/settings.json".text = builtins.toJSON flake.desktop.noctalia.settings;
+          "noctalia/settings.json".text = builtins.toJSON noctaliaSettings;
           "vicinae/settings.json".text = ''
             {
               "theme": {
