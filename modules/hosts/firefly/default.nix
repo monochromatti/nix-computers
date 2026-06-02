@@ -13,6 +13,7 @@ in
       packages
       hardware
       niri
+      flake.modules.nixos.dailyHours
 
       inputs.pc.nixosModules.hdw-hp-zbook-firefly_g11
       inputs.pc.nixosModules.default
