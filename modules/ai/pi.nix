@@ -34,8 +34,8 @@
 
           settings = {
             defaultProvider = "azure-openai-responses";
-            defaultModel = "gpt-5.3-codex";
-            defaultThinkingLevel = "medium";
+            defaultModel = "gpt-5.5";
+            defaultThinkingLevel = "low";
           };
         };
       };
