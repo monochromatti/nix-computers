@@ -440,6 +440,27 @@
         "type": "github"
       }
     },
+    "linear-notification-daemon": {
+      "inputs": {
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1780586544,
+        "narHash": "sha256-059AjkdFWrnWPGmWNn2LHERCkEuFlHUcm2MrZ3NF8Ww=",
+        "owner": "fornybar",
+        "repo": "linear-notification-daemon",
+        "rev": "9a136f07d2c36b77593e137c6cff96084a0ab24b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "fornybar",
+        "ref": "setup",
+        "repo": "linear-notification-daemon",
+        "type": "github"
+      }
+    },
     "llm-agents": {
       "inputs": {
         "blueprint": "blueprint_2",
@@ -841,6 +862,7 @@
         "home-manager": "home-manager",
         "hunk": "hunk",
         "import-tree": "import-tree_2",
+        "linear-notification-daemon": "linear-notification-daemon",
         "llm-agents": "llm-agents",
         "nix-darwin": "nix-darwin",
         "nixos-hardware": "nixos-hardware",

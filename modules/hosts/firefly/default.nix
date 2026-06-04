@@ -13,9 +13,9 @@ in
       packages
       hardware
       niri
-      linear-notify
       flake.modules.nixos.dailyHours
 
+      inputs.linear-notification-daemon.nixosModules.default
       inputs.pc.nixosModules.hdw-hp-zbook-firefly_g11
       inputs.pc.nixosModules.default
       inputs.pc.nixosModules.docker
@@ -47,8 +47,10 @@ in
       user = "monochromatti";
       tokenFile = "/run/secrets/linear-api-key";
       intervalSeconds = 45;
-      pageSize = 50;
-      notifyExistingOnFirstRun = false;
+      extraArgs = [
+        "--page-size"
+        "50"
+      ];
       enableActions = false;
     };
 
