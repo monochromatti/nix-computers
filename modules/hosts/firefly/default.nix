@@ -13,6 +13,7 @@ in
       packages
       hardware
       niri
+      linear-notify
       flake.modules.nixos.dailyHours
 
       inputs.pc.nixosModules.hdw-hp-zbook-firefly_g11
@@ -35,6 +36,16 @@ in
         };
       };
       nixbuild.enable = true;
+    };
+
+    services.linear-notify = {
+      enable = true;
+      user = "monochromatti";
+      tokenFile = "/run/secrets/linear-api-key";
+      intervalSeconds = 45;
+      pageSize = 50;
+      notifyExistingOnFirstRun = false;
+      enableActions = false;
     };
 
     virtualisation.docker.enable = true;
