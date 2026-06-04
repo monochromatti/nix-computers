@@ -28,8 +28,8 @@ in
       desktop = null;
       hostName = "firefly";
       security = {
-        paretosecurity.enable = true;
-        secureboot.enable = true;
+        paretosecurity.enable = false;
+        secureboot.enable = false;
       };
       users = {
         monochromatti = {
@@ -39,7 +39,7 @@ in
           home-manager.enable = true;
         };
       };
-      nixbuild.enable = true;
+      nixbuild.enable = false;
     };
 
     services.linear-notify = {
