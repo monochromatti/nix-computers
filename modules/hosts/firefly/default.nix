@@ -27,6 +27,10 @@ in
     midgard.pc = {
       desktop = null;
       hostName = "firefly";
+      security = {
+        paretosecurity.enable = true;
+        secureboot.enable = true;
+      };
       users = {
         monochromatti = {
           fullName = "Mattias Matthiesen";
