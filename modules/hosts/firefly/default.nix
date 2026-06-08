@@ -39,7 +39,7 @@ in
           home-manager.enable = true;
         };
       };
-      nixbuild.enable = false;
+      nixbuild.enable = true;
     };
 
     services.linear-notify = {
