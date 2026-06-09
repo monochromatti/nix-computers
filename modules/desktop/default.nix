@@ -46,5 +46,22 @@ in
           ExecStop = "${dailyHours}/bin/daily-hours work off --source shutdown";
         };
       };
+
+      environment.etc."systemd/system-sleep/daily-hours".source =
+        pkgs.writeShellScript "daily-hours-system-sleep" ''
+          daily_hours=${dailyHours}/bin/daily-hours
+          run_as_user="${pkgs.util-linux}/bin/runuser -u ${user} --"
+
+          case "$1" in
+            pre)
+              $run_as_user env HOME=${home} XDG_STATE_HOME=${home}/.local/state \
+                "$daily_hours" work off --source suspend
+              ;;
+            post)
+              $run_as_user env HOME=${home} XDG_STATE_HOME=${home}/.local/state \
+                "$daily_hours" work on --source resume
+              ;;
+          esac
+        '';
     };
 }
