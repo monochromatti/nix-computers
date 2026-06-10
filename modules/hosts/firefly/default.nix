@@ -5,7 +5,7 @@ in
 {
   flake.nixosConfigurations = flake.lib.mkNixos "x86_64-linux" "firefly";
 
-  flake.modules.nixos.firefly = {
+  flake.modules.nixos.firefly = { pkgs, ... }: {
     imports = with flake.modules.nixos; [
       base
       shell
@@ -22,6 +22,10 @@ in
       inputs.utgard.nixosModules.aruba-onboard
 
       monochromatti
+    ];
+
+    nixpkgs.config.permittedInsecurePackages = [
+      "electron-39.8.10"
     ];
 
     midgard.pc = {
@@ -54,7 +58,10 @@ in
       enableActions = false;
     };
 
-    virtualisation.docker.enable = true;
+    virtualisation.docker = {
+      enable = true;
+      package = pkgs.docker_29;
+    };
 
     system.stateVersion = "24.05";
   };
