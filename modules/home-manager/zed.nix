@@ -70,6 +70,11 @@ in
             ];
           };
           load_direnv = "shell_hook";
+          project_panel.dock = "left";
+          agent = {
+            dock = "right";
+            sidebar_side = "right";
+          };
           edit_predictions = {
             provider = "zed";
             mode = "subtle";
