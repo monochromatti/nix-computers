@@ -24,7 +24,12 @@ in
       ids.gids.nixbld = 30000;
 
       nixpkgs = {
-        config.allowUnfree = true;
+        config = {
+          allowUnfree = true;
+          permittedInsecurePackages = [
+            "electron-39.8.10"
+          ];
+        };
         overlays = [
           (_final: prev: {
             python3Packages = prev.python3Packages.overrideScope (
