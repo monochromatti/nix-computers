@@ -68,30 +68,30 @@ let
 
         case "$cmd" in
           up|start)
-            shift
+            [ "$#" -eq 0 ] || shift
             ensure_started "$@"
             ;;
           shell|enter)
-            shift
+            [ "$#" -eq 0 ] || shift
             ensure_started
             ensure_bootstrapped
             exec limactl shell --workdir ${host.workdir} "$instance" "$@"
             ;;
           rebuild)
-            shift
+            [ "$#" -eq 0 ] || shift
             ensure_started
             apply_config
             ;;
           down|stop)
-            shift
+            [ "$#" -eq 0 ] || shift
             exec limactl stop "$instance" "$@"
             ;;
           delete|destroy)
-            shift
+            [ "$#" -eq 0 ] || shift
             exec limactl delete --force "$instance" "$@"
             ;;
           status)
-            shift
+            [ "$#" -eq 0 ] || shift
             exec limactl list "$@"
             ;;
           *)
