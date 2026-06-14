@@ -1,6 +1,7 @@
 {
   lib,
   config,
+  inputs,
   ...
 }:
 let
@@ -13,7 +14,7 @@ let
       name = host.commandName;
       runtimeInputs = [
         pkgs.coreutils
-        pkgs.git
+        pkgs.nix
         upkgs.lima
       ];
       text = ''
@@ -21,14 +22,8 @@ let
 
         instance="${host.instanceName}"
         template="${host.template}"
-        host_repo="''${${host.repoEnvVar}:-$(git rev-parse --show-toplevel 2>/dev/null || pwd)}"
+        flake_ref=${lib.escapeShellArg inputs.self.outPath}
         bootstrap_marker="${host.bootstrapMarker}"
-
-        if [ ! -f "$host_repo/flake.nix" ]; then
-          echo "flake.nix not found in $host_repo" >&2
-          echo "Run from repo root or set ${host.repoEnvVar}=/path/to/nix-computers" >&2
-          exit 1
-        fi
 
         if ! command -v limactl >/dev/null 2>&1; then
           echo "limactl not found in PATH." >&2
@@ -53,7 +48,17 @@ let
         }
 
         apply_config() {
-          limactl shell --workdir "$host_repo" "$instance" -- sudo nixos-rebuild switch --flake ".#${name}"
+          echo "Building ${name} NixOS system from $flake_ref..."
+          toplevel="$(nix --extra-experimental-features 'nix-command flakes' build --print-out-paths "$flake_ref#nixosConfigurations.${name}.config.system.build.toplevel" --no-link)"
+
+          echo "Copying closure to Lima guest..."
+          # Export/import avoids needing SSH details and keeps flake source out of the guest.
+          mapfile -t closure < <(nix-store -qR "$toplevel")
+          nix-store --export "''${closure[@]}" \
+            | limactl shell --workdir / "$instance" -- sudo -n nix-store --import
+
+          echo "Activating $toplevel inside Lima guest..."
+          limactl shell --workdir / "$instance" -- sudo -n "$toplevel/bin/switch-to-configuration" switch
           mark_bootstrapped
         }
 
@@ -125,10 +130,6 @@ in
             template = lib.mkOption {
               type = lib.types.str;
               default = "github:nixos-lima";
-            };
-            repoEnvVar = lib.mkOption {
-              type = lib.types.str;
-              default = "NIX_COMPUTERS_REPO";
             };
             workdir = lib.mkOption { type = lib.types.str; };
             bootstrapMarker = lib.mkOption {
