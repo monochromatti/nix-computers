@@ -14,6 +14,7 @@ let
       name = host.commandName;
       runtimeInputs = [
         pkgs.coreutils
+        pkgs.gh
         pkgs.nix
         upkgs.lima
       ];
@@ -38,22 +39,48 @@ let
           fi
         }
 
+        github_nix_config() {
+          local token
+          if token="$(gh auth token --hostname github.com 2>/dev/null)" && [ -n "$token" ]; then
+            printf 'access-tokens = github.com=%s' "$token"
+          fi
+        }
+
+        lima_shell() {
+          local workdir="$1"
+          shift
+          local nix_config
+          nix_config="$(github_nix_config)"
+
+          if [ -n "$nix_config" ]; then
+            if [ "$#" -eq 0 ]; then
+              # Expand SHELL inside guest, not on host.
+              # shellcheck disable=SC2016
+              limactl shell --workdir "$workdir" "$instance" -- env NIX_CONFIG="$nix_config" sh -lc 'exec "$SHELL" -l'
+            else
+              limactl shell --workdir "$workdir" "$instance" -- env NIX_CONFIG="$nix_config" "$@"
+            fi
+          else
+            limactl shell --workdir "$workdir" "$instance" "$@"
+          fi
+        }
+
         is_bootstrapped() {
-          limactl shell --workdir / "$instance" -- test -f "$bootstrap_marker"
+          lima_shell / test -f "$bootstrap_marker"
         }
 
         mark_bootstrapped() {
-          limactl shell --workdir / "$instance" -- sudo mkdir -p "$(dirname "$bootstrap_marker")"
+          lima_shell / sudo mkdir -p "$(dirname "$bootstrap_marker")"
           printf '%s\n' "$1" \
-            | limactl shell --workdir / "$instance" -- sudo tee "$bootstrap_marker" >/dev/null
+            | lima_shell / sudo tee "$bootstrap_marker" >/dev/null
         }
 
         enter_shell() {
-          if limactl shell --workdir / "$instance" -- test -d ${lib.escapeShellArg host.workdir}; then
-            exec limactl shell --workdir ${lib.escapeShellArg host.workdir} "$instance" "$@"
+          if lima_shell / test -d ${lib.escapeShellArg host.workdir}; then
+            lima_shell ${lib.escapeShellArg host.workdir} "$@"
           else
             echo "Workdir ${host.workdir} is unavailable inside Lima guest; entering /." >&2
-            exec limactl shell --workdir / "$instance" "$@"
+            lima_shell / "$@"
           fi
         }
 
@@ -65,16 +92,16 @@ let
           # Export/import avoids needing SSH details and keeps flake source out of the guest.
           mapfile -t closure < <(nix-store -qR "$toplevel")
           nix-store --export "''${closure[@]}" \
-            | limactl shell --workdir / "$instance" -- sudo -n nix-store --import >/dev/null
+            | lima_shell / sudo -n nix-store --import >/dev/null
 
           echo "Installing $toplevel as next boot inside Lima guest..."
-          limactl shell --workdir / "$instance" -- sudo -n "$toplevel/bin/switch-to-configuration" boot
+          lima_shell / sudo -n "$toplevel/bin/switch-to-configuration" boot
 
           echo "Restarting Lima guest to activate config..."
           limactl restart "$instance"
 
           echo "Verifying booted system..."
-          booted="$(limactl shell --workdir / "$instance" -- readlink -f /run/current-system)"
+          booted="$(lima_shell / readlink -f /run/current-system)"
           if [ "$booted" != "$toplevel" ]; then
             echo "Expected /run/current-system to be $toplevel, got $booted" >&2
             exit 1
