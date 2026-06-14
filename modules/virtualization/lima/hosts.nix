@@ -44,7 +44,17 @@ let
 
         mark_bootstrapped() {
           limactl shell --workdir / "$instance" -- sudo mkdir -p "$(dirname "$bootstrap_marker")"
-          limactl shell --workdir / "$instance" -- sudo touch "$bootstrap_marker"
+          printf '%s\n' "$1" \
+            | limactl shell --workdir / "$instance" -- sudo tee "$bootstrap_marker" >/dev/null
+        }
+
+        enter_shell() {
+          if limactl shell --workdir / "$instance" -- test -d ${lib.escapeShellArg host.workdir}; then
+            exec limactl shell --workdir ${lib.escapeShellArg host.workdir} "$instance" "$@"
+          else
+            echo "Workdir ${host.workdir} is unavailable inside Lima guest; entering /." >&2
+            exec limactl shell --workdir / "$instance" "$@"
+          fi
         }
 
         apply_config() {
@@ -55,11 +65,22 @@ let
           # Export/import avoids needing SSH details and keeps flake source out of the guest.
           mapfile -t closure < <(nix-store -qR "$toplevel")
           nix-store --export "''${closure[@]}" \
-            | limactl shell --workdir / "$instance" -- sudo -n nix-store --import
+            | limactl shell --workdir / "$instance" -- sudo -n nix-store --import >/dev/null
 
-          echo "Activating $toplevel inside Lima guest..."
-          limactl shell --workdir / "$instance" -- sudo -n "$toplevel/bin/switch-to-configuration" switch
-          mark_bootstrapped
+          echo "Installing $toplevel as next boot inside Lima guest..."
+          limactl shell --workdir / "$instance" -- sudo -n "$toplevel/bin/switch-to-configuration" boot
+
+          echo "Restarting Lima guest to activate config..."
+          limactl restart "$instance"
+
+          echo "Verifying booted system..."
+          booted="$(limactl shell --workdir / "$instance" -- readlink -f /run/current-system)"
+          if [ "$booted" != "$toplevel" ]; then
+            echo "Expected /run/current-system to be $toplevel, got $booted" >&2
+            exit 1
+          fi
+
+          mark_bootstrapped "$toplevel"
         }
 
         ensure_bootstrapped() {
@@ -80,7 +101,7 @@ let
             [ "$#" -eq 0 ] || shift
             ensure_started
             ensure_bootstrapped
-            exec limactl shell --workdir ${host.workdir} "$instance" "$@"
+            enter_shell "$@"
             ;;
           rebuild)
             [ "$#" -eq 0 ] || shift
@@ -102,7 +123,7 @@ let
           *)
             ensure_started
             ensure_bootstrapped
-            exec limactl shell --workdir ${host.workdir} "$instance" "$@"
+            enter_shell "$@"
             ;;
         esac
       '';
