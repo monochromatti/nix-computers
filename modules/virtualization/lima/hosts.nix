@@ -16,7 +16,7 @@ let
         pkgs.coreutils
         pkgs.gh
         pkgs.nix
-        upkgs.lima
+        (upkgs.lima.override { withAdditionalGuestAgents = true; })
       ];
       text = ''
         set -euo pipefail
@@ -24,6 +24,8 @@ let
         instance="${host.instanceName}"
         template="${host.template}"
         flake_ref=${lib.escapeShellArg inputs.self.outPath}
+        guest_flake_ref=${lib.escapeShellArg host.flakePath}
+        build_in_guest=${lib.boolToString host.buildInGuest}
         bootstrap_marker="${host.bootstrapMarker}"
 
         if ! command -v limactl >/dev/null 2>&1; then
@@ -35,7 +37,7 @@ let
           if [ -d "$HOME/.lima/$instance" ]; then
             limactl start "$instance"
           else
-            limactl start --name "$instance" --yes "$template"
+            limactl start --name "$instance" --arch ${lib.escapeShellArg host.arch} --yes "$template"
           fi
         }
 
@@ -85,14 +87,19 @@ let
         }
 
         apply_config() {
-          echo "Building ${name} NixOS system from $flake_ref..."
-          toplevel="$(nix --extra-experimental-features 'nix-command flakes' build --print-out-paths "$flake_ref#nixosConfigurations.${name}.config.system.build.toplevel" --no-link)"
+          if [ "$build_in_guest" = true ]; then
+            echo "Building ${name} NixOS system inside Lima guest from $guest_flake_ref..."
+            toplevel="$(lima_shell / nix --extra-experimental-features 'nix-command flakes' build --print-out-paths "$guest_flake_ref#nixosConfigurations.${name}.config.system.build.toplevel" --no-link)"
+          else
+            echo "Building ${name} NixOS system from $flake_ref..."
+            toplevel="$(nix --extra-experimental-features 'nix-command flakes' build --print-out-paths "$flake_ref#nixosConfigurations.${name}.config.system.build.toplevel" --no-link)"
 
-          echo "Copying closure to Lima guest..."
-          # Export/import avoids needing SSH details and keeps flake source out of the guest.
-          mapfile -t closure < <(nix-store -qR "$toplevel")
-          nix-store --export "''${closure[@]}" \
-            | lima_shell / sudo -n nix-store --import >/dev/null
+            echo "Copying closure to Lima guest..."
+            # Export/import avoids needing SSH details and keeps flake source out of the guest.
+            mapfile -t closure < <(nix-store -qR "$toplevel")
+            nix-store --export "''${closure[@]}" \
+              | lima_shell / sudo -n nix-store --import >/dev/null
+          fi
 
           echo "Installing $toplevel as next boot inside Lima guest..."
           lima_shell / sudo -n "$toplevel/bin/switch-to-configuration" boot
@@ -180,6 +187,25 @@ in
               default = "github:nixos-lima";
             };
             workdir = lib.mkOption { type = lib.types.str; };
+            arch = lib.mkOption {
+              type = lib.types.enum [
+                "x86_64"
+                "aarch64"
+                "riscv64"
+                "armv7l"
+                "s390x"
+                "ppc64le"
+              ];
+              default = "aarch64";
+            };
+            buildInGuest = lib.mkOption {
+              type = lib.types.bool;
+              default = false;
+            };
+            flakePath = lib.mkOption {
+              type = lib.types.str;
+              default = inputs.self.outPath;
+            };
             bootstrapMarker = lib.mkOption {
               type = lib.types.str;
               default = "/var/lib/${name}/bootstrap-v1";
@@ -223,7 +249,7 @@ in
         {
           environment.systemPackages = [
             flake.packages.${pkgs.stdenv.hostPlatform.system}.${guest.commandName}
-            upkgs.lima
+            (upkgs.lima.override { withAdditionalGuestAgents = true; })
           ];
 
           nix.linux-builder.enable = true;

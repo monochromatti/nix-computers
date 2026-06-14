@@ -3,7 +3,7 @@ let
   flake = config.flake;
 in
 {
-  flake.nixosConfigurations = flake.lib.mkNixos "aarch64-linux" "linux";
+  flake.nixosConfigurations = flake.lib.mkNixos "x86_64-linux" "linux";
 
   flake.modules.nixos.linux =
     { pkgs, ... }:
