@@ -25,6 +25,7 @@
         "soundsource"
         "visual-studio-code"
         "loop"
+        "mullvad-vpn"
       ];
     };
   };

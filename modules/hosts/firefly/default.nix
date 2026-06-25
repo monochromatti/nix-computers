@@ -46,6 +46,8 @@ in
       nixbuild.enable = true;
     };
 
+    services.mullvad-vpn.enable = true;
+
     services.linear-notify = {
       enable = true;
       user = "monochromatti";
