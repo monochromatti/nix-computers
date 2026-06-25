@@ -38,10 +38,10 @@
 
               case "$command" in
                 dev)
-                  sudo tailscale up --login-server=https://head.dev.fornybar.eviny.io --accept-dns=true --accept-routes=true "$@"
+                  sudo tailscale up --login-server=https://head.dev.fornybar.eviny.io --accept-dns=false --accept-routes=false "$@"
                   ;;
                 prod)
-                  sudo tailscale up --login-server=https://head.fornybar.eviny.io --accept-dns=true --accept-routes=true "$@"
+                  sudo tailscale up --login-server=https://head.fornybar.eviny.io --accept-dns=false --accept-routes=false "$@"
                   ;;
                 status)
                   tailscale status "$@"
