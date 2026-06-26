@@ -29,6 +29,7 @@ in
         paths = [
           config.packages.pi
           config.packages.pi-dev
+          config.packages.omp
           config.packages."delta-duck-query"
           pkgs.playwright-test
         ];
