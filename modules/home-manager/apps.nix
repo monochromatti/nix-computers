@@ -12,9 +12,6 @@
         libreoffice
         keymapp
 
-        # Text editors
-        obsidian
-
         # Graphics
         inkscape
         gimp

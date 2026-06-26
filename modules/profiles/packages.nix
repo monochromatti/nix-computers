@@ -11,7 +11,11 @@ in
     ];
   };
 
-  flake.modules.nixos.packages = {
+  flake.modules.nixos.packages = { pkgs, ... }: {
+    environment.systemPackages = with pkgs; [
+      obsidian
+    ];
+
     home-manager.sharedModules = [
       flake.modules.homeManager.apps
     ];
