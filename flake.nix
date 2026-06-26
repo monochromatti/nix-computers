@@ -41,7 +41,6 @@
     hjem = {
       url = "github:feel-co/hjem";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.nix-darwin.follows = "nix-darwin";
     };
     sops-nix = {
       url = "github:Mic92/sops-nix";
