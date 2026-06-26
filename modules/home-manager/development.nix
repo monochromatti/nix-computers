@@ -14,7 +14,7 @@
         daily-hours
 
         # Nix
-        pkgs.nixfmt-rfc-style
+        pkgs.nixfmt
         pkgs.nixpkgs-fmt
         pkgs.nixd
 

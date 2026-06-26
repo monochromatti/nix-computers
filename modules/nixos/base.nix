@@ -46,6 +46,10 @@ in
       programs = {
         zsh.enable = true;
 
+        ssh.extraConfig = ''
+          WarnWeakCrypto no
+        '';
+
         direnv = {
           enable = true;
           nix-direnv.enable = true;

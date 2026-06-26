@@ -5,21 +5,33 @@ let
   users = flake.lib.users;
 in
 {
-  flake.modules.homeManager.${username} = {
-    imports = with flake.modules.homeManager; [
-      packages
-      ghostty
-      zed
-      linux
-    ];
+  flake.modules.homeManager.${username} =
+    { config, lib, ... }:
+    {
+      imports = with flake.modules.homeManager; [
+        packages
+        ghostty
+        zed
+        linux
+      ];
 
-    programs.home-manager.enable = true;
+      gtk.gtk4.theme = lib.mkIf config.gtk.enable config.gtk.theme;
 
-    home = {
-      inherit username;
-      stateVersion = "24.05";
+      programs = {
+        home-manager.enable = true;
+        ssh = {
+          enable = true;
+          enableDefaultConfig = false;
+          settings."*".WarnWeakCrypto = "no";
+        };
+        zsh.dotDir = config.home.homeDirectory;
+      };
+
+      home = {
+        inherit username;
+        stateVersion = "24.05";
+      };
     };
-  };
 
   flake.modules.nixos.${username} =
     { ... }:

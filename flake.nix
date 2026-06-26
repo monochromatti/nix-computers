@@ -1,10 +1,10 @@
 {
   description = "Unified nix-darwin and NixOS configuration";
 
-  nixConfig.flake-registry = "https://raw.githubusercontent.com/fornybar/registry/nixos-25.11/registry.json";
+  nixConfig.flake-registry = "https://raw.githubusercontent.com/fornybar/registry/nixos-26.05/registry.json";
 
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
 
@@ -31,11 +31,11 @@
     };
 
     nix-darwin = {
-      url = "github:LnL7/nix-darwin/nix-darwin-25.11";
+      url = "github:LnL7/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     home-manager = {
-      url = "github:nix-community/home-manager/release-25.11";
+      url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     hjem = {
