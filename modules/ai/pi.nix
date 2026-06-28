@@ -81,7 +81,5 @@
           };
         };
       };
-
-      packages.omp = inputs.agents.packages.${system}.omp;
     };
 }
