@@ -46,6 +46,11 @@ in
       nixbuild.enable = true;
     };
 
+    environment.systemPackages = with pkgs; [
+      proton-vpn
+      proton-vpn-cli
+    ];
+
     services.mullvad-vpn.enable = true;
 
     services.linear-notify = {

@@ -7,7 +7,7 @@ in
 
   flake.darwinConfigurations = flake.lib.mkDarwin "aarch64-darwin" "macarius";
 
-  flake.modules.darwin.macarius = {
+  flake.modules.darwin.macarius = { pkgs, ... }: {
     imports = [
       flake.modules.darwin.base
       flake.modules.darwin.shell
@@ -17,6 +17,10 @@ in
       flake.modules.darwin."lima-linux"
 
       flake.modules.darwin.monochromatti
+    ];
+
+    environment.systemPackages = with pkgs; [
+      proton-vpn-cli
     ];
 
     sops.secrets.github-token = {
