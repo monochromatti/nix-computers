@@ -6,6 +6,8 @@ let
       environment.systemPackages = with pkgs; [
         tree
         lazygit
+        jujutsu
+        jjui
         yazi
         starship
         zoxide
