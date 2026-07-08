@@ -49,6 +49,7 @@ in
     environment.systemPackages = with pkgs; [
       proton-vpn
       proton-vpn-cli
+      transmission_4
     ];
 
     services.mullvad-vpn.enable = true;
