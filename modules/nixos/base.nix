@@ -72,6 +72,7 @@ in
 
       fonts.packages = with pkgs; [
         font-awesome
+        inter
         jetbrains-mono
         cantarell-fonts
         source-sans-pro
