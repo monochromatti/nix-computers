@@ -5,6 +5,7 @@
       home.packages = with pkgs; [
         glow
         pandoc
+        typst
       ];
     };
 }
