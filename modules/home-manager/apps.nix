@@ -11,6 +11,7 @@
         kdePackages.okular
         libreoffice
         keymapp
+        vlc
 
         # Graphics
         inkscape
