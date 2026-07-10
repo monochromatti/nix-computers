@@ -24,7 +24,7 @@
 
         # Python
         upkgs.uv
-        upkgs.ty
+        pkgs.ty
         upkgs.ruff
 
         # JavaScript

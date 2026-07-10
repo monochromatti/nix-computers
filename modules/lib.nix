@@ -3,10 +3,7 @@ let
   flake = config.flake;
   mkPackageSets = system: {
     pkgs = inputs.nixpkgs.legacyPackages.${system};
-    upkgs = import inputs.nixpkgs-unstable {
-      inherit system;
-      overlays = [ inputs.utgard.overlays.ty ];
-    };
+    upkgs = inputs.nixpkgs-unstable.legacyPackages.${system};
     mpkgs = inputs.nixpkgs-master.legacyPackages.${system};
   };
 

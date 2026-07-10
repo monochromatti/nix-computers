@@ -6,7 +6,6 @@
       {
         nixpkgs.overlays = [
           inputs.utgard.overlays.aruba-onboard
-          inputs.utgard.overlays.ty
         ];
 
         services.utgard.aruba-onboard.enable = true;

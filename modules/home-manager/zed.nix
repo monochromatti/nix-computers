@@ -100,7 +100,7 @@ in
             };
             ty = {
               binary = {
-                path = getExe upkgs.ty;
+                path = getExe pkgs.ty;
                 arguments = [ "server" ];
               };
             };
