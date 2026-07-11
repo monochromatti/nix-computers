@@ -50,6 +50,7 @@
         "npm:pi-thinking-steps"
         "npm:pi-caveman"
         "npm:pi-mcp-adapter"
+        "npm:pi-code-previews"
       ];
 
       skills = [
