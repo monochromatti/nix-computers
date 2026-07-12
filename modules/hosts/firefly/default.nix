@@ -54,6 +54,13 @@ in
 
     services.mullvad-vpn.enable = true;
 
+    # Keep background workloads running while securing session on lid close.
+    services.logind.settings.Login = {
+      HandleLidSwitch = "lock";
+      HandleLidSwitchDocked = "lock";
+      HandleLidSwitchExternalPower = "lock";
+    };
+
     services.linear-notify = {
       enable = true;
       user = "monochromatti";
