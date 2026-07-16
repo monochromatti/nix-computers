@@ -5,6 +5,7 @@ let
     {
       environment.systemPackages = with pkgs; [
         tree
+        nix-output-monitor
         lazygit
         jujutsu
         jjui
