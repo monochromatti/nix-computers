@@ -30,10 +30,15 @@ in
 
         environment.systemPackages = with pkgs; [
           marktext
+          nautilus
           overskride
         ];
 
-        midgard.niri.settings = lib.recursiveUpdate flake.desktop.niri.settings flake.desktop.niri.hostSettings.firefly;
+        midgard.niri.settings = lib.recursiveUpdate flake.desktop.niri.settings (
+          lib.recursiveUpdate flake.desktop.niri.hostSettings.firefly {
+            binds."Mod+E".spawn = "nautilus";
+          }
+        );
 
         programs.niri.enable = true;
 
