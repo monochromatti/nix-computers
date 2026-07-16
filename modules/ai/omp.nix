@@ -11,6 +11,7 @@
             enabled = [
               "linear"
               "playwright"
+              "remarkable"
             ];
             registry.playwright = {
               transport = "stdio";
@@ -22,6 +23,16 @@
               ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
                 "--executable-path"
                 (lib.getExe pkgs.chromium)
+              ];
+            };
+            registry.remarkable = {
+              transport = "stdio";
+              command = lib.getExe pkgs.uv;
+              args = [
+                "tool"
+                "run"
+                "remarkable-mcp"
+                "--usb"
               ];
             };
           };
