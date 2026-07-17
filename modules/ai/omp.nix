@@ -52,8 +52,8 @@
             (
               skillFile:
               let
-                skillPath = builtins.dirOf skillFile;
-                name = builtins.unsafeDiscardStringContext (builtins.baseNameOf skillPath);
+                skillPath = dirOf skillFile;
+                name = builtins.unsafeDiscardStringContext (baseNameOf skillPath);
               in
               lib.nameValuePair name {
                 inherit name;
@@ -63,9 +63,7 @@
               }
             )
             (
-              builtins.filter (path: builtins.baseNameOf path == "SKILL.md") (
-                lib.filesystem.listFilesRecursive skillsDir
-              )
+              builtins.filter (path: baseNameOf path == "SKILL.md") (lib.filesystem.listFilesRecursive skillsDir)
             )
         );
 
