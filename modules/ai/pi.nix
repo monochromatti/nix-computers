@@ -62,6 +62,7 @@
         "npm:pi-caveman"
         "npm:pi-mcp-adapter"
         "npm:pi-code-previews"
+        "npm:pi-impeccable"
       ];
 
       skills = [
