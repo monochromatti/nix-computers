@@ -47,6 +47,24 @@
             defaultProvider = "azure-openai-responses";
             defaultModel = "gpt-5.5";
             defaultThinkingLevel = "low";
+            subagents.agentOverrides = {
+              oracle = {
+                model = "gpt-5.6-sol";
+                thinking = "medium";
+              };
+              worker = {
+                model = "gpt-5.6-luna";
+                thinking = "medium";
+              };
+              scout = {
+                model = "gpt-5.6-terra";
+                thinking = "low";
+              };
+              planner = {
+                model = "gpt-5.6-sol";
+                thinking = "low";
+              };
+            };
           };
         };
       };
