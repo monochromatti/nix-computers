@@ -1,4 +1,7 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
+let
+  flake = config.flake;
+in
 {
   flake.modules.homeManager.development =
     {
@@ -10,6 +13,8 @@
       daily-hours = inputs.daily-hours.packages.${pkgs.stdenv.hostPlatform.system}.default;
     in
     {
+      imports = [ flake.modules.homeManager.hunk ];
+
       home.packages = [
         daily-hours
 
