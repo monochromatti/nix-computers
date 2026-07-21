@@ -10,7 +10,9 @@ in
       ...
     }:
     let
-      daily-hours = inputs.daily-hours.packages.${pkgs.stdenv.hostPlatform.system}.default;
+      system = pkgs.stdenv.hostPlatform.system;
+      daily-hours = inputs.daily-hours.packages.${system}.default;
+      fornybar-keyring = inputs.python-package-index.packages.${system}.fornybar-keyring;
     in
     {
       imports = [ flake.modules.homeManager.hunk ];
@@ -31,6 +33,7 @@ in
         upkgs.uv
         pkgs.ty
         upkgs.ruff
+        fornybar-keyring
 
         # JavaScript
         upkgs.nodejs_24

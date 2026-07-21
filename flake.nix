@@ -16,6 +16,9 @@
       url = "github:fornybar/uvloom";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    python-package-index = {
+      url = "github:fornybar/python-package-index";
+    };
 
     wrappers = {
       url = "github:Lassulus/wrappers";
