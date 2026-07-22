@@ -45,8 +45,8 @@
 
           settings = {
             defaultProvider = "azure-openai-responses";
-            defaultModel = "gpt-5.5";
-            defaultThinkingLevel = "low";
+            defaultModel = "gpt-5.6-luna";
+            defaultThinkingLevel = "high";
             subagents.agentOverrides = {
               oracle = {
                 model = "gpt-5.6-sol";
