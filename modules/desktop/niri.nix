@@ -154,6 +154,10 @@ in
     layout = {
       gaps = 12;
       focus-ring.width = 2;
+      struts = {
+        left = 45;
+        right = 45;
+      };
     };
 
     window-rules = [
