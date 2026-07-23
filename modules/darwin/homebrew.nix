@@ -27,6 +27,7 @@
         "loop"
         "mullvad-vpn"
         "protonvpn"
+        "bitwarden"
       ];
     };
   };

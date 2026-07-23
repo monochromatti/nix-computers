@@ -1,9 +1,9 @@
 {
   flake.modules.homeManager.security =
-    { pkgs, ... }:
+    { lib, pkgs, ... }:
     {
-      home.packages = with pkgs; [
-        bitwarden-desktop
+      home.packages = lib.optionals pkgs.stdenv.isLinux [
+        pkgs.bitwarden-desktop
       ];
     };
 }
