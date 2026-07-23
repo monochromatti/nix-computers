@@ -9,14 +9,14 @@ let
   cfg = config.virtualization.lima.guests;
 
   mkLauncher =
-    pkgs: upkgs: name: host:
+    pkgs: name: host:
     pkgs.writeShellApplication {
       name = host.commandName;
       runtimeInputs = [
         pkgs.coreutils
         pkgs.gh
         pkgs.nix
-        (upkgs.lima.override { withAdditionalGuestAgents = true; })
+        (pkgs.lima.override { withAdditionalGuestAgents = true; })
       ];
       text = ''
         set -euo pipefail
@@ -220,7 +220,6 @@ in
     perSystem =
       {
         pkgs,
-        upkgs,
         system,
         ...
       }:
@@ -229,7 +228,7 @@ in
       in
       {
         packages = lib.mapAttrs' (
-          name: guest: lib.nameValuePair guest.commandName (mkLauncher pkgs upkgs name guest)
+          name: guest: lib.nameValuePair guest.commandName (mkLauncher pkgs name guest)
         ) systemGuests;
 
         apps = lib.mapAttrs' (
@@ -245,11 +244,11 @@ in
     flake.modules.darwin = lib.mapAttrs' (
       name: guest:
       lib.nameValuePair "lima-${name}" (
-        { pkgs, upkgs, ... }:
+        { pkgs, ... }:
         {
           environment.systemPackages = [
             flake.packages.${pkgs.stdenv.hostPlatform.system}.${guest.commandName}
-            (upkgs.lima.override { withAdditionalGuestAgents = true; })
+            (pkgs.lima.override { withAdditionalGuestAgents = true; })
           ];
 
           nix.linux-builder.enable = true;
