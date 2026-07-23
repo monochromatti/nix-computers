@@ -19,10 +19,6 @@ in
       flake.modules.darwin.monochromatti
     ];
 
-    environment.systemPackages = with pkgs; [
-      proton-vpn-cli
-    ];
-
     sops.secrets.github-token = {
       key = "monochromatti/github-token";
     };
