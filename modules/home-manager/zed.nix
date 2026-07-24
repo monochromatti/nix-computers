@@ -24,7 +24,8 @@ in
 
       programs.zed-editor = {
         enable = true;
-        package = upkgs.zed-editor;
+        # Unstable Zed builds livekit-libwebrtc locally on Darwin; use cached stable package there.
+        package = if pkgs.stdenv.hostPlatform.isDarwin then pkgs.zed-editor else upkgs.zed-editor;
         mutableUserSettings = false;
         extensions = [
           "nord"
