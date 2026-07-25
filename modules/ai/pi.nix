@@ -81,6 +81,7 @@
         "npm:pi-mcp-adapter"
         "npm:pi-code-previews"
         "npm:pi-impeccable"
+        "npm:@tintinweb/pi-subagents"
       ];
 
       skills = [
@@ -88,6 +89,20 @@
         "${inputs.agents}/.agents/skills"
         "${self}/.agents/skills"
       ];
+
+      piExtensionsPackage = {
+        source = "git:github.com/monochromatti/pi-extensions";
+        extensions = [
+          "packages/pi-tree-map/index.ts"
+          "packages/pi-answer/index.ts"
+          "packages/pi-zed-context/index.ts"
+          "packages/pi-canvas/index.ts"
+        ];
+        skills = [
+          "packages/pi-zed-context/skills/**"
+          "packages/pi-canvas/skills/**"
+        ];
+      };
 
     in
     {
@@ -97,7 +112,7 @@
           binName = "pi";
           settings = {
             inherit skills;
-            packages = extensions ++ [ "git:github.com/monochromatti/pi-extensions" ];
+            packages = extensions ++ [ piExtensionsPackage ];
           };
         };
       };
