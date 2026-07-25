@@ -55,6 +55,10 @@ in
           ]
           ++ base.bar.widgets.right;
         };
+      # Noctalia treats a briefly missing settings file as a fresh install and
+      # opens its setup panel. Keep this file regular; HM symlink replacement
+      # during a switch can otherwise trigger that path.
+      noctaliaSettingsFile = pkgs.writeText "noctalia-settings.json" (builtins.toJSON noctaliaSettings);
       niri = "${pkgs.niri}/bin/niri";
       systemctl = "${pkgs.systemd}/bin/systemctl";
       noctaliaWallpaper = toString ../../dotfiles/wallpapers/aishot-4712.jpg;
@@ -63,7 +67,6 @@ in
       xdg = {
         enable = true;
         configFile = lib.optionalAttrs pkgs.stdenv.isLinux {
-          "noctalia/settings.json".text = builtins.toJSON noctaliaSettings;
           "vicinae/settings.json".text = ''
             {
               "theme": {
@@ -220,6 +223,12 @@ in
         };
 
         activation = lib.optionalAttrs pkgs.stdenv.isLinux {
+          noctaliaSettings = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+            install -d "$HOME/.config/noctalia"
+            install -m 0644 "${noctaliaSettingsFile}" "$HOME/.config/noctalia/.settings.json.tmp"
+            mv -fT "$HOME/.config/noctalia/.settings.json.tmp" "$HOME/.config/noctalia/settings.json"
+          '';
+
           noctaliaThemeStubs = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
             mkdir -p \
               "$HOME/.config/niri" \
