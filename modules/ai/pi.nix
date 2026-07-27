@@ -18,7 +18,13 @@
               "linear"
               "playwright"
               "remarkable"
+              "chrome-devtools"
             ];
+            registry.chrome-devtools = {
+              transport = "stdio";
+              command = "npx";
+              args = [ "chrome-devtools-mcp@latest" ];
+            };
             registry.playwright = {
               transport = "stdio";
               command = "npx";
