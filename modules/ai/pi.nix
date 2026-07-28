@@ -85,9 +85,9 @@
         "npm:pi-thinking-steps"
         "npm:pi-caveman"
         "npm:pi-mcp-adapter"
-        "npm:pi-code-previews"
         "npm:pi-impeccable"
         "npm:@tintinweb/pi-subagents"
+        "npm:@heyhuynhgiabuu/pi-pretty"
       ];
 
       skills = [
