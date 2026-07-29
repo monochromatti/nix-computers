@@ -5,6 +5,20 @@
     let
       system = pkgs.stdenv.hostPlatform.system;
 
+      # pi-subagents discovers global custom agents below PI_CODING_AGENT_DIR.
+      agentFiles = {
+        oracle = ./agents/oracle.md;
+        planner = ./agents/planner.md;
+        scout = ./agents/scout.md;
+        worker = ./agents/worker.md;
+      };
+
+      installAgents = lib.concatStringsSep "\n" (
+        lib.mapAttrsToList (
+          name: path: "install -m 644 ${lib.escapeShellArg (toString path)} \"$agent_dir/agents/${name}.md\""
+        ) agentFiles
+      );
+
       mkPi =
         module:
         (inputs.agents.packages.${system}.pi.configuration.apply {
@@ -53,25 +67,13 @@
             defaultProvider = "azure-openai-responses";
             defaultModel = "gpt-5.6-luna";
             defaultThinkingLevel = "high";
-            subagents.agentOverrides = {
-              oracle = {
-                model = "gpt-5.6-sol";
-                thinking = "medium";
-              };
-              worker = {
-                model = "gpt-5.6-luna";
-                thinking = "medium";
-              };
-              scout = {
-                model = "gpt-5.6-terra";
-                thinking = "low";
-              };
-              planner = {
-                model = "gpt-5.6-sol";
-                thinking = "low";
-              };
-            };
           };
+
+          preHook = ''
+            agent_dir="''${PI_CODING_AGENT_DIR:-$HOME/.pi/agent}"
+            mkdir -p "$agent_dir/agents"
+            ${installAgents}
+          '';
         };
       };
 
