@@ -28,6 +28,8 @@ in
       "electron-39.8.10"
     ];
 
+    systemd.services.NetworkManager-wait-online.enable = false;
+
     midgard.pc = {
       desktop = null;
       hostName = "firefly";
