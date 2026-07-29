@@ -41,6 +41,7 @@ in
         # Dev
         pkgs.gh
         pkgs.git
+        pkgs.worktrunk
         upkgs.devenv
 
         # AI

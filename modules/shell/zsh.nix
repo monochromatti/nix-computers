@@ -7,6 +7,7 @@ let
     ${builtins.readFile ../../dotfiles/init.zsh}
 
     eval "$(zoxide init zsh)"
+    eval "$(wt config shell init zsh)"
 
     if [[ $options[zle] = on ]]; then
       source <(fzf --zsh)
