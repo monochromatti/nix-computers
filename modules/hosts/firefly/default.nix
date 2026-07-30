@@ -5,7 +5,7 @@ in
 {
   flake.nixosConfigurations = flake.lib.mkNixos "x86_64-linux" "firefly";
 
-  flake.modules.nixos.firefly = { pkgs, ... }: {
+  flake.modules.nixos.firefly = { lib, pkgs, ... }: {
     imports = with flake.modules.nixos; [
       base
       shell
@@ -29,6 +29,8 @@ in
     ];
 
     systemd.services.NetworkManager-wait-online.enable = false;
+
+    boot.kernelModules.nvidia_uvm = lib.mkForce false;
 
     midgard.pc = {
       desktop = null;
@@ -77,6 +79,7 @@ in
 
     virtualisation.docker = {
       enable = true;
+      enableOnBoot = false;
       package = pkgs.docker_29;
     };
 
