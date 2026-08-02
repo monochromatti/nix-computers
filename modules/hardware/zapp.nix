@@ -1,7 +1,4 @@
-{ config, ... }:
-let
-  flake = config.flake;
-in
+{ moduleWithSystem, ... }:
 {
   perSystem =
     { upkgs, ... }:
@@ -9,22 +6,20 @@ in
       packages.zapp = upkgs.callPackage ../../packages/hardware/zapp/package.nix { };
     };
 
-  flake.modules.darwin.hardware =
-    { pkgs, ... }:
-    let
-      zapp = flake.packages.${pkgs.stdenv.hostPlatform.system}.zapp;
-    in
+  flake.modules.darwin.hardware = moduleWithSystem (
+    { config, ... }:
+    { ... }:
     {
-      environment.systemPackages = [ zapp ];
-    };
+      environment.systemPackages = [ config.packages.zapp ];
+    }
+  );
 
-  flake.modules.nixos.hardware =
-    { pkgs, ... }:
-    let
-      zapp = flake.packages.${pkgs.stdenv.hostPlatform.system}.zapp;
-    in
+  flake.modules.nixos.hardware = moduleWithSystem (
+    { config, ... }:
+    { ... }:
     {
-      environment.systemPackages = [ zapp ];
-      services.udev.packages = [ zapp ];
-    };
+      environment.systemPackages = [ config.packages.zapp ];
+      services.udev.packages = [ config.packages.zapp ];
+    }
+  );
 }

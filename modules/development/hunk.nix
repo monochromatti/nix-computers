@@ -1,7 +1,4 @@
-{ config, inputs, ... }:
-let
-  flake = config.flake;
-in
+{ inputs, moduleWithSystem, ... }:
 {
   perSystem =
     { system, ... }:
@@ -9,9 +6,11 @@ in
       packages.hunk = inputs.hunk.packages.${system}.default;
     };
 
-  flake.modules.homeManager.hunk =
-    { pkgs, ... }:
+  flake.modules.homeManager.hunk = moduleWithSystem (
+    { config, ... }:
+    { ... }:
     {
-      home.packages = [ flake.packages.${pkgs.stdenv.hostPlatform.system}.hunk ];
-    };
+      home.packages = [ config.packages.hunk ];
+    }
+  );
 }
