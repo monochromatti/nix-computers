@@ -37,6 +37,9 @@ let
           [Unit]
           X-Reload-Triggers=${ghostty.configFile.path}
           X-SwitchMethod=keep-old
+
+          [Service]
+          Environment="PATH=/run/wrappers/bin:/run/current-system/sw/bin:/etc/profiles/per-user/%u/bin:%h/.nix-profile/bin"
         '';
         clobber = true;
       };
