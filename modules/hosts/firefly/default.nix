@@ -31,6 +31,9 @@ in
         ghostty = flake.desktop.ghostty.wrapper pkgs;
         linuxFiles = flake.linuxConfigFiles { inherit pkgs; };
         gtkFiles = flake.gtkConfigFiles { inherit pkgs; };
+        zedSettings = (pkgs.formats.json { }).generate "zed-user-settings" (
+          flake.zedUserSettings { inherit lib pkgs; }
+        );
         clobber = section: name: gtkFiles.${section}.${name} // { clobber = true; };
       in
       {
@@ -64,6 +67,10 @@ in
           ".icons/default/index.theme" = clobber "files" ".icons/default/index.theme";
         };
         xdg.config.files = linuxFiles // {
+          "zed/settings.json" = {
+            source = zedSettings;
+            clobber = true;
+          };
           "gtk-3.0/settings.ini" = gtkFiles.xdgConfig."gtk-3.0/settings.ini" // {
             clobber = true;
           };

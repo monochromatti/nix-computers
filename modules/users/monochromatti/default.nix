@@ -62,6 +62,7 @@ in
           flake.userPackageGroups.gtk pkgs
           ++ flake.userPackageGroups.apps pkgs
           ++ flake.userPackageGroups.zed pkgs
+          ++ flake.userPackageGroups.zedEditor { inherit pkgs upkgs; }
           ++ flake.userPackageGroups.desktop pkgs
           ++ flake.userPackageGroups.documents pkgs
           ++ flake.userPackageGroups.terminal pkgs
