@@ -1,6 +1,6 @@
 { inputs, ... }:
 {
-  flake.modules.nixos.lima =
+  flake.modules.nixos."feature/virtualization/lima" =
     {
       lib,
       modulesPath,

@@ -5,15 +5,23 @@ in
 {
   flake.nixosConfigurations = flake.lib.mkNixos "x86_64-linux" "firefly";
 
-  flake.modules.nixos.firefly = { lib, pkgs, ... }: {
-    imports = with flake.modules.nixos; [
-      base
-      shell
-      secrets
-      packages
-      hardware
-      niri
-      flake.modules.nixos.dailyHours
+  flake.modules.nixos."host/firefly" = { lib, pkgs, ... }: {
+    imports = [
+      flake.modules.nixos."feature/base"
+      flake.modules.nixos."feature/ai"
+      flake.modules.nixos."profile/shell"
+      flake.modules.nixos."feature/secrets"
+      flake.modules.nixos."feature/applications/obsidian"
+      flake.modules.nixos."feature/hardware/zapp"
+      flake.modules.nixos."feature/desktop/niri"
+      flake.modules.nixos."feature/ghostty"
+      flake.modules.nixos."feature/desktop/daily-hours"
+      flake.modules.nixos."host/firefly/desktop"
+      flake.modules.nixos."host/firefly/hardware"
+      flake.modules.nixos."host/firefly/networking"
+      flake.modules.nixos."host/firefly/secrets"
+      flake.modules.nixos."host/firefly/tailscale"
+      flake.modules.nixos."host/firefly/work"
 
       inputs.linear-notification-daemon.nixosModules.default
       inputs.pc.nixosModules.hdw-hp-zbook-firefly_g11
@@ -21,110 +29,20 @@ in
       inputs.pc.nixosModules.docker
       inputs.utgard.nixosModules.aruba-onboard
 
-      monochromatti
+      flake.modules.nixos."user/monochromatti"
     ];
 
-    services.dbus.packages = [ (flake.desktop.ghostty.wrapper pkgs).wrapper ];
-
-    hjem.users.monochromatti =
-      let
-        ghostty = flake.desktop.ghostty.wrapper pkgs;
-        linuxFiles = flake.linuxConfigFiles { inherit pkgs; };
-        gtkFiles = flake.gtkConfigFiles { inherit pkgs; };
-        zedSettings = (pkgs.formats.json { }).generate "zed-user-settings" (
-          flake.zedUserSettings { inherit lib pkgs; }
-        );
-        clobber = section: name: gtkFiles.${section}.${name} // { clobber = true; };
-      in
-      {
-        packages = [
-          ghostty.wrapper
-          pkgs.sops
-        ];
-        environment.sessionVariables = {
-          GTK2_RC_FILES = "/home/monochromatti/.gtkrc-2.0";
-          XCURSOR_THEME = "Adwaita";
-          XCURSOR_SIZE = 32;
-          XCURSOR_PATH = [
-            "/etc/profiles/per-user/monochromatti/share/icons"
-            "/home/monochromatti/.icons"
-            "/home/monochromatti/.local/share/icons"
-          ];
-          QT_QPA_PLATFORMTHEME = "qt6ct";
-          SOPS_AGE_KEY_FILE = "/home/monochromatti/.config/sops/age/keys.txt";
-        };
-        files = {
-          ".ssh/config" = {
-            text = ''
-              Host *
-                WarnWeakCrypto no
-            '';
-            clobber = true;
-          };
-          ".gtkrc-2.0" = clobber "files" ".gtkrc-2.0";
-          ".Xresources" = clobber "files" ".Xresources";
-          ".icons/Adwaita" = clobber "files" ".icons/Adwaita";
-          ".icons/default/index.theme" = clobber "files" ".icons/default/index.theme";
-        };
-        xdg.config.files = linuxFiles // {
-          "zed/settings.json" = {
-            source = zedSettings;
-            clobber = true;
-          };
-          "gtk-3.0/settings.ini" = gtkFiles.xdgConfig."gtk-3.0/settings.ini" // {
-            clobber = true;
-          };
-          "gtk-4.0/settings.ini" = gtkFiles.xdgConfig."gtk-4.0/settings.ini" // {
-            clobber = true;
-          };
-          "gtk-4.0/gtk.css" = gtkFiles.xdgConfig."gtk-4.0/gtk.css" // {
-            clobber = true;
-          };
-          "fontconfig/conf.d/10-hm-fonts.conf" = gtkFiles.xdgConfig."fontconfig/conf.d/10-hm-fonts.conf" // {
-            clobber = true;
-          };
-          "fontconfig/conf.d/10-hm-rendering.conf" =
-            gtkFiles.xdgConfig."fontconfig/conf.d/10-hm-rendering.conf"
-            // {
-              clobber = true;
-            };
-          "fontconfig/conf.d/52-hm-default-fonts.conf" =
-            gtkFiles.xdgConfig."fontconfig/conf.d/52-hm-default-fonts.conf"
-            // {
-              clobber = true;
-            };
-          "vicinae/settings.json" = linuxFiles."vicinae/settings.json" // {
-            clobber = true;
-          };
-          "qt6ct/qt6ct.conf" = linuxFiles."qt6ct/qt6ct.conf" // {
-            clobber = true;
-          };
-          "systemd/user/app-com.mitchellh.ghostty.service" = {
-            source = "${ghostty.wrapper}/share/systemd/user/app-com.mitchellh.ghostty.service";
-            clobber = true;
-          };
-          "systemd/user/app-com.mitchellh.ghostty.service.d/overrides.conf" = {
-            text = ''
-              [Unit]
-              X-Reload-Triggers=${ghostty.configFile.path}
-              X-SwitchMethod=keep-old
-            '';
-            clobber = true;
-          };
-          "bat/syntaxes/ghostty.sublime-syntax" = {
-            source = "${ghostty.wrapper}/share/bat/syntaxes/ghostty.sublime-syntax";
-            clobber = true;
-          };
-          "bat/config" = {
-            text = "--map-syntax='${ghostty.configFile.path}:Ghostty Config'\n";
-            clobber = true;
-          };
-        };
-        xdg.data.files = {
-          "icons/Adwaita" = clobber "xdgData" "icons/Adwaita";
-          "icons/default/index.theme" = clobber "xdgData" "icons/default/index.theme";
-        };
+    hjem.users.monochromatti = {
+      packages = lib.mkBefore [ pkgs.sops ];
+      files.".ssh/config" = {
+        text = ''
+          Host *
+            WarnWeakCrypto no
+        '';
+        clobber = true;
       };
+      environment.sessionVariables.SOPS_AGE_KEY_FILE = "/home/monochromatti/.config/sops/age/keys.txt";
+    };
 
     home-manager.users.monochromatti.fonts.fontconfig.enable = lib.mkForce false;
 

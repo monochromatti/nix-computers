@@ -15,10 +15,15 @@ let
   '';
 in
 {
-  flake.modules.nixos.zsh =
+  flake.modules.nixos."feature/shell/zsh" =
     { config, lib, ... }:
     let
-      hjemLoadEnv = lib.attrByPath [ "hjem" "users" "monochromatti" "environment" "loadEnv" ] null config;
+      user = lib.attrByPath [ "nixComputers" "primaryUser" ] null config;
+      hjemLoadEnv =
+        if user == null then
+          null
+        else
+          lib.attrByPath [ "hjem" "users" user "environment" "loadEnv" ] null config;
       hjemInit = lib.optionalString (hjemLoadEnv != null) ''
         source ${hjemLoadEnv}
       '';
@@ -32,10 +37,15 @@ in
       };
     };
 
-  flake.modules.darwin.zsh =
+  flake.modules.darwin."feature/shell/zsh" =
     { config, lib, ... }:
     let
-      hjemLoadEnv = lib.attrByPath [ "hjem" "users" "monochromatti" "environment" "loadEnv" ] null config;
+      user = lib.attrByPath [ "system" "primaryUser" ] null config;
+      hjemLoadEnv =
+        if user == null then
+          null
+        else
+          lib.attrByPath [ "hjem" "users" user "environment" "loadEnv" ] null config;
       hjemInit = lib.optionalString (hjemLoadEnv != null) ''
         source ${hjemLoadEnv}
       '';

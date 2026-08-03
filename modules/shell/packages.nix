@@ -17,6 +17,6 @@ let
     };
 in
 {
-  flake.modules.darwin.shellPackages = packagesModule;
-  flake.modules.nixos.shellPackages = packagesModule;
+  flake.modules.darwin."feature/shell/packages" = packagesModule;
+  flake.modules.nixos."feature/shell/packages" = packagesModule;
 }

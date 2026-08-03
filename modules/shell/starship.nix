@@ -59,14 +59,14 @@ let
   };
 in
 {
-  flake.modules.nixos.starship = {
+  flake.modules.nixos."feature/shell/starship" = {
     programs.starship = {
       enable = true;
       settings = starshipSettings;
     };
   };
 
-  flake.modules.darwin.starship =
+  flake.modules.darwin."feature/shell/starship" =
     { pkgs, ... }:
     let
       starshipToml = (pkgs.formats.toml { }).generate "starship.toml" starshipSettings;

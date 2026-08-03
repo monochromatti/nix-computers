@@ -5,12 +5,13 @@ in
 {
   flake.nixosConfigurations = flake.lib.mkNixos "x86_64-linux" "vindos";
 
-  flake.modules.nixos.vindos = {
+  flake.modules.nixos."host/vindos" = {
     imports = [
       inputs.nixos-wsl.nixosModules.default
-      flake.modules.nixos.base
-      flake.modules.nixos.shell
-      flake.modules.nixos."monochromatti-wsl"
+      flake.modules.nixos."feature/base"
+      flake.modules.nixos."feature/ai"
+      flake.modules.nixos."profile/shell"
+      flake.modules.nixos."user/monochromatti-wsl"
     ];
 
     wsl = {

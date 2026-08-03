@@ -1,34 +1,43 @@
-{ config, inputs, ... }:
+{ inputs, ... }:
 let
   lib = inputs.nixpkgs.lib;
-  flake = config.flake;
 in
 {
-  options.flake.desktop = lib.mkOption {
+  options.nixComputers.desktop = lib.mkOption {
     type = lib.types.submodule {
-      freeformType = lib.types.attrsOf lib.types.anything;
       options = {
-        opacity = lib.mkOption {
-          type = lib.types.float;
+        niri.settings = lib.mkOption {
+          type = lib.types.attrsOf lib.types.anything;
+          default = { };
         };
-
-        font.size = lib.mkOption {
-          type = lib.types.ints.positive;
-          default = 12;
+        noctalia = {
+          settings = lib.mkOption {
+            type = lib.types.attrsOf lib.types.anything;
+            default = { };
+          };
+          wallpaper = lib.mkOption {
+            type = lib.types.path;
+            default = ../../dotfiles/wallpapers/aishot-4712.jpg;
+          };
         };
       };
     };
     default = { };
   };
 
-  config.flake.modules.nixos.dailyHours =
-    { pkgs, ... }:
+  config.flake.modules.nixos."feature/desktop/daily-hours" =
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     let
       dailyHours = inputs.daily-hours.packages.${pkgs.stdenv.hostPlatform.system}.default;
-      user = "monochromatti";
-      home = flake.lib.users.${user}.home.linux;
+      user = config.nixComputers.primaryUser;
+      home = if user == null then null else lib.attrByPath [ "users" "users" user "home" ] null config;
     in
-    {
+    lib.mkIf (user != null && home != null) {
       systemd.services.daily-hours-work-session = {
         description = "daily-hours work session marker";
         wantedBy = [ "graphical.target" ];

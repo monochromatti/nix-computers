@@ -8,7 +8,7 @@ let
   username = "monochromatti";
 in
 {
-  flake.modules.homeManager."${username}-wsl" = {
+  flake.modules.homeManager."user/${username}-wsl" = {
     programs = {
       git = {
         enable = true;
@@ -27,40 +27,35 @@ in
     };
   };
 
-  flake.modules.nixos."${username}-wsl" =
+  flake.modules.nixos."user/${username}-wsl" =
     {
-      pkgs,
       upkgs,
       inputs,
       ...
     }:
-    let
-      system = pkgs.stdenv.hostPlatform.system;
-    in
     {
+      nixComputers.primaryUser = username;
+
       imports = [
         inputs.hjem.nixosModules.default
-        flake.modules.nixos.userdirs
+        flake.modules.nixos."feature/users/userdirs"
       ];
 
       home-manager.sharedModules = [
-        flake.modules.homeManager."${username}-wsl"
+        flake.modules.homeManager."user/${username}-wsl"
       ];
+
+      hjem.extraModules = [
+        flake.modules.hjem."internal/hjem-profile-schema"
+      ];
+      hjem.specialArgs = {
+        inherit inputs upkgs;
+      };
 
       hjem.users.${username} = {
         user = username;
         directory = "/home/${username}";
-        packages =
-          flake.userPackageGroups.documents pkgs
-          ++ flake.userPackageGroups.terminal pkgs
-          ++ flake.userPackageGroups.development {
-            inherit
-              pkgs
-              upkgs
-              inputs
-              ;
-          }
-          ++ [ flake.packages.${system}.hunk ];
+        nixComputers.profile = "wsl";
       };
 
       home-manager.users.${username}.home.homeDirectory = "/home/${username}";

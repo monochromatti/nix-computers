@@ -5,12 +5,12 @@ in
 {
   flake.nixosConfigurations = flake.lib.mkNixos "x86_64-linux" "linux";
 
-  flake.modules.nixos.linux =
+  flake.modules.nixos."host/linux" =
     { pkgs, ... }:
     {
       imports = [
-        flake.modules.nixos.lima
-        flake.modules.nixos.shell
+        flake.modules.nixos."feature/virtualization/lima"
+        flake.modules.nixos."profile/shell"
       ];
 
       networking.hostName = "linux";

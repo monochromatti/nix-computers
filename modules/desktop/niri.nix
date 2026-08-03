@@ -1,18 +1,16 @@
 { config, inputs, ... }:
 let
-  flake = config.flake;
-  opacity = 0.95;
+  desktopConfig = config.nixComputers.desktop;
+  theme = config.nixComputers.theme;
 in
 {
-  flake.desktop.opacity = opacity;
-
-  perSystem =
+  config.perSystem =
     { pkgs, ... }:
     {
       packages.niri-stack = pkgs.callPackage ../../packages/niri-stack/package.nix { };
     };
 
-  flake.modules.nixos.niri =
+  config.flake.modules.nixos."feature/desktop/niri" =
     {
       config,
       lib,
@@ -22,7 +20,9 @@ in
     }:
     let
       niri = mpkgs.niri;
-      userNoctaliaConfig = "${flake.lib.users.monochromatti.home.linux}/.config/niri/noctalia.kdl";
+      user = config.nixComputers.primaryUser;
+      userHome = config.users.users.${user}.home;
+      userNoctaliaConfig = "${userHome}/.config/niri/noctalia.kdl";
       defaultConfig = pkgs.runCommand "niri-default-config.kdl" { } ''
         cp ${niri.src}/resources/default-config.kdl $out
         substituteInPlace $out \
@@ -95,20 +95,20 @@ in
         }).wrapper;
     in
     {
-      options.midgard.niri.settings = lib.mkOption {
+      options.nixComputers.desktop.niri.settings = lib.mkOption {
         type = lib.types.attrsOf lib.types.anything;
-        default = flake.desktop.niri.settings;
+        default = desktopConfig.niri.settings;
       };
 
       config = {
-        programs.niri.package = mkNiri config.midgard.niri.settings;
+        programs.niri.package = mkNiri config.nixComputers.desktop.niri.settings;
 
         # Noctalia Battery widget reads device state via UPower.
         services.upower.enable = true;
       };
     };
 
-  flake.desktop.niri.settings = {
+  config.nixComputers.desktop.niri.settings = {
     binds = {
       "Mod+T".spawn = "ghostty";
       "Mod+D".spawn = [
@@ -143,7 +143,7 @@ in
     environment.QT_QPA_PLATFORMTHEME = "qt6ct";
 
     cursor = {
-      xcursor-theme = "Adwaita";
+      xcursor-theme = theme.cursor.name;
       xcursor-size = 24;
     };
 
@@ -168,24 +168,4 @@ in
     ];
   };
 
-  flake.desktop.niri.hostSettings.firefly = {
-    outputs = {
-      "eDP-1" = {
-        scale = 1.15;
-        position._attrs = {
-          x = 1725;
-          y = 0;
-        };
-      };
-
-      "DP-1" = {
-        mode = "5120x1440@29.979";
-        scale = 1;
-        position._attrs = {
-          x = 0;
-          y = -1440;
-        };
-      };
-    };
-  };
 }

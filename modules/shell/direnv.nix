@@ -25,6 +25,6 @@ let
     };
 in
 {
-  flake.modules.darwin.direnv = direnvModule;
-  flake.modules.nixos.direnv = direnvModule;
+  flake.modules.darwin."feature/shell/direnv" = direnvModule;
+  flake.modules.nixos."feature/shell/direnv" = direnvModule;
 }

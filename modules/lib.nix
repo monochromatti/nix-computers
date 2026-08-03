@@ -27,11 +27,6 @@ let
     };
 in
 {
-  options.flake.userPackageGroups = lib.mkOption {
-    type = lib.types.attrsOf lib.types.raw;
-    default = { };
-  };
-
   config.flake.lib = {
     inherit mkPackageSets;
 
@@ -49,7 +44,7 @@ in
       ${name} = inputs.nixpkgs.lib.nixosSystem {
         specialArgs = mkSpecialArgs system;
         modules = [
-          flake.modules.nixos.${name}
+          flake.modules.nixos."host/${name}"
           { nixpkgs.hostPlatform = system; }
         ];
       };
@@ -59,7 +54,7 @@ in
       ${name} = inputs.nix-darwin.lib.darwinSystem {
         specialArgs = mkSpecialArgs system;
         modules = [
-          flake.modules.darwin.${name}
+          flake.modules.darwin."host/${name}"
           { nixpkgs.hostPlatform = system; }
         ];
       };

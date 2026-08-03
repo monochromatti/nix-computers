@@ -6,7 +6,7 @@
       packages.zapp = upkgs.callPackage ../../packages/hardware/zapp/package.nix { };
     };
 
-  flake.modules.darwin.hardware = moduleWithSystem (
+  flake.modules.darwin."feature/hardware/zapp" = moduleWithSystem (
     { config, ... }:
     { ... }:
     {
@@ -14,7 +14,7 @@
     }
   );
 
-  flake.modules.nixos.hardware = moduleWithSystem (
+  flake.modules.nixos."feature/hardware/zapp" = moduleWithSystem (
     { config, ... }:
     { ... }:
     {

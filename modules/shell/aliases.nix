@@ -11,6 +11,6 @@ let
   };
 in
 {
-  flake.modules.darwin.shellAliases = aliasesModule;
-  flake.modules.nixos.shellAliases = aliasesModule;
+  flake.modules.darwin."feature/shell/aliases" = aliasesModule;
+  flake.modules.nixos."feature/shell/aliases" = aliasesModule;
 }

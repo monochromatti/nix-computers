@@ -3,20 +3,19 @@ let
   flake = config.flake;
 in
 {
-  imports = [ ./linux.nix ];
-
   flake.darwinConfigurations = flake.lib.mkDarwin "aarch64-darwin" "macarius";
 
-  flake.modules.darwin.macarius = { pkgs, ... }: {
+  flake.modules.darwin."host/macarius" = { pkgs, ... }: {
     imports = [
-      flake.modules.darwin.base
-      flake.modules.darwin.shell
-      flake.modules.darwin.homebrew
-      flake.modules.darwin.secrets
-      flake.modules.darwin.hardware
-      flake.modules.darwin."lima-linux"
+      flake.modules.darwin."feature/base"
+      flake.modules.darwin."feature/ai"
+      flake.modules.darwin."profile/shell"
+      flake.modules.darwin."feature/homebrew"
+      flake.modules.darwin."feature/secrets"
+      flake.modules.darwin."feature/hardware/zapp"
+      flake.modules.darwin."feature/virtualization/lima-linux"
 
-      flake.modules.darwin.monochromatti
+      flake.modules.darwin."user/monochromatti"
     ];
 
     sops.secrets.github-token = {

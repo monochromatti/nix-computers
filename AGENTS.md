@@ -27,7 +27,7 @@ The repository follows a modular style centered around `modules/` and assembled 
 2. `modules/`: main module tree (hosts, OS modules, users, Home Manager modules, package sets).
 3. `dotfiles/`: shell and user environment dotfiles.
 4. `packages/`: custom packages and scripts.
-5. `modules/secrets/`: sops-related definitions and encrypted data.
+5. `modules/platform/secrets/`: sops-related definitions and encrypted data.
 
 ## Editing Guidelines
 
