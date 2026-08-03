@@ -19,14 +19,12 @@ let
     in
     {
       config = {
-        home-manager.sharedModules = [
-          {
-            home.packages = [ pkgs.sops ];
-            home.sessionVariables = {
-              SOPS_AGE_KEY_FILE = "${userHome}/.config/sops/age/keys.txt";
-            };
-          }
-        ];
+        home-manager.sharedModules = lib.optional pkgs.stdenv.isDarwin {
+          home.packages = [ pkgs.sops ];
+          home.sessionVariables = {
+            SOPS_AGE_KEY_FILE = "${userHome}/.config/sops/age/keys.txt";
+          };
+        };
 
         sops = {
           age.keyFile = mkForce "${userHome}/.config/sops/age/keys.txt";

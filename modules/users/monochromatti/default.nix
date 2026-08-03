@@ -6,7 +6,12 @@ let
 in
 {
   flake.modules.homeManager.${username} =
-    { config, lib, ... }:
+    {
+      config,
+      lib,
+      pkgs,
+      ...
+    }:
     {
       imports = with flake.modules.homeManager; [
         ghostty
@@ -14,11 +19,9 @@ in
         linux
       ];
 
-      gtk.gtk4.theme = lib.mkIf config.gtk.enable config.gtk.theme;
-
       programs = {
         home-manager.enable = true;
-        ssh = {
+        ssh = lib.mkIf pkgs.stdenv.isDarwin {
           enable = true;
           enableDefaultConfig = false;
           settings."*".WarnWeakCrypto = "no";
@@ -56,7 +59,8 @@ in
         user = username;
         directory = users.${username}.home.linux;
         packages =
-          flake.userPackageGroups.apps pkgs
+          flake.userPackageGroups.gtk pkgs
+          ++ flake.userPackageGroups.apps pkgs
           ++ flake.userPackageGroups.zed pkgs
           ++ flake.userPackageGroups.desktop pkgs
           ++ flake.userPackageGroups.documents pkgs

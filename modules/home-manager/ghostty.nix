@@ -9,38 +9,33 @@ in
       lib,
       ...
     }:
-    let
-      opacity = flake.desktop.opacity;
-      fontSize = flake.desktop.font.size;
-
-      commonSettings = {
-        font-family = "JetBrains Mono";
-        window-padding-x = 8;
-        window-padding-y = 8;
-        cursor-style = "block";
-        background-opacity = opacity;
-        background-opacity-cells = true;
-      };
-
-      linuxSettings = {
-        font-size = fontSize;
-      };
-
-      darwinSettings = {
-        background-blur = "macos-glass-regular";
-        macos-titlebar-style = "transparent";
-      };
-    in
     {
       xdg.enable = true;
 
       programs.ghostty = {
-        enable = true;
-        package = if pkgs.stdenv.isDarwin then pkgs.ghostty-bin else pkgs.ghostty;
-        settings =
-          commonSettings
-          // lib.optionalAttrs pkgs.stdenv.isLinux linuxSettings
-          // lib.optionalAttrs pkgs.stdenv.isDarwin darwinSettings;
+        enable = lib.mkIf pkgs.stdenv.isDarwin true;
+        package = lib.mkIf pkgs.stdenv.isDarwin pkgs.ghostty-bin;
+        settings = lib.mkIf pkgs.stdenv.isDarwin (
+          flake.desktop.ghostty.sharedSettings
+          // {
+            background-blur = "macos-glass-regular";
+            macos-titlebar-style = "transparent";
+          }
+        );
       };
+
+      programs.bash.initExtra = lib.mkIf pkgs.stdenv.isLinux (
+        lib.mkOrder 101 ''
+          if [[ -n "''${GHOSTTY_RESOURCES_DIR}" ]]; then builtin source "''${GHOSTTY_RESOURCES_DIR}/shell-integration/bash/ghostty.bash"; fi
+        ''
+      );
+
+      programs.fish.interactiveShellInit = lib.mkIf pkgs.stdenv.isLinux ''
+        if set -q GHOSTTY_RESOURCES_DIR; source "$GHOSTTY_RESOURCES_DIR/shell-integration/fish/vendor_conf.d/ghostty-shell-integration.fish"; end
+      '';
+
+      programs.zsh.initContent = lib.mkIf pkgs.stdenv.isLinux ''
+        if [[ -n $GHOSTTY_RESOURCES_DIR ]]; then source "$GHOSTTY_RESOURCES_DIR"/shell-integration/zsh/ghostty-integration; fi
+      '';
     };
 }
