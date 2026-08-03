@@ -3,6 +3,18 @@ let
   flake = config.flake;
 in
 {
+  flake.userPackageGroups.linux =
+    { pkgs, upkgs }:
+    let
+      system = pkgs.stdenv.hostPlatform.system;
+    in
+    [
+      flake.packages.${system}.noctalia-shell
+      pkgs.nwg-look
+      pkgs.qt6Packages.qt6ct
+      upkgs.vicinae
+    ];
+
   flake.modules.homeManager.linux =
     {
       config,
@@ -251,12 +263,6 @@ in
           '';
         };
 
-        packages = lib.optionals pkgs.stdenv.isLinux [
-          flake.packages.${system}.noctalia-shell
-          pkgs.nwg-look
-          pkgs.qt6Packages.qt6ct
-          upkgs.vicinae
-        ];
       };
     };
 }

@@ -1,4 +1,9 @@
-{ config, inputs, ... }:
+{
+  config,
+  inputs,
+  lib,
+  ...
+}:
 let
   flake = config.flake;
   mkPackageSets = system: {
@@ -22,7 +27,12 @@ let
     };
 in
 {
-  flake.lib = {
+  options.flake.userPackageGroups = lib.mkOption {
+    type = lib.types.attrsOf lib.types.raw;
+    default = { };
+  };
+
+  config.flake.lib = {
     inherit mkPackageSets;
 
     users = {

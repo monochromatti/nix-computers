@@ -1,9 +1,17 @@
+{ config, ... }:
+let
+  flake = config.flake;
+in
 {
+  flake.userPackageGroups.security =
+    pkgs:
+    pkgs.lib.optionals pkgs.stdenv.isLinux [
+      pkgs.bitwarden-desktop
+    ];
+
   flake.modules.homeManager.security =
-    { lib, pkgs, ... }:
+    { pkgs, ... }:
     {
-      home.packages = lib.optionals pkgs.stdenv.isLinux [
-        pkgs.bitwarden-desktop
-      ];
+      home.packages = flake.userPackageGroups.security pkgs;
     };
 }

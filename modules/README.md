@@ -16,7 +16,7 @@ This tree uses flake-parts with `import-tree`. Organize modules by semantic feat
 
 - Simple aspects: shell pieces, package groups, desktop apps.
 - Multi-context aspects: users, secrets, AI/system integration.
-- Inheritance aspects: `shell`, `base`, workstation/wsl/package profiles, hosts.
+- Inheritance aspects: `shell`, `base`, wsl/package profiles, hosts.
 - Conditional aspects: Home Manager desktop modules that differ by Linux/Darwin.
 - Factory/library aspects: `flake.lib.mkNixos`, `flake.lib.mkDarwin`, package set helpers.
 

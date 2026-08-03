@@ -1,9 +1,13 @@
+{ config, ... }:
+let
+  flake = config.flake;
+in
 {
+  flake.userPackageGroups.virtualization = pkgs: [ pkgs.qemu ];
+
   flake.modules.homeManager.virtualization =
     { pkgs, ... }:
     {
-      home.packages = with pkgs; [
-        qemu
-      ];
+      home.packages = flake.userPackageGroups.virtualization pkgs;
     };
 }

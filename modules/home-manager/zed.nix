@@ -3,8 +3,18 @@ let
   flake = config.flake;
 in
 {
+  flake.userPackageGroups.zed = pkgs: [
+    pkgs.package-version-server
+    pkgs.just
+  ];
+
   flake.modules.homeManager.zed =
-    { pkgs, upkgs, ... }:
+    {
+      lib,
+      pkgs,
+      upkgs,
+      ...
+    }:
     let
       opacity = flake.desktop.opacity;
       inherit (pkgs.lib)
@@ -17,10 +27,7 @@ in
       transparent = color: "${color}${alpha}";
     in
     {
-      home.packages = with pkgs; [
-        package-version-server
-        just
-      ];
+      home.packages = lib.optionals pkgs.stdenv.isDarwin (flake.userPackageGroups.zed pkgs);
 
       programs.zed-editor = {
         enable = true;

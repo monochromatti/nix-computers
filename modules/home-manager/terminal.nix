@@ -1,16 +1,20 @@
+{ config, ... }:
+let
+  flake = config.flake;
+in
 {
+  flake.userPackageGroups.terminal =
+    pkgs: with pkgs; [
+      eza
+      ripgrep
+      fd
+      jq
+      nil
+    ];
+
   flake.modules.homeManager.terminal =
     { pkgs, ... }:
     {
-      home.packages = with pkgs; [
-        eza
-        ripgrep
-        fd
-        fzf
-        zoxide
-        yazi
-        jq
-        nil
-      ];
+      home.packages = flake.userPackageGroups.terminal pkgs;
     };
 }

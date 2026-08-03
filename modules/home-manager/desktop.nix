@@ -3,12 +3,13 @@ let
   flake = config.flake;
 in
 {
+  flake.userPackageGroups.desktop = pkgs: [
+    flake.packages.${pkgs.stdenv.hostPlatform.system}.niri-stack
+  ];
+
   flake.modules.homeManager.desktop =
     { pkgs, ... }:
-    let
-      niri-stack = flake.packages.${pkgs.stdenv.hostPlatform.system}.niri-stack;
-    in
     {
-      home.packages = [ niri-stack ];
+      home.packages = flake.userPackageGroups.desktop pkgs;
     };
 }
