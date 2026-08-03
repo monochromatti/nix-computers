@@ -66,6 +66,7 @@ in
       };
       systemd.services.vicinae = {
         description = "Vicinae launcher daemon";
+        enableDefaultPath = false;
         documentation = [ "https://docs.vicinae.com" ];
         partOf = [ "graphical-session.target" ];
         after = [ "graphical-session.target" ];
