@@ -237,14 +237,7 @@ in
           };
         noctalia = {
           description = "Noctalia shell";
-          path = [
-            pkgs.bash
-            pkgs.coreutils
-            pkgs.systemd
-            pkgs.procps
-            pkgs.curl
-            pkgs.fontconfig
-          ];
+          enableDefaultPath = false;
           partOf = [ "graphical-session.target" ];
           requires = [
             "noctalia-settings-setup.service"
