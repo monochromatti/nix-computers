@@ -79,9 +79,6 @@
 
       extensions = [
         "npm:pi-web-access"
-        "npm:pi-boomerang"
-        "npm:pi-skill-palette"
-        "npm:pi-move-session"
         "npm:pi-prompt-template-model"
         "npm:pi-ghostty"
         "npm:pi-thinking-steps"
