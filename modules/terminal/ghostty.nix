@@ -83,6 +83,7 @@ in
         settings = lib.mkIf pkgs.stdenv.isDarwin (
           sharedSettings
           // {
+            font-size = theme.font.size;
             background-blur = "macos-glass-regular";
             macos-titlebar-style = "transparent";
           }
