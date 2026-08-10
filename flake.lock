@@ -904,6 +904,10 @@
         "hunk": "hunk",
         "import-tree": "import-tree_2",
         "linear-notification-daemon": "linear-notification-daemon",
+        "llm-agents": [
+          "agents",
+          "llm-agents"
+        ],
         "nix-darwin": "nix-darwin",
         "nixos-hardware": "nixos-hardware",
         "nixos-lima": "nixos-lima",
