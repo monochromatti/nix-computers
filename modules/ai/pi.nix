@@ -80,7 +80,6 @@
         "npm:pi-prompt-template-model"
         "npm:pi-ghostty"
         "npm:pi-thinking-steps"
-        "npm:pi-caveman"
         "npm:pi-mcp-adapter"
         "npm:pi-impeccable"
         "npm:pi-subagents"
