@@ -35,6 +35,7 @@ in
         flake.modules.hjem."feature/ghostty"
         flake.modules.hjem."feature/zed"
         flake.modules.hjem."feature/applications"
+        flake.modules.hjem."feature/ai"
       ];
       config.nixComputers.profileFeatures =
         if config.nixComputers.profile == "workstation" then
@@ -58,6 +59,7 @@ in
             "ghostty"
             "zed"
             "apps"
+            "ai"
           ]
         else if config.nixComputers.profile == "wsl" then
           [
@@ -65,6 +67,7 @@ in
             "development"
             "terminal"
             "documents"
+            "ai"
           ]
         else
           [ ];
@@ -101,6 +104,7 @@ in
             "ghostty"
             "zed"
             "apps"
+            "ai"
           ]
         );
         default = [ ];

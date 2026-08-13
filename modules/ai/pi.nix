@@ -1,5 +1,14 @@
 { inputs, self, ... }:
 {
+  flake.modules.hjem."feature/ai" =
+    { config, lib, ... }:
+    lib.mkIf (lib.elem "ai" config.nixComputers.profileFeatures) {
+      files.".pi/agent/SYSTEM.md" = {
+        source = ./SYSTEM.md;
+        clobber = true;
+      };
+    };
+
   perSystem =
     { pkgs, lib, ... }:
     let
