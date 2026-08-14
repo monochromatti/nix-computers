@@ -115,6 +115,10 @@
         ];
       };
 
+      piAgentsPackage = {
+        source = "${./.}";
+      };
+
     in
     {
       packages.pi = mkPi {
@@ -123,7 +127,10 @@
           binName = "pi";
           settings = {
             inherit skills;
-            packages = extensions ++ [ piExtensionsPackage ];
+            packages = extensions ++ [
+              piExtensionsPackage
+              piAgentsPackage
+            ];
           };
         };
       };
@@ -135,6 +142,7 @@
           filesToExclude = [ "bin/pi" ];
           settings = {
             inherit skills extensions;
+            packages = [ piAgentsPackage ];
           };
         };
       };
