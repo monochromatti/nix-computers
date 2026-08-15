@@ -22,6 +22,15 @@
 
       baseSettingsModule = {
         config = {
+          # pi-subagents uses node:v8.promiseHooks.createHook for workflow
+          # execution. The standalone Pi binary is compiled with Bun, which
+          # does not implement that API. Use Pi's Node entry point instead.
+          package = lib.mkForce (
+            inputs.llm-agents.packages.${system}.pi.override {
+              useBun = false;
+            }
+          );
+
           mcp = {
             enabled = [
               "linear"

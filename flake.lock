@@ -10,11 +10,11 @@
         "wrappers": "wrappers"
       },
       "locked": {
-        "lastModified": 1786359188,
-        "narHash": "sha256-HI4+UtJQOhdjk7McardzyxAsrC0aFoHsD/dCSw7jA5g=",
+        "lastModified": 1786643517,
+        "narHash": "sha256-HYTrJ1l/Dw3iflyJLHJu93POQUqTwIrWlWpzClrBymQ=",
         "owner": "fornybar",
         "repo": "agents",
-        "rev": "fb9c8dd800513e57eeccb4404329e5183780e419",
+        "rev": "3b3ae0f30fbafc74018ce3a0412b8efdcf42a768",
         "type": "github"
       },
       "original": {
@@ -424,11 +424,11 @@
         "treefmt-nix": "treefmt-nix"
       },
       "locked": {
-        "lastModified": 1786337855,
-        "narHash": "sha256-UG8v0D6MCJs7TCpdpAOLKus+IHktnt4MlV19kFLZQ2w=",
+        "lastModified": 1786817893,
+        "narHash": "sha256-FMcWtSdWf6zb1C/EMbHjjrKflTxEFO6o0/b9/SNOTBY=",
         "owner": "numtide",
         "repo": "llm-agents.nix",
-        "rev": "33656317a15ef8171dc2efbbdefd5f7b092b57b9",
+        "rev": "03eb805f7600594270b9434ecb6619ae76e04bc3",
         "type": "github"
       },
       "original": {
