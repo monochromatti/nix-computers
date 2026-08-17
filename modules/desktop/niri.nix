@@ -155,8 +155,8 @@ in
       gaps = 12;
       focus-ring.width = 2;
       struts = {
-        left = 45;
-        right = 45;
+        left = 20;
+        right = 20;
       };
     };
 
