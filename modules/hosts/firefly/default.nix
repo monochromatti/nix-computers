@@ -18,7 +18,6 @@ in
       flake.modules.nixos."feature/desktop/daily-hours"
       flake.modules.nixos."host/firefly/desktop"
       flake.modules.nixos."host/firefly/hardware"
-      flake.modules.nixos."host/firefly/networking"
       flake.modules.nixos."host/firefly/secrets"
       flake.modules.nixos."host/firefly/tailscale"
       flake.modules.nixos."host/firefly/work"
@@ -36,6 +35,8 @@ in
       packages = lib.mkBefore [ pkgs.sops ];
       files.".ssh/config" = {
         text = ''
+          Include config.d/*
+
           Host *
             WarnWeakCrypto no
         '';
