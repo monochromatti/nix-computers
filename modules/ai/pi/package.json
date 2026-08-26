@@ -4,6 +4,7 @@
   "pi": {
     "subagents": {
       "agents": ["./agents"]
-    }
+    },
+    "prompts": ["./prompts"]
   }
 }
