@@ -15,6 +15,7 @@ in
       flake.modules.nixos."feature/hardware/zapp"
       flake.modules.nixos."feature/desktop/niri"
       flake.modules.nixos."feature/ghostty"
+      flake.modules.nixos."feature/terminal/monstar"
       flake.modules.nixos."feature/desktop/daily-hours"
       flake.modules.nixos."host/firefly/desktop"
       flake.modules.nixos."host/firefly/hardware"

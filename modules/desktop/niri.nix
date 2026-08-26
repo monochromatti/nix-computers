@@ -60,6 +60,15 @@ in
             }
 
             window-rule {
+              match app-id="^dev\\.rockorager\\.monstar$"
+              draw-border-with-background false
+
+              background-effect {
+                blur true
+              }
+            }
+
+            window-rule {
               match app-id="^dev\\.zed\\.Zed$"
               draw-border-with-background false
 
