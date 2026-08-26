@@ -25,6 +25,7 @@ in
       environment.systemPackages = with pkgs; [
         marktext
         nautilus
+        wl-mirror
       ];
 
       nixComputers.desktop.niri.settings = lib.recursiveUpdate desktopConfig.niri.settings {
@@ -46,6 +47,12 @@ in
           };
         };
         binds."Mod+E".spawn = "nautilus";
+        binds."Mod+P".spawn = [
+          "wl-mirror"
+          "--fullscreen-output"
+          "DP-1"
+          "eDP-1"
+        ];
       };
 
       programs.niri.enable = true;
