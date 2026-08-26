@@ -26,6 +26,7 @@ in
       # catppuccin theme.
       herdrConfig = (pkgs.formats.toml { }).generate "herdr-config.toml" {
         onboarding = false;
+        experimental.kitty_graphics = true;
         ui = {
           show_agent_labels_on_pane_borders = true;
           agent_panel_sort = "spaces";
