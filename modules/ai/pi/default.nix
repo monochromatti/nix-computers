@@ -32,6 +32,7 @@
           agents.skillSources = [ "${herdrSkillSource}/skills/herdr" ];
 
           mcp = {
+            package = "${extensionPackages.pi-mcp-adapter}";
             enabled = [
               "linear"
               "playwright"
@@ -93,16 +94,21 @@
         };
       };
 
+      extensionPackages = {
+        pi-herdr-subagents = import ./extensions/pi-herdr-subagents.nix { inherit pkgs lib; };
+        pi-impeccable = import ./extensions/pi-impeccable.nix { inherit pkgs lib; };
+        pi-mcp-adapter = import ./extensions/pi-mcp-adapter.nix { inherit pkgs lib; };
+        pi-pretty = import ./extensions/pi-pretty.nix { inherit pkgs lib; };
+        pi-prompt-template-model = import ./extensions/pi-prompt-template-model.nix { inherit pkgs lib; };
+        pi-web-access = import ./extensions/pi-web-access.nix { inherit pkgs lib; };
+      };
+
       extensions = [
-        "npm:pi-web-access"
-        "npm:pi-prompt-template-model"
         "npm:pi-ghostty"
-        "npm:pi-thinking-steps"
-        "npm:pi-mcp-adapter"
-        "npm:pi-impeccable"
-        "npm:pi-subagents"
-        "npm:@heyhuynhgiabuu/pi-pretty"
-      ];
+      ]
+      ++ lib.mapAttrsToList (_: package: {
+        source = "${package}";
+      }) (removeAttrs extensionPackages [ "pi-mcp-adapter" ]);
 
       skills = [
         "~/.agents/skills"
@@ -134,6 +140,7 @@
         imports = [ baseSettingsModule ];
         config = {
           binName = "pi";
+          env.PI_OFFLINE = "1";
           settings = {
             inherit skills;
             packages = extensions ++ [
@@ -144,16 +151,5 @@
         };
       };
 
-      packages.pi-dev = mkPi {
-        imports = [ baseSettingsModule ];
-        config = {
-          binName = "pi-dev";
-          filesToExclude = [ "bin/pi" ];
-          settings = {
-            inherit skills extensions;
-            packages = [ piAgentsPackage ];
-          };
-        };
-      };
     };
 }

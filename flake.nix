@@ -83,10 +83,18 @@
   };
 
   outputs =
-    inputs@{ flake-parts, import-tree, ... }:
+    inputs@{
+      flake-parts,
+      import-tree,
+      nixpkgs,
+      ...
+    }:
+    let
+      lib = nixpkgs.lib;
+    in
     flake-parts.lib.mkFlake { inherit inputs; } {
       imports = [
-        (import-tree ./modules)
+        ((import-tree.filterNot (lib.hasInfix "/extensions/")) ./modules)
       ];
     };
 }
