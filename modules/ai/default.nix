@@ -37,8 +37,25 @@ in
           agent_panel_sort = "spaces";
         };
         theme.name = "terminal";
+        keys.command = [
+          {
+            key = "prefix+g";
+            type = "plugin_action";
+            command = "herdr-lazygit.open";
+          }
+          {
+            key = "prefix+shift+g";
+            type = "plugin_action";
+            command = "herdr-lazygit.open-tab";
+          }
+        ];
       };
       herdrPackage = inputs.llm-agents.packages.${system}.herdr;
+      herdrLazygit = import ./pi/extensions/herdr-lazygit.nix { inherit pkgs lib; };
+      herdrPlugins = [
+        "${(import ./pi/extensions/pi-herdr-subagents.nix { inherit pkgs lib; })}/herdr-plugin"
+        "${herdrLazygit}"
+      ];
     in
     {
       packages."delta-duck-query" = pkgs.callPackage ../../packages/delta-duck-query/package.nix {
@@ -48,13 +65,19 @@ in
         inherit pkgs;
         package = herdrPackage;
         env.HERDR_CONFIG_PATH = "${herdrConfig}";
-        runtimeInputs = [ pkgs.jq ];
+        runtimeInputs = [
+          pkgs.bash
+          pkgs.git
+          pkgs.jq
+          pkgs.python3
+        ];
         preHook = ''
-          plugin_root="${(import ./pi/extensions/pi-herdr-subagents.nix { inherit pkgs lib; })}/herdr-plugin"
           plugin_list="$(${lib.getExe herdrPackage} plugin list --json 2>/dev/null || true)"
-          if ! printf '%s' "$plugin_list" | ${lib.getExe pkgs.jq} -e --arg plugin_root "$plugin_root" 'any(.result.plugins[]?; .plugin_root == $plugin_root)' >/dev/null; then
-            ${lib.getExe herdrPackage} plugin link "$plugin_root" --enabled >/dev/null
-          fi
+          for plugin_root in ${lib.escapeShellArgs herdrPlugins}; do
+            if ! printf '%s' "$plugin_list" | ${lib.getExe pkgs.jq} -e --arg plugin_root "$plugin_root" 'any(.result.plugins[]?; .plugin_root == $plugin_root)' >/dev/null; then
+              ${lib.getExe herdrPackage} plugin link "$plugin_root" --enabled >/dev/null
+            fi
+          done
         '';
       };
 
