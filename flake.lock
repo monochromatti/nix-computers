@@ -738,11 +738,11 @@
         "treefmt-nix": "treefmt-nix_3"
       },
       "locked": {
-        "lastModified": 1788257286,
-        "narHash": "sha256-u4EupLN5l01G51eQ3ayMCecRI9ab9DOGGqVMmpiWi3k=",
+        "lastModified": 1788332408,
+        "narHash": "sha256-sYtl7pm5RXfsWFsEXro19NYGAQXKJHLeM/6g5lRPPjE=",
         "owner": "fornybar",
         "repo": "pc",
-        "rev": "1ada937cba8514418995a421e6f8c9762320520e",
+        "rev": "82d0db6898086bd47fffe0b7b1f2149cec18796c",
         "type": "github"
       },
       "original": {

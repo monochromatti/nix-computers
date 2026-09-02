@@ -12,12 +12,10 @@
       tailnets = {
         dev = {
           loginServer = "https://head.dev.fornybar.eviny.io";
-          acceptDns = false;
           sshUser = "odin";
         };
         prod = {
           loginServer = "https://head.fornybar.eviny.io";
-          acceptDns = false;
           sshUser = "odin";
         };
       };
