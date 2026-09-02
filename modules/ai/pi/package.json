@@ -2,9 +2,6 @@
   "name": "monochromatti-pi-agents",
   "private": true,
   "pi": {
-    "subagents": {
-      "agents": ["./agents"]
-    },
     "prompts": ["./prompts"]
   }
 }

@@ -3,10 +3,22 @@
   flake.modules.hjem."feature/ai" =
     { config, lib, ... }:
     lib.mkIf (lib.elem "ai" config.nixComputers.profileFeatures) {
-      files.".pi/agent/SYSTEM.md" = {
-        source = ./SYSTEM.md;
-        clobber = true;
-      };
+      files =
+        lib.mapAttrs
+          (_: source: {
+            inherit source;
+            clobber = true;
+          })
+          {
+            ".pi/agent/SYSTEM.md" = ./SYSTEM.md;
+            ".pi/agent/keybindings.json" = ./keybindings.json;
+            ".pi/agent/agents/oracle.md" = ./agents/oracle.md;
+            ".pi/agent/agents/planner.md" = ./agents/planner.md;
+            ".pi/agent/agents/quick-reviewer.md" = ./agents/quick-reviewer.md;
+            ".pi/agent/agents/reviewer.md" = ./agents/reviewer.md;
+            ".pi/agent/agents/scout.md" = ./agents/scout.md;
+            ".pi/agent/agents/worker.md" = ./agents/worker.md;
+          };
     };
 
   perSystem =
@@ -72,24 +84,6 @@
             defaultProvider = "azure-openai-responses";
             defaultModel = "gpt-5.6-luna";
             defaultThinkingLevel = "high";
-            subagents.agentOverrides = {
-              oracle = {
-                model = "azure-openai-responses/gpt-5.6-sol";
-                thinking = "medium";
-              };
-              worker = {
-                model = "azure-openai-responses/gpt-5.6-luna";
-                thinking = "medium";
-              };
-              scout = {
-                model = "azure-openai-responses/gpt-5.6-terra";
-                thinking = "low";
-              };
-              planner = {
-                model = "azure-openai-responses/gpt-5.6-sol";
-                thinking = "low";
-              };
-            };
           };
         };
       };

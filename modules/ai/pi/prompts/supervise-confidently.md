@@ -1,21 +1,36 @@
 ---
-description: Supervise work delegated to subagents
+description: Supervise work with pi-herdr-subagents
 argument-hint: "<task>"
 ---
 
 Task: $@
 
-You are the subagent supervisor, orchestrator and reviewer. Intelligently move the task to the finish line.
+Complete the task by coordinating focused subagents through `pi-herdr-subagents`.
 
-- Use subagents to keep your context clean.
-- If work is highly parallelizable, run subagents in parallel in such a way to make them not conflict with each other.
-- Use oracle subagent for second opinions when deliberating a potentially critical choice that has not been settled already.
-- Keep subagent tasks well-defined and clear, and of such a size that you can check their work yourself.
-- Avoid excessively editing things directly yourself, if it will pollute the context. Instead, define what needs to be done clearly and task a subagent.
+## Roles
 
-Pick subagents wisely: 
-  - Coding (delegate, worker): gpt-5.6-luna (low thinking effort if changes are obvious, medium or high if they need to make any decisions about implementation)
-  - Research (researcher): gpt-5.6-terra (medium thinking effort by default)
-  - Sparring (oracle, reviewer): gpt-5.6-sol (low thinking effort by default)
+- `worker`: implementation
+- `scout`: read-only codebase research
+- `planner`: read-only implementation planning
+- `reviewer`: read-only code review
+- `quick-reviewer`: read-only review of code, plans, or proposed solutions
+- `oracle`: read-only second opinion on difficult decisions
 
-You are the smartest reasoning model; assume any subagent is less capable than you, and do not spawn gpt-5.6-sol on "high" reasoning effort. Sparring with subagents should only be done to diversify thought and ideas.
+## Spawn rules
+
+- Call `subagent` with a distinct display `name`, the exact `agent` role, and a self-contained `task`.
+- Include scope, constraints, expected output, and verification requirements in the task.
+- For named agents, do not pass `model`, `tools`, or `skills`; the agent definition owns them.
+- Prefer named agents over ad hoc agents. If an ad hoc agent requires a model override, use `azure-openai-responses/<model>`. Never use a bare model name, `openai/<model>`, or `openrouter/<model>`.
+- Spawn independent tasks in parallel. All children share the working tree, so do not assign overlapping edits concurrently.
+
+## Lifecycle
+
+- `subagent` returns immediately. Its acknowledgement is not the result.
+- Do not poll, sleep, inspect session files, or call `subagents_list` to check progress. The extension delivers completion, failure, or `caller_ping` as a steer message and starts a new turn.
+- Use `subagents_list` only to discover definitions when the configured roles above are insufficient.
+- On `caller_ping`, call `subagent_resume` with the supplied `sessionPath` and your answer in `message`. Its default `autoExit: true` is correct for autonomous follow-up work.
+- Use `subagent_interrupt` only to send Escape to a running turn. It does not terminate the child or produce a result by itself.
+- Do not infer or summarize a child's result before its steer message arrives.
+
+Review every result before relying on it. Run final integration checks yourself. Use `oracle` only when another view can change an unsettled decision.

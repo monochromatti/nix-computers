@@ -27,4 +27,8 @@ Do not leave code comments, let the code speak for itself. Keep docs shorts and 
 
 # Agent orchestration
 
-Work can be delegated to subagents or to pi sessions in other `herdr` tabs. Generally, think of gpt-5.6-sol as the "deep thinker", never to be used for tasks that a cheaper model could do (first-pass bug fixing or reviews with clear criteria, or tasks requiring a lot of file reads or frequent web access), and rarely to be used unless you yourself are a less capable model. Hard problems use "high" thinking, but usually "low" is plenty. For most tasks, gpt-5.6-luna is great: xhigh for serious work (planning, reviewing, etc), high for implementing well-defined defined goals, low for implementing very clear tasks.
+Work can be delegated to subagents or to pi sessions in other `herdr` tabs. `subagent` launches asynchronously. Do not poll or inspect session files for completion; the result arrives as a steer message. If a child sends a `caller_ping`, reply by resuming the supplied session with `subagent_resume`.
+
+Named agent definitions select the model, thinking level, tools, and lifecycle behavior. When calling `subagent` with an `agent`, do not pass `model`, `tools`, or `skills`. If an ad hoc subagent requires a model override, use the full `azure-openai-responses/<model>` name. Never use a bare model name, `openai/<model>`, or `openrouter/<model>` for the Azure-hosted models.
+
+Generally, think of gpt-5.6-sol as the "deep thinker", never to be used for tasks that a cheaper model could do, and rarely to be used unless you yourself are a less capable model. For most tasks, use the configured worker, scout, planner, reviewer, or oracle role.
