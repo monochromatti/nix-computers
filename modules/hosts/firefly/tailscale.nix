@@ -1,7 +1,7 @@
 { ... }:
 {
   flake.modules.nixos."host/firefly/tailscale" =
-    { pkgs, ... }:
+    { lib, pkgs, ... }:
     let
       ensureAsgardKey = pkgs.writeShellApplication {
         name = "ensure-asgard-key";
@@ -49,6 +49,11 @@
             sshLoadKeyCommand = "${ensureAsgardKey}/bin/ensure-asgard-key";
           };
         };
+      };
+
+      programs.ssh = {
+        enableAskPassword = true;
+        askPassword = lib.getExe pkgs.lxqt.lxqt-openssh-askpass;
       };
 
       environment.shellAliases.tn = "ts";
