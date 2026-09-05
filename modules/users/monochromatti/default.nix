@@ -30,6 +30,7 @@ in
         flake.modules.hjem."feature/development/cloud"
         flake.modules.hjem."feature/virtualization/containers"
         flake.modules.hjem."feature/shell/terminal"
+        flake.modules.hjem."feature/shell/direnv"
         flake.modules.hjem."feature/documents"
         flake.modules.hjem."feature/desktop"
         flake.modules.hjem."feature/ghostty"
