@@ -10,6 +10,7 @@
       };
       brews = [ "tw93/tap/mole" ];
       casks = [
+        "chatgpt"
         "discord"
         "zotero"
         "affinity-designer"
