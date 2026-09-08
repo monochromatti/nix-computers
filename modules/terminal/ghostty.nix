@@ -83,7 +83,8 @@ in
         settings = lib.mkIf pkgs.stdenv.isDarwin (
           sharedSettings
           // {
-            font-size = theme.font.size;
+            # Keep macOS Ghostty text larger than shared desktop font size.
+            font-size = 14;
             background-blur = "macos-glass-regular";
             macos-titlebar-style = "transparent";
           }
