@@ -1,17 +1,22 @@
 { pkgs, lib }:
-pkgs.stdenv.mkDerivation {
+pkgs.buildNpmPackage {
   pname = "pi-pretty";
-  version = "0.6.23";
+  version = "0.6.27";
 
   src = pkgs.fetchFromGitHub {
     owner = "heyhuynhgiabuu";
     repo = "pi-pretty";
-    rev = "9cf3cfb2413d01b1a0c31ef132945e3e4cbd419e";
-    hash = "sha256-Z6y4pHTFSW0jEnYXx6oazy72zTPugi5K5+rD5VsRWCs=";
+    rev = "6363850cd2c0dd64545628ffeed9ba00e021bc01";
+    hash = "sha256-POKMlTPpFHcWjossfx70F0z7+/Wh3ElaE8EefXnf2p8=";
   };
 
-  dontConfigure = true;
-  dontBuild = true;
+  npmDepsHash = "sha256-bQcY5VokCHyox7aA36f64n9CeMumyXLuDkEm+aJTTos=";
+  postPatch = ''
+    cp ${./locks/pi-pretty.json} package-lock.json
+    ${lib.getExe pkgs.jq} 'del(.devDependencies, .peerDependencies)' package.json > package.json.tmp
+    mv package.json.tmp package.json
+  '';
+  dontNpmBuild = true;
   installPhase = ''
     mkdir -p "$out"
     cp -R ./. "$out/"

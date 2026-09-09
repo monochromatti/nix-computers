@@ -1,13 +1,13 @@
 { pkgs, lib }:
 pkgs.stdenv.mkDerivation {
   pname = "pi-herdr-subagents";
-  version = "0.2.0-unstable-2026-08-31";
+  version = "0.2.0-unstable-2026-09-01";
 
   src = pkgs.fetchFromGitHub {
     owner = "modem-dev";
     repo = "pi-herdr-subagents";
-    rev = "007ec2eec90d4c6d9177f0de6ac7b3bde6301642";
-    hash = "sha256-YdCdAULbURq7+b7I1PrAjpYP2339OEwBgfPnobxnpKo=";
+    rev = "b6987324284b1fa22b2eb9f0effaf956ada27333";
+    hash = "sha256-c8zNMN5624hvGckWZDtQ5pnfxrnYDuB477xdlbbsPzk=";
   };
 
   dontConfigure = true;
