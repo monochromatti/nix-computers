@@ -94,6 +94,7 @@
         pi-mcp-adapter = import ./extensions/pi-mcp-adapter.nix { inherit pkgs lib; };
         pi-pretty = import ./extensions/pi-pretty.nix { inherit pkgs lib; };
         pi-prompt-template-model = import ./extensions/pi-prompt-template-model.nix { inherit pkgs lib; };
+        pi-ponytail = import ./extensions/pi-ponytail.nix { inherit pkgs lib; };
         pi-web-access = import ./extensions/pi-web-access.nix { inherit pkgs lib; };
       };
 
