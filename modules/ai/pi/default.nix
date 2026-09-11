@@ -50,6 +50,7 @@
               "playwright"
               "remarkable"
               "chrome-devtools"
+              "svelte"
             ];
             registry.chrome-devtools = {
               transport = "stdio";
@@ -66,6 +67,14 @@
               ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
                 "--executable-path"
                 (lib.getExe pkgs.chromium)
+              ];
+            };
+            registry.svelte = {
+              transport = "stdio";
+              command = "npx";
+              args = [
+                "-y"
+                "@sveltejs/mcp"
               ];
             };
             registry.remarkable = {
