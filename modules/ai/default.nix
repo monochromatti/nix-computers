@@ -26,6 +26,7 @@ in
     }:
     let
       system = pkgs.stdenv.hostPlatform.system;
+      codexPackage = inputs.llm-agents.packages.${system}.codex;
       # Declarative herdr config; `theme.name = "terminal"` makes herdr
       # inherit the host terminal (ghostty) palette instead of its default
       # catppuccin theme.
@@ -81,10 +82,47 @@ in
         '';
       };
 
+      packages.codex = inputs.wrappers.lib.wrapPackage {
+        inherit pkgs;
+        package = codexPackage;
+        runtimeInputs = [ pkgs.coreutils ];
+        preHook = ''
+          api_key_file=/run/secrets/chatgpt-api-key
+          if [ ! -r "$api_key_file" ]; then
+            echo "codex: missing readable ChatGPT API key at $api_key_file" >&2
+            exit 1
+          fi
+          OPENAI_API_KEY="$(<"$api_key_file")"
+          export OPENAI_API_KEY
+
+          codex_config_args=(
+            --config 'model_provider="openai"'
+            --config 'model="gpt-5.3-codex"'
+            --config 'model_reasoning_effort="high"'
+            --config 'model_providers.openai.name="OpenAI"'
+            --config 'model_providers.openai.base_url="https://api.openai.com/v1"'
+            --config 'model_providers.openai.wire_api="responses"'
+            --config 'model_providers.openai.env_key="OPENAI_API_KEY"'
+          )
+
+          case "''${1-}" in
+            exec|e|review|debug|features)
+              subcommand="$1"
+              shift
+              exec ${lib.getExe codexPackage} "$subcommand" "''${codex_config_args[@]}" "$@"
+              ;;
+            *)
+              exec ${lib.getExe codexPackage} "''${codex_config_args[@]}" "$@"
+              ;;
+          esac
+        '';
+      };
+
       packages.ai = pkgs.buildEnv {
         name = "ai";
         paths = [
           config.packages.pi
+          config.packages.codex
           config.packages."delta-duck-query"
           config.packages.herdr
           pkgs.playwright-test

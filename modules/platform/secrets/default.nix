@@ -25,9 +25,17 @@ let
 
         home-manager.sharedModules = lib.optional pkgs.stdenv.isDarwin {
           home.packages = [ pkgs.sops ];
-          home.sessionVariables = {
-            SOPS_AGE_KEY_FILE = "${userHome}/.config/sops/age/keys.txt";
-          };
+        };
+
+        environment.variables = lib.mkIf pkgs.stdenv.isDarwin {
+          SOPS_AGE_KEY_FILE = "${userHome}/.config/sops/age/keys.txt";
+        };
+
+        sops.secrets.chatgpt-api-key = {
+          key = "monochromatti/chatgpt-api-key";
+          owner = primaryUser;
+          mode = "0400";
+          path = "/run/secrets/chatgpt-api-key";
         };
 
         sops = {
