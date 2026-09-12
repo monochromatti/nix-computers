@@ -21,6 +21,8 @@ let
     in
     {
       config = {
+        environment.systemPackages = [ pkgs.secretspec ];
+
         home-manager.sharedModules = lib.optional pkgs.stdenv.isDarwin {
           home.packages = [ pkgs.sops ];
           home.sessionVariables = {
