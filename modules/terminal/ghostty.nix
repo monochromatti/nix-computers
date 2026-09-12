@@ -84,7 +84,7 @@ in
           sharedSettings
           // {
             # Keep macOS Ghostty text larger than shared desktop font size.
-            font-size = 14;
+            font-size = 16;
             background-blur = "macos-glass-regular";
             macos-titlebar-style = "transparent";
           }
