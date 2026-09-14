@@ -1,31 +1,9 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
 let
-  lib = inputs.nixpkgs.lib;
+  flake = config.flake;
 in
 {
-  options.nixComputers.desktop = lib.mkOption {
-    type = lib.types.submodule {
-      options = {
-        niri.settings = lib.mkOption {
-          type = lib.types.attrsOf lib.types.anything;
-          default = { };
-        };
-        noctalia = {
-          settings = lib.mkOption {
-            type = lib.types.attrsOf lib.types.anything;
-            default = { };
-          };
-          wallpaper = lib.mkOption {
-            type = lib.types.path;
-            default = ../../dotfiles/wallpapers/aishot-4712.jpg;
-          };
-        };
-      };
-    };
-    default = { };
-  };
-
-  config.flake.modules.nixos."feature/desktop/daily-hours" =
+  flake.modules.nixos."feature/desktop/daily-hours" =
     {
       config,
       lib,
