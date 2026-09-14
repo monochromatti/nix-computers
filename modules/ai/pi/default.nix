@@ -98,13 +98,17 @@
       };
 
       extensionPackages = {
-        pi-herdr-subagents = import ./extensions/pi-herdr-subagents.nix { inherit pkgs lib; };
-        pi-impeccable = import ./extensions/pi-impeccable.nix { inherit pkgs lib; };
-        pi-mcp-adapter = import ./extensions/pi-mcp-adapter.nix { inherit pkgs lib; };
-        pi-pretty = import ./extensions/pi-pretty.nix { inherit pkgs lib; };
-        pi-prompt-template-model = import ./extensions/pi-prompt-template-model.nix { inherit pkgs lib; };
-        pi-ponytail = import ./extensions/pi-ponytail.nix { inherit pkgs lib; };
-        pi-web-access = import ./extensions/pi-web-access.nix { inherit pkgs lib; };
+        pi-herdr-subagents = import ../../../packages/pi/extensions/pi-herdr-subagents.nix {
+          inherit pkgs lib;
+        };
+        pi-impeccable = import ../../../packages/pi/extensions/pi-impeccable.nix { inherit pkgs lib; };
+        pi-mcp-adapter = import ../../../packages/pi/extensions/pi-mcp-adapter.nix { inherit pkgs lib; };
+        pi-pretty = import ../../../packages/pi/extensions/pi-pretty.nix { inherit pkgs lib; };
+        pi-prompt-template-model = import ../../../packages/pi/extensions/pi-prompt-template-model.nix {
+          inherit pkgs lib;
+        };
+        pi-ponytail = import ../../../packages/pi/extensions/pi-ponytail.nix { inherit pkgs lib; };
+        pi-web-access = import ../../../packages/pi/extensions/pi-web-access.nix { inherit pkgs lib; };
       };
 
       extensions = [

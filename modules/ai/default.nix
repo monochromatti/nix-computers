@@ -1,10 +1,10 @@
-{ inputs, ... }:
+{ config, inputs, ... }:
 let
+  flake = config.flake;
   aiModule =
     {
       pkgs,
       lib,
-      flake,
       ...
     }:
     let
@@ -52,9 +52,9 @@ in
         ];
       };
       herdrPackage = inputs.llm-agents.packages.${system}.herdr;
-      herdrLazygit = import ./pi/extensions/herdr-lazygit.nix { inherit pkgs lib; };
+      herdrLazygit = import ../../packages/pi/extensions/herdr-lazygit.nix { inherit pkgs lib; };
       herdrPlugins = [
-        "${(import ./pi/extensions/pi-herdr-subagents.nix { inherit pkgs lib; })}/herdr-plugin"
+        "${(import ../../packages/pi/extensions/pi-herdr-subagents.nix { inherit pkgs lib; })}/herdr-plugin"
         "${herdrLazygit}"
       ];
     in

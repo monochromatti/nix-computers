@@ -17,8 +17,6 @@ let
     (builtins.removeAttrs (mkPackageSets system) [ "pkgs" ])
     // {
       inherit inputs;
-      flake = config.flake;
-      self = inputs.self;
       inherit (inputs)
         home-manager
         nixos-hardware
