@@ -77,7 +77,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     utgard = {
-      url = "git+https://github.com/fornybar/utgard.git";
+      url = "github:fornybar/utgard/main";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };

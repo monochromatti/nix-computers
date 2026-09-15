@@ -1248,15 +1248,16 @@
       "locked": {
         "lastModified": 1787662788,
         "narHash": "sha256-8dV8EdJYiER+JEQsZ/Ls9QQXTgJnpPIPEN+ujL35zqE=",
-        "ref": "refs/heads/main",
+        "owner": "fornybar",
+        "repo": "utgard",
         "rev": "4c1ae9b7d523c57c6cef7a804c68807835868a16",
-        "revCount": 212,
-        "type": "git",
-        "url": "https://github.com/fornybar/utgard.git"
+        "type": "github"
       },
       "original": {
-        "type": "git",
-        "url": "https://github.com/fornybar/utgard.git"
+        "owner": "fornybar",
+        "ref": "main",
+        "repo": "utgard",
+        "type": "github"
       }
     },
     "uv2nix": {
