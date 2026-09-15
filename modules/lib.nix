@@ -2,6 +2,7 @@
   config,
   inputs,
   lib,
+  self,
   ...
 }:
 let
@@ -16,7 +17,7 @@ let
     system:
     (builtins.removeAttrs (mkPackageSets system) [ "pkgs" ])
     // {
-      inherit inputs;
+      inherit inputs self;
       inherit (inputs)
         home-manager
         nixos-hardware
