@@ -18,6 +18,7 @@ in
       flake.modules.nixos."feature/terminal/monstar"
       flake.modules.nixos."feature/desktop/daily-hours"
       flake.modules.nixos."feature/desktop/nautilus-copy-path"
+      flake.modules.nixos."feature/development/cli-microsoft365"
       flake.modules.nixos."host/firefly/desktop"
       flake.modules.nixos."host/firefly/hardware"
       flake.modules.nixos."host/firefly/secrets"
