@@ -39,6 +39,24 @@
         hash = "sha256-empFQ+hrnCh2JhOzQRWSCLV0YoZC3DXW3bY6k8YuJjk=";
       };
 
+      typedbSkillsSource = pkgs.fetchFromGitHub {
+        owner = "typedb";
+        repo = "typedb-skills";
+        rev = "fc20bccf7b279600170e33d9de85901b5983ed0b";
+        hash = "sha256-DKyKI1OeCC55bJxLBwae5sg2ngtfabjIaNp80Syl3kw=";
+      };
+
+      typedbSkills = pkgs.linkFarm "typedb-skills" [
+        {
+          name = "typedb-modeling.md";
+          path = "${typedbSkillsSource}/modeling.md";
+        }
+        {
+          name = "typedb-typeql.md";
+          path = "${typedbSkillsSource}/typeql.md";
+        }
+      ];
+
       baseSettingsModule = {
         config = {
           agents.skillSources = [ "${herdrSkillSource}/skills/herdr" ];
@@ -122,6 +140,8 @@
         "~/.agents/skills"
         "${inputs.agents}/.agents/skills"
         "${self}/.agents/skills"
+        "${typedbSkills}/typedb-modeling.md"
+        "${typedbSkills}/typedb-typeql.md"
       ];
 
       piExtensionsPackage = {
