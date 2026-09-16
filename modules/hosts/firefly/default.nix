@@ -84,6 +84,12 @@ in
 
     services.mullvad-vpn.enable = true;
 
+    security.audit.enable = true;
+    security.auditd.enable = true;
+    security.audit.rules = [
+      "-a always,exit -F arch=b64 -S kill,tkill,tgkill,pidfd_send_signal,rt_sigqueueinfo,rt_tgsigqueueinfo -k process-signals"
+    ];
+
     # Keep background workloads running while securing session on lid close.
     services.logind.settings.Login = {
       HandleLidSwitch = "lock";
