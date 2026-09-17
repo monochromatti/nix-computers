@@ -1,16 +1,16 @@
 { pkgs, lib }:
 pkgs.buildNpmPackage {
   pname = "pi-mcp-adapter";
-  version = "2.32.1-unstable-2026-09-05";
+  version = "2.34.0";
 
   src = pkgs.fetchFromGitHub {
     owner = "nicobailon";
     repo = "pi-mcp-adapter";
-    rev = "8243eba3421e301c88c047444f34ab7d5d57163e";
-    hash = "sha256-Z+Nc7aQJFnZKYAe6yQN0CFwYuekNahAcFRg+dDBpRVU=";
+    rev = "33bdc38d8dd3802f2b51ba1fe37e30ed7ae6a29a";
+    hash = "sha256-nmvDX4urLUmcP3/HUdiwRsk8TtGwIHKIG2MIg8aARj0=";
   };
 
-  npmDepsHash = "sha256-Q/DGtRE1l41QBnAelBBx7q17dNzjo7p/xCVK5OCiN4Y=";
+  npmDepsHash = "sha256-ZxrUJXi/seXm4OhAqbVdJO77J/VhDSRtEFFS5KN8pZA=";
   npmDepsFetcherVersion = 2;
   postPatch = ''
     cp ${./locks/pi-mcp-adapter.json} package-lock.json

@@ -6,8 +6,8 @@ pkgs.stdenv.mkDerivation {
   src = pkgs.fetchFromGitHub {
     owner = "Crokily";
     repo = "herdr-lazygit";
-    rev = "v0.3.0";
-    hash = "sha256-eXeUZEEO21hkAUWZiozxIamsJtfi5Cmf212vUMCLue4=";
+    rev = "ac955e59caae5cbc34b74ccf949e11f085269b4d";
+    hash = "sha256-Uf3iKgChkB8LW3voL0EfNCBC2Z8Xb5mxwNFgqbWuyZ4=";
   };
 
   dontConfigure = true;

@@ -10,7 +10,7 @@ pkgs.buildNpmPackage {
     hash = "sha256-dYFJ3Vtm2q3TCqbk9YLuhDis5dWL2MNe65yA8YRHW8E=";
   };
 
-  npmDepsHash = "sha256-34O1SoM+tIML4PyL+1NllWxO5F2DbCZB3WxPbW+DHW8=";
+  npmDepsHash = "sha256-lSIm6YmNiosntjBRVuRQhimbOi7pflclY56OBh6dIGE=";
   npmDepsFetcherVersion = 2;
   postPatch = ''
     cp ${./locks/pi-prompt-template-model.json} package-lock.json

@@ -1,16 +1,16 @@
 { pkgs, lib }:
 pkgs.buildNpmPackage {
   pname = "pi-web-access";
-  version = "0.28.0";
+  version = "0.29.0";
 
   src = pkgs.fetchFromGitHub {
     owner = "nicobailon";
     repo = "pi-web-access";
-    rev = "811ef82a6dd04fe4abd73fa40b079aa39ee1870d";
-    hash = "sha256-pRAya3k3gFSZ9dOqUq5aBf3UaNbpeD2Q0LB+c0J8mvE=";
+    rev = "09cd27175d4a3088a43708041d935231187c5a97";
+    hash = "sha256-fNB5UqtNP9BXuQKQp3R61rIDRBVhXu4ub++pvq7/pe8=";
   };
 
-  npmDepsHash = "sha256-40wTpjxKcv5aZ+Jd6aaUtx4A+o3IcE+UvGRE5vAlB1Q=";
+  npmDepsHash = "sha256-0ScX5nMu3h8/KCysaeNiXj/DK7E3abY8LINAaAARhCc=";
   npmDepsFetcherVersion = 2;
   postPatch = ''
     cp ${./locks/pi-web-access.json} package-lock.json

@@ -1,7 +1,7 @@
 { pkgs, lib }:
 pkgs.stdenv.mkDerivation {
   pname = "pi-herdr-subagents";
-  version = "0.2.0-unstable-2026-09-01";
+  version = "0.1.0";
 
   src = pkgs.fetchFromGitHub {
     owner = "modem-dev";
