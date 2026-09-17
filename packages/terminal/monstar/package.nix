@@ -16,13 +16,13 @@
 
 stdenv.mkDerivation (finalAttrs: {
   pname = "monstar";
-  version = "1.1.0-unstable-2026-08-25";
+  version = "1.1.0-unstable-2026-09-15";
 
   src = fetchFromGitHub {
     owner = "rockorager";
     repo = "monstar";
-    rev = "537b676801df50be3de6cc414688d008e9a4aefc";
-    hash = "sha256-RTBGA1qiBk/u8K/gpuhu+UjWq/U4EI8v2T44bGo4y6s=";
+    rev = "6032b4f7ddc18da155e3cf4211c6643e4ecce534";
+    hash = "sha256-HcUlhVK+6vUPutx07uYRPYeU+0gKJsziViCsQLLRAvY=";
   };
 
   nativeBuildInputs = [
