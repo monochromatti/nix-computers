@@ -1,12 +1,8 @@
 # delta-duck-query
 
-Minimal CLI to query Delta Lake via DuckDB.
+Query Delta Lake with the DuckDB 2.0 alpha client and the bundled Quack configuration.
 
-- DuckDB extensions: `delta`, `azure`, `httpfs`
-- Azure auth via `DefaultAzureCredential` → DuckDB `CREATE SECRET`
-- Account inferred from `abfss://` URL when possible
-
-## Usage
+The production configuration is the default. Select development with `--environment dev` or `DELTA_DUCK_QUERY_ENV=dev`.
 
 ```bash
 delta-duck-query \
@@ -14,10 +10,8 @@ delta-duck-query \
   --query 'select * from delta_scan($source_path) limit 10'
 ```
 
-Local / non-Azure:
+The bundled production endpoint is `quack:quack.fornybar.eviny.io:443` with scope `https://apps.eviny.no/quack/.default`. The development endpoint is `quack:quack-dev.fornybar.eviny.io:443` with scope `https://apps.eviny.no/quack-dev/.default`.
 
-```bash
-delta-duck-query --source-path ./local-table --no-auth
-```
+Use `--quack-host` and `--quack-scope` to override the bundled values. Use `--no-quack` to run the query locally. Local Azure authentication uses `DefaultAzureCredential`.
 
 Output: JSON array to stdout.

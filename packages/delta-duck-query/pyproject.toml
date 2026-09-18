@@ -6,7 +6,7 @@ readme = "README.md"
 requires-python = ">=3.11"
 dependencies = [
   "azure-identity",
-  "duckdb",
+  "duckdb==2.0.0.dev2609121639",
   "pytz",
 ]
 
