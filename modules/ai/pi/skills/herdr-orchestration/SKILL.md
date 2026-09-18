@@ -1,0 +1,33 @@
+---
+name: herdr-orchestration
+description: "Use when doing work through subagents in herdr"
+---
+
+Orchestrate and coordinate work using focused subagents through `pi-herdr-subagents`. This keeps the context clean and focused, and helps match the task difficulty to a suitable model to save costs and increase speed.
+
+## Roles
+
+- `worker`: implementation
+- `scout`: read-only codebase research
+- `planner`: read-only implementation planning
+- `reviewer`: read-only code review
+- `quick-reviewer`: read-only review of code, plans, or proposed solutions
+- `oracle`: read-only second opinion on difficult decisions
+
+## Spawn rules
+
+- Call `subagent` with a distinct display `name`, the exact `agent` role, and a self-contained `task`.
+- Include scope, constraints, expected output, and verification requirements in the task.
+- For named agents, do not pass `model`, `tools`, or `skills`; the agent definition owns them.
+- Prefer named agents over ad hoc agents. If an ad hoc agent requires a model override, use `azure-openai-responses/<model>`. Never use a bare model name, `openai/<model>`, or `openrouter/<model>`.
+- Split broad work into bounded tasks that you can verify. Do not delegate the whole task to one child unless it is already narrow and well specified.
+- Spawn independent tasks in parallel. All children share the working tree, so do not assign overlapping edits concurrently.
+
+## Lifecycle
+
+- `subagent` returns immediately. Its acknowledgement is not the result.
+- Do not poll, sleep, inspect session files, or call `subagents_list` to check progress. The extension delivers completion, failure, or `caller_ping` as a steer message and starts a new turn.
+- Use `subagents_list` only to discover definitions when the configured roles above are insufficient.
+- On `caller_ping`, call `subagent_resume` with the supplied `sessionPath` and your answer in `message`. Its default `autoExit: true` is correct for autonomous follow-up work.
+- Use `subagent_interrupt` only to send Escape to a running turn. It does not terminate the child or produce a result by itself.
+- Do not infer or summarize a child's result before its steer message arrives.

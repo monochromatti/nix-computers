@@ -59,7 +59,10 @@
 
       baseSettingsModule = {
         config = {
-          agents.skillSources = [ "${herdrSkillSource}/skills/herdr" ];
+          agents.skillSources = [
+            "${herdrSkillSource}/skills/herdr"
+            ./skills
+          ];
 
           mcp = {
             package = "${extensionPackages.pi-mcp-adapter}";
