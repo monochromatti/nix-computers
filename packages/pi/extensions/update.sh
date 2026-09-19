@@ -7,19 +7,25 @@ trap 'rm -rf "$tmp"' EXIT
 
 update() {
   local file=$1 owner=$2 repo=$3 npm=$4
-  local rev url archive source hash version dir lock npmhash
-  rev=$(git ls-remote "https://github.com/$owner/$repo.git" HEAD | cut -f1)
+  local rev url archive source hash version dir lock npmhash release
+  release=$(curl --fail --location --silent --show-error \
+    "https://api.github.com/repos/$owner/$repo/releases/latest" | jq -r '.tag_name // empty')
+  test -n "$release"
+  rev=$(git ls-remote "https://github.com/$owner/$repo.git" "refs/tags/$release^{}" | cut -f1)
+  if [[ -z "$rev" ]]; then
+    rev=$(git ls-remote "https://github.com/$owner/$repo.git" "refs/tags/$release" | cut -f1)
+  fi
   test -n "$rev"
   url="https://github.com/$owner/$repo/archive/$rev.tar.gz"
   archive="$tmp/$repo.tar.gz"
   dir="$tmp/$repo"
   curl --fail --location --silent --show-error "$url" -o "$archive"
-  hash=$(nix run nixpkgs#nix-prefetch-github -- "$owner" "$repo" --rev "$rev" | jq -r .hash)
+  hash=$(nix run nixpkgs#nix-prefetch-github -- "$owner" "$repo" --rev "$rev" | jq -r .hash | sed 's/^sha256-//')
   mkdir "$dir"
   tar -xzf "$archive" -C "$dir" --strip-components=1
   version=$(jq -r '.version // empty' "$dir/package.json" 2>/dev/null || true)
   if [[ -z "$version" ]]; then
-    version=$(sed -n 's/.*version = "\([^"]*\)";.*/\1/p' "$root/$file" | head -1)
+    version=${release#v}
   fi
   if [[ "$npm" == 1 ]]; then
     lock="$root/locks/$repo.json"
@@ -50,7 +56,7 @@ for name, package in data.get("packages", {}).items():
         package["integrity"] = integrity
 open(path, "w").write(json.dumps(data, indent=2) + "\n")
 PY
-    npmhash=$(nix run nixpkgs#prefetch-npm-deps -- "$lock")
+    npmhash=$(NPM_FETCHER_VERSION=2 nix run nixpkgs#prefetch-npm-deps -- "$lock")
   fi
   python3 - "$root/$file" "$rev" "$hash" "$version" "${npmhash-}" <<'PY'
 import re
@@ -67,7 +73,6 @@ PY
 }
 
 update herdr-lazygit.nix Crokily herdr-lazygit 0
-update pi-herdr-subagents.nix modem-dev pi-herdr-subagents 0
 update pi-impeccable.nix jordi9 pi-impeccable 0
 update pi-mcp-adapter.nix nicobailon pi-mcp-adapter 1
 update pi-ponytail.nix DietrichGebert ponytail 0

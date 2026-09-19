@@ -6,8 +6,8 @@ pkgs.buildNpmPackage {
   src = pkgs.fetchFromGitHub {
     owner = "nicobailon";
     repo = "pi-mcp-adapter";
-    rev = "33bdc38d8dd3802f2b51ba1fe37e30ed7ae6a29a";
-    hash = "sha256-nmvDX4urLUmcP3/HUdiwRsk8TtGwIHKIG2MIg8aARj0=";
+    rev = "74c5233c63ad0096077df925fd6135c3bf6b8c6b";
+    hash = "sha256-YpiJROIG0/U81wAoImjktbg/d5wGnc6o130IlOrTyEE=";
   };
 
   npmDepsHash = "sha256-ZxrUJXi/seXm4OhAqbVdJO77J/VhDSRtEFFS5KN8pZA=";

@@ -1,13 +1,13 @@
 { pkgs, lib }:
 pkgs.stdenv.mkDerivation {
   pname = "herdr-lazygit";
-  version = "0.3.0";
+  version = "0.4.0";
 
   src = pkgs.fetchFromGitHub {
     owner = "Crokily";
     repo = "herdr-lazygit";
-    rev = "ac955e59caae5cbc34b74ccf949e11f085269b4d";
-    hash = "sha256-Uf3iKgChkB8LW3voL0EfNCBC2Z8Xb5mxwNFgqbWuyZ4=";
+    rev = "e085baf5fb1a474f93d2f989d058ee82fceb21b2";
+    hash = "sha256-G0Jmwhsw0aYx1lomdM4eXz5uDrbDh/WPeTA94wjzWvo=";
   };
 
   dontConfigure = true;

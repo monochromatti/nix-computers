@@ -6,8 +6,8 @@ pkgs.stdenv.mkDerivation {
   src = pkgs.fetchFromGitHub {
     owner = "jordi9";
     repo = "pi-impeccable";
-    rev = "d46a777d49145a118c8a2766239ea54bb8fc5e5d";
-    hash = "sha256-OTTOeRyM7QOMrp/OYTtj5m1rh2YcZjezsVD5fKVppZw=";
+    rev = "819a51b024490b6c081a489f951ecbc4f806e20e";
+    hash = "sha256-FoyrhZX7RuVZEgWt22p5eZSp2KPH7/LMb0BXOWN+3Fs=";
   };
 
   dontConfigure = true;

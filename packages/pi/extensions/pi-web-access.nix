@@ -6,8 +6,8 @@ pkgs.buildNpmPackage {
   src = pkgs.fetchFromGitHub {
     owner = "nicobailon";
     repo = "pi-web-access";
-    rev = "09cd27175d4a3088a43708041d935231187c5a97";
-    hash = "sha256-fNB5UqtNP9BXuQKQp3R61rIDRBVhXu4ub++pvq7/pe8=";
+    rev = "192ac1875e3b8f88c78953dbc314949ec9fcaa27";
+    hash = "sha256-5YMwE44pyMmCapGt9kFLxT61Qg3OCzuJCIATRhMBv6M=";
   };
 
   npmDepsHash = "sha256-0ScX5nMu3h8/KCysaeNiXj/DK7E3abY8LINAaAARhCc=";
