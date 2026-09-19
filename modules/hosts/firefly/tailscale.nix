@@ -35,6 +35,16 @@
         useRoutingFeatures = "client";
       };
 
+      services.openssh = {
+        enable = true;
+        settings = {
+          PasswordAuthentication = true;
+          KbdInteractiveAuthentication = true;
+        };
+      };
+
+      networking.firewall.interfaces.tailscale0.allowedTCPPorts = [ 22 ];
+
       midgard.pc.tailscale = {
         enable = true;
         tailnets = {
