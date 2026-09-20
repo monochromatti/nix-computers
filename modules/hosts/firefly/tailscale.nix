@@ -60,6 +60,10 @@
             sshUser = "odin";
             sshLoadKeyCommand = "${ensureAsgardKey}/bin/ensure-asgard-key";
           };
+          personal = {
+            loginServer = "https://controlplane.tailscale.com";
+            acceptDns = false;
+          };
         };
       };
 
