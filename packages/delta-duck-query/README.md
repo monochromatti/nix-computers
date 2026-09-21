@@ -1,6 +1,6 @@
 # delta-duck-query
 
-Query Delta Lake with the DuckDB 2.0 alpha client and the bundled Quack configuration.
+Query Delta Lake with the DuckDB 1.5.5 stable client and the bundled Quack configuration.
 
 The production configuration is the default. Select development with `--environment dev` or `DELTA_DUCK_QUERY_ENV=dev`.
 
