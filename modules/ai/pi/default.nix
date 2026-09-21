@@ -64,6 +64,25 @@
             ./skills
           ];
 
+          models.providers.azure-openai-responses.models = [
+            {
+              id = "grok-4.6";
+              name = "Grok 4.6";
+              reasoning = true;
+              input = [
+                "text"
+                "image"
+              ];
+              contextWindow = 200000;
+              maxTokens = 128000;
+              thinkingLevelMap = {
+                off = null;
+                minimal = null;
+                xhigh = null;
+              };
+            }
+          ];
+
           mcp = {
             package = "${extensionPackages.pi-mcp-adapter}";
             enabled = [
