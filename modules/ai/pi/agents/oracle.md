@@ -1,7 +1,7 @@
 ---
 name: oracle
 description: Read-only second opinion for decisions, architecture, and difficult tradeoffs
-model: azure-openai-responses/gpt-5.6-sol
+model: azure-openai-responses/gpt-6-sol
 tools: read,grep,find,ls,bash
 thinking: medium
 spawning: false

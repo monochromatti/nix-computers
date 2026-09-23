@@ -1,7 +1,7 @@
 ---
 name: reviewer
 description: Read-only review agent for code changes
-model: azure-openai-responses/gpt-5.6-sol
+model: azure-openai-responses/gpt-6-sol
 tools: read,grep,find,ls,bash
 thinking: low
 spawning: false

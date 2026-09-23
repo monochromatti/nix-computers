@@ -1,7 +1,7 @@
 ---
 name: quick-reviewer
 description: Quick review specialist for code diffs, plans, proposed solutions, codebase health, and PR/issue validation
-model: azure-openai-responses/gpt-5.6-luna
+model: azure-openai-responses/gpt-6-luna
 tools: read,grep,find,ls
 thinking: high
 spawning: false

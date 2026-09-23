@@ -1,7 +1,7 @@
 ---
 name: worker
 description: Implementation agent for focused coding tasks
-model: azure-openai-responses/gpt-5.6-luna
+model: azure-openai-responses/gpt-6-luna
 tools: read,grep,find,ls,bash,edit,write
 thinking: medium
 spawning: false
