@@ -50,6 +50,12 @@ in
 
     home-manager.users.monochromatti.fonts.fontconfig.enable = lib.mkForce false;
 
+    nix.settings = {
+      experimental-features = lib.mkAfter [ "fetch-tree" "auto-allocate-uids" "cgroups" ];
+      auto-allocate-uids = true;
+      extra-system-features = [ "uid-range" ];
+    };
+
     nixpkgs.config.permittedInsecurePackages = [
       "electron-39.8.10"
     ];
