@@ -1,16 +1,16 @@
 { pkgs, lib }:
 pkgs.buildNpmPackage {
   pname = "pi-prompt-template-model";
-  version = "0.12.2";
+  version = "0.12.3";
 
   src = pkgs.fetchFromGitHub {
     owner = "nicobailon";
     repo = "pi-prompt-template-model";
-    rev = "accfa7817f78942d918e436405cb4f1a90afa23a";
-    hash = "sha256-dYFJ3Vtm2q3TCqbk9YLuhDis5dWL2MNe65yA8YRHW8E=";
+    rev = "6da205917e549cbe8e855c1d241c616ae1fb1627";
+    hash = "sha256-F0GXAqoYdD4ciiDSyNRL2WYqU5w8FVWaJ81yyLwV+jQ=";
   };
 
-  npmDepsHash = "sha256-lSIm6YmNiosntjBRVuRQhimbOi7pflclY56OBh6dIGE=";
+  npmDepsHash = "sha256-UA6vYzYDdvJavL9P933lZAAhaqCq7DoJuM4ZCvTGUWA=";
   npmDepsFetcherVersion = 2;
   postPatch = ''
     cp ${./locks/pi-prompt-template-model.json} package-lock.json
