@@ -124,7 +124,6 @@
         };
         pi-impeccable = import ../../../packages/pi/extensions/pi-impeccable.nix { inherit pkgs lib; };
         pi-mcp-adapter = import ../../../packages/pi/extensions/pi-mcp-adapter.nix { inherit pkgs lib; };
-        pi-pretty = import ../../../packages/pi/extensions/pi-pretty.nix { inherit pkgs lib; };
         pi-prompt-template-model = import ../../../packages/pi/extensions/pi-prompt-template-model.nix {
           inherit pkgs lib;
         };

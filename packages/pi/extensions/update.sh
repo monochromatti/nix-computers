@@ -76,6 +76,5 @@ update herdr-lazygit.nix Crokily herdr-lazygit 0
 update pi-impeccable.nix jordi9 pi-impeccable 0
 update pi-mcp-adapter.nix nicobailon pi-mcp-adapter 1
 update pi-ponytail.nix DietrichGebert ponytail 0
-update pi-pretty.nix heyhuynhgiabuu pi-pretty 1
 update pi-prompt-template-model.nix nicobailon pi-prompt-template-model 1
 update pi-web-access.nix nicobailon pi-web-access 1
