@@ -29,6 +29,6 @@ Do not leave code comments, let the code speak for itself. Keep docs shorts and 
 
 Work can be delegated to subagents or to pi sessions in other `herdr` tabs. `subagent` launches asynchronously. Do not poll or inspect session files for completion; the result arrives as a steer message. If a child sends a `caller_ping`, reply by resuming the supplied session with `subagent_resume`.
 
-Named agent definitions select the model, thinking level, tools, and lifecycle behavior. When calling `subagent` with an `agent`, do not pass `model`, `tools`, or `skills`. If an ad hoc subagent requires a model override, use the full `azure-openai-responses/<model>` name. Never use a bare model name, `openai/<model>`, or `openrouter/<model>` for the Azure-hosted models.
+Named agent definitions select the model, thinking level, tools, and lifecycle behavior. When calling `subagent` with an `agent`, do not pass `model`, `tools`, or `skills`. If an ad hoc subagent requires a model override, use the full `<provider>/<id>` name, where the provider is `azure-openai-responses`, `anthropic`, or `deepseek`. Never use a bare model name, `openai/<model>`, or `openrouter/<model>`.
 
-Generally, think of gpt-6-sol as the "deep thinker", never to be used for tasks that a cheaper model could do, and rarely to be used unless you yourself are a less capable model. For most tasks, use the configured worker, scout, planner, reviewer, or oracle role.
+Generally, think of gpt-6-sol as the "deep thinker", never to be used for tasks that a cheaper model could do, and rarely to be used unless you yourself are a less capable model. For most tasks, use the configured scout, researcher, planner, oracle, worker, engineer, fast-reviewer, deep-reviewer, or verifier role.

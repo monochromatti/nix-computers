@@ -12,11 +12,14 @@
           {
             ".pi/agent/SYSTEM.md" = ./SYSTEM.md;
             ".pi/agent/keybindings.json" = ./keybindings.json;
+            ".pi/agent/agents/deep-reviewer.md" = ./agents/deep-reviewer.md;
+            ".pi/agent/agents/engineer.md" = ./agents/engineer.md;
+            ".pi/agent/agents/fast-reviewer.md" = ./agents/fast-reviewer.md;
             ".pi/agent/agents/oracle.md" = ./agents/oracle.md;
             ".pi/agent/agents/planner.md" = ./agents/planner.md;
-            ".pi/agent/agents/quick-reviewer.md" = ./agents/quick-reviewer.md;
-            ".pi/agent/agents/reviewer.md" = ./agents/reviewer.md;
+            ".pi/agent/agents/researcher.md" = ./agents/researcher.md;
             ".pi/agent/agents/scout.md" = ./agents/scout.md;
+            ".pi/agent/agents/verifier.md" = ./agents/verifier.md;
             ".pi/agent/agents/worker.md" = ./agents/worker.md;
           };
     };
