@@ -112,7 +112,7 @@ in
         "--page-size"
         "50"
       ];
-      enableActions = false;
+      enableActions = true;
     };
 
     virtualisation.docker = {
