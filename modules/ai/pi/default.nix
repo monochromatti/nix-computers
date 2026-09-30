@@ -67,7 +67,11 @@
 
       baseSettingsModule = {
         config = {
-          mcp.enabled = lib.mkForce [ ];
+          mcp.enabled = [
+            "grafana-prod"
+            "linear"
+            "azure"
+          ];
 
           agents.skillSources = [
             "${herdrSkillSource}/skills/herdr"
