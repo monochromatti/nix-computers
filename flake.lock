@@ -10,16 +10,15 @@
         "wrappers": "wrappers"
       },
       "locked": {
-        "lastModified": 1790754741,
-        "narHash": "sha256-w+e+KfH1Rw1UQ376Fv95njRC6IiJ3EBGaKQYZoY/V2s=",
+        "lastModified": 1790760830,
+        "narHash": "sha256-h+6C1vh0e1Niwn/uI8Bi/mTgPylIdP8dc0wnd2+GlSc=",
         "owner": "fornybar",
         "repo": "agents",
-        "rev": "384c75952f22748736742cd2841fdcbb2ee27467",
+        "rev": "3d0b26f60368473d350fdf1229e6f2faf35e9d9b",
         "type": "github"
       },
       "original": {
         "owner": "fornybar",
-        "ref": "gpt-6-1-sol",
         "repo": "agents",
         "type": "github"
       }
