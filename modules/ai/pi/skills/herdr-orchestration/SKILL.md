@@ -11,7 +11,7 @@ Orchestrate and coordinate work using focused subagents through `pi-herdr-subage
 | --- | --- | --- |
 | `scout` | codebase reconnaissance: entry points, call paths, tests, conventions | DeepSeek-V4.1-Flash, low |
 | `researcher` | external facts: upstream docs, release notes, API references, issue threads | gpt-5.6-luna, low |
-| `planner` | implementation plan for work that is not yet written | gpt-6-sol, high |
+| `planner` | implementation plan for work that is not yet written | gpt-6.1-sol, high |
 | `oracle` | second opinion on a plan, a proposal, a design, or a decision already on the table | claude-opus-5-5, medium |
 | `worker` | focused implementation, one or two files, no design choice | gpt-6-luna, medium |
 | `engineer` | multi-file or correctness-critical implementation | gpt-5.6-sol, high |

@@ -1,7 +1,7 @@
 ---
 name: planner
 description: Read-only implementation planning agent
-model: azure-openai-responses/gpt-6-sol
+model: azure-openai-responses/gpt-6.1-sol
 tools: read,grep,find,ls,bash
 thinking: high
 spawning: false
