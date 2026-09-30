@@ -26,7 +26,7 @@
     };
 
     agents = {
-      url = "github:fornybar/agents";
+      url = "github:fornybar/agents/gpt-6-1-sol";
     };
     llm-agents.follows = "agents/llm-agents";
 
