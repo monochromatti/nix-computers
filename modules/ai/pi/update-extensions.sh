@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-root=$(cd "$(dirname "$0")" && pwd)
-extensions="$root/../../../modules/ai/pi/extensions"
+root=$(git rev-parse --show-toplevel)
+extensions="$root/modules/ai/pi/extensions"
+test -f "$extensions/pi-web-search.nix"
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 
 update() {
   local file=$1 owner=$2 repo=$3 npm=$4
-  local rev url archive source hash version dir lock npmhash release
+  local rev url archive hash version dir lock npmhash release
   if [[ "$repo" == pi-web-search ]]; then
     release=""
     rev=$(git ls-remote "https://github.com/$owner/$repo.git" HEAD | cut -f1)
@@ -26,7 +27,7 @@ update() {
   archive="$tmp/$repo.tar.gz"
   dir="$tmp/$repo"
   curl --fail --location --silent --show-error "$url" -o "$archive"
-  hash=$(nix run nixpkgs#nix-prefetch-github -- "$owner" "$repo" --rev "$rev" | jq -r .hash | sed 's/^sha256-//')
+  hash=$(nix-prefetch-github "$owner" "$repo" --rev "$rev" | jq -r .hash | sed 's/^sha256-//')
   mkdir "$dir"
   tar -xzf "$archive" -C "$dir" --strip-components=1
   version=$(jq -r '.version // empty' "$dir/package.json" 2>/dev/null || true)
@@ -62,7 +63,7 @@ for name, package in data.get("packages", {}).items():
         package["integrity"] = integrity
 open(path, "w").write(json.dumps(data, indent=2) + "\n")
 PY
-    npmhash=$(NPM_FETCHER_VERSION=2 nix run nixpkgs#prefetch-npm-deps -- "$lock")
+    npmhash=$(NPM_FETCHER_VERSION=2 prefetch-npm-deps "$lock")
   fi
   python3 - "$root/$file" "$rev" "$hash" "$version" "${npmhash-}" <<'PY'
 import re
@@ -78,8 +79,8 @@ open(path, 'w').write(s)
 PY
 }
 
-update herdr-lazygit.nix Crokily herdr-lazygit 0
-update ../../../modules/ai/pi/extensions/pi-impeccable.nix jordi9 pi-impeccable 0
-update ../../../modules/ai/pi/extensions/pi-ponytail.nix DietrichGebert ponytail 0
-update ../../../modules/ai/pi/extensions/pi-prompt-template-model.nix nicobailon pi-prompt-template-model 1
-update ../../../modules/ai/pi/extensions/pi-web-search.nix ttttmr pi-web-search 0
+update packages/pi/extensions/herdr-lazygit.nix Crokily herdr-lazygit 0
+update modules/ai/pi/extensions/pi-impeccable.nix jordi9 pi-impeccable 0
+update modules/ai/pi/extensions/pi-ponytail.nix DietrichGebert ponytail 0
+update modules/ai/pi/extensions/pi-prompt-template-model.nix nicobailon pi-prompt-template-model 1
+update modules/ai/pi/extensions/pi-web-search.nix ttttmr pi-web-search 0
