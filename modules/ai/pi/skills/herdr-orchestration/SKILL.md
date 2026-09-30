@@ -15,7 +15,7 @@ Orchestrate and coordinate work using focused subagents through `pi-herdr-subage
 | `oracle` | second opinion on a plan, a proposal, a design, or a decision already on the table | claude-opus-5-5, medium |
 | `worker` | focused implementation, one or two files, no design choice | gpt-6-luna, medium |
 | `engineer` | multi-file or correctness-critical implementation | gpt-5.6-sol, high |
-| `deep-reviewer` | deep review of a diff, PR, or issue; the merge gate | claude-opus-5-5, medium |
+| `deep-reviewer` | deep review of a diff, PR, or issue; the merge gate | gpt-6.1-sol, medium |
 | `fast-reviewer` | first pass over a diff: local defects only | DeepSeek-V4.1-Flash, high |
 | `verifier` | reproduce a bug, run the tests, exercise the real surface | claude-sonnet-5, high |
 
