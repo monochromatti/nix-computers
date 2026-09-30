@@ -8,12 +8,17 @@ trap 'rm -rf "$tmp"' EXIT
 update() {
   local file=$1 owner=$2 repo=$3 npm=$4
   local rev url archive source hash version dir lock npmhash release
-  release=$(curl --fail --location --silent --show-error \
-    "https://api.github.com/repos/$owner/$repo/releases/latest" | jq -r '.tag_name // empty')
-  test -n "$release"
-  rev=$(git ls-remote "https://github.com/$owner/$repo.git" "refs/tags/$release^{}" | cut -f1)
-  if [[ -z "$rev" ]]; then
-    rev=$(git ls-remote "https://github.com/$owner/$repo.git" "refs/tags/$release" | cut -f1)
+  if [[ "$repo" == pi-web-search ]]; then
+    release=""
+    rev=$(git ls-remote "https://github.com/$owner/$repo.git" HEAD | cut -f1)
+  else
+    release=$(curl --fail --location --silent --show-error \
+      "https://api.github.com/repos/$owner/$repo/releases/latest" | jq -r '.tag_name // empty')
+    test -n "$release"
+    rev=$(git ls-remote "https://github.com/$owner/$repo.git" "refs/tags/$release^{}" | cut -f1)
+    if [[ -z "$rev" ]]; then
+      rev=$(git ls-remote "https://github.com/$owner/$repo.git" "refs/tags/$release" | cut -f1)
+    fi
   fi
   test -n "$rev"
   url="https://github.com/$owner/$repo/archive/$rev.tar.gz"
@@ -76,4 +81,4 @@ update herdr-lazygit.nix Crokily herdr-lazygit 0
 update pi-impeccable.nix jordi9 pi-impeccable 0
 update pi-ponytail.nix DietrichGebert ponytail 0
 update pi-prompt-template-model.nix nicobailon pi-prompt-template-model 1
-update pi-web-access.nix nicobailon pi-web-access 1
+update pi-web-search.nix ttttmr pi-web-search 0

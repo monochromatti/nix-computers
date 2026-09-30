@@ -86,7 +86,7 @@
           inherit pkgs lib;
         };
         pi-ponytail = import ../../../packages/pi/extensions/pi-ponytail.nix { inherit pkgs lib; };
-        pi-web-access = import ../../../packages/pi/extensions/pi-web-access.nix { inherit pkgs lib; };
+        pi-web-search = import ../../../packages/pi/extensions/pi-web-search.nix { inherit pkgs lib; };
       };
 
       extensions = [
