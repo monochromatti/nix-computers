@@ -62,56 +62,12 @@
 
       baseSettingsModule = {
         config = {
+          mcp.enabled = lib.mkForce [ ];
+
           agents.skillSources = [
             "${herdrSkillSource}/skills/herdr"
             ./skills
           ];
-
-          mcp = {
-            package = "${extensionPackages.pi-mcp-adapter}";
-            enabled = [
-              "linear"
-              "playwright"
-              "remarkable"
-              "chrome-devtools"
-              "svelte"
-            ];
-            registry.chrome-devtools = {
-              transport = "stdio";
-              command = "npx";
-              args = [ "chrome-devtools-mcp@latest" ];
-            };
-            registry.playwright = {
-              transport = "stdio";
-              command = "npx";
-              args = [
-                "-y"
-                "@playwright/mcp@latest"
-              ]
-              ++ lib.optionals pkgs.stdenv.hostPlatform.isLinux [
-                "--executable-path"
-                (lib.getExe pkgs.chromium)
-              ];
-            };
-            registry.svelte = {
-              transport = "stdio";
-              command = "npx";
-              args = [
-                "-y"
-                "@sveltejs/mcp"
-              ];
-            };
-            registry.remarkable = {
-              transport = "stdio";
-              command = lib.getExe pkgs.uv;
-              args = [
-                "tool"
-                "run"
-                "remarkable-mcp"
-                "--usb"
-              ];
-            };
-          };
 
           settings = {
             defaultProvider = "azure-openai-responses";
@@ -126,7 +82,6 @@
           inherit pkgs lib;
         };
         pi-impeccable = import ../../../packages/pi/extensions/pi-impeccable.nix { inherit pkgs lib; };
-        pi-mcp-adapter = import ../../../packages/pi/extensions/pi-mcp-adapter.nix { inherit pkgs lib; };
         pi-prompt-template-model = import ../../../packages/pi/extensions/pi-prompt-template-model.nix {
           inherit pkgs lib;
         };
@@ -139,7 +94,7 @@
       ]
       ++ lib.mapAttrsToList (_: package: {
         source = "${package}";
-      }) (removeAttrs extensionPackages [ "pi-mcp-adapter" ]);
+      }) extensionPackages;
 
       skills = [
         "~/.agents/skills"
