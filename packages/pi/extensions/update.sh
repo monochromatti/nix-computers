@@ -2,6 +2,7 @@
 set -euo pipefail
 
 root=$(cd "$(dirname "$0")" && pwd)
+extensions="$root/../../../modules/ai/pi/extensions"
 tmp=$(mktemp -d)
 trap 'rm -rf "$tmp"' EXIT
 
@@ -33,7 +34,7 @@ update() {
     version=${release#v}
   fi
   if [[ "$npm" == 1 ]]; then
-    lock="$root/locks/$repo.json"
+    lock="$extensions/locks/$repo.json"
     if [[ -f "$dir/package-lock.json" ]]; then
       cp "$dir/package-lock.json" "$lock"
     else
@@ -78,7 +79,7 @@ PY
 }
 
 update herdr-lazygit.nix Crokily herdr-lazygit 0
-update pi-impeccable.nix jordi9 pi-impeccable 0
-update pi-ponytail.nix DietrichGebert ponytail 0
-update pi-prompt-template-model.nix nicobailon pi-prompt-template-model 1
-update pi-web-search.nix ttttmr pi-web-search 0
+update ../../../modules/ai/pi/extensions/pi-impeccable.nix jordi9 pi-impeccable 0
+update ../../../modules/ai/pi/extensions/pi-ponytail.nix DietrichGebert ponytail 0
+update ../../../modules/ai/pi/extensions/pi-prompt-template-model.nix nicobailon pi-prompt-template-model 1
+update ../../../modules/ai/pi/extensions/pi-web-search.nix ttttmr pi-web-search 0

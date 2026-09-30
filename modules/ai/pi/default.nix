@@ -25,7 +25,12 @@
     };
 
   perSystem =
-    { pkgs, lib, ... }:
+    {
+      config,
+      pkgs,
+      lib,
+      ...
+    }:
     let
       system = pkgs.stdenv.hostPlatform.system;
 
@@ -77,25 +82,6 @@
         };
       };
 
-      extensionPackages = {
-        pi-herdr-subagents = import ../../../packages/pi/extensions/pi-herdr-subagents.nix {
-          inherit pkgs lib;
-        };
-        pi-impeccable = import ../../../packages/pi/extensions/pi-impeccable.nix { inherit pkgs lib; };
-        pi-prompt-template-model = import ../../../packages/pi/extensions/pi-prompt-template-model.nix {
-          inherit pkgs lib;
-        };
-        pi-ponytail = import ../../../packages/pi/extensions/pi-ponytail.nix { inherit pkgs lib; };
-        pi-web-search = import ../../../packages/pi/extensions/pi-web-search.nix { inherit pkgs lib; };
-      };
-
-      extensions = [
-        "npm:pi-ghostty"
-      ]
-      ++ lib.mapAttrsToList (_: package: {
-        source = "${package}";
-      }) extensionPackages;
-
       skills = [
         "~/.agents/skills"
         "${inputs.agents}/.agents/skills"
@@ -124,14 +110,20 @@
 
     in
     {
-      packages.pi = mkPi {
+      options.pi.extensions = lib.mkOption {
+        type = lib.types.listOf lib.types.package;
+        default = [ ];
+      };
+
+      config.packages.pi = mkPi {
         imports = [ baseSettingsModule ];
         config = {
           binName = "pi";
           env.PI_OFFLINE = "1";
           settings = {
             inherit skills;
-            packages = extensions ++ [
+            packages = map (source: { source = toString source; }) config.pi.extensions ++ [
+              "npm:pi-ghostty"
               piExtensionsPackage
               piAgentsPackage
             ];
