@@ -1,9 +1,9 @@
 ---
 name: engineer
 description: Implementation agent for difficult, multi-file, or correctness-critical changes
-model: azure-openai-responses/gpt-5.6-sol
+model: azure-openai-responses/gpt-6.1-sol
 tools: read,grep,find,ls,bash,edit,write
-thinking: high
+thinking: low 
 spawning: false
 auto-exit: true
 interactive: false

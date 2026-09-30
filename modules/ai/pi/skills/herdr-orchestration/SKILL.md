@@ -10,11 +10,11 @@ Orchestrate and coordinate work using focused subagents through `pi-herdr-subage
 | Role | Use for | Model |
 | --- | --- | --- |
 | `scout` | codebase reconnaissance: entry points, call paths, tests, conventions | DeepSeek-V4.1-Flash, low |
-| `researcher` | external facts: upstream docs, release notes, API references, issue threads | gpt-5.6-luna, low |
+| `researcher` | external facts: upstream docs, release notes, API references, issue threads | gpt-6-luna, low |
 | `planner` | implementation plan for work that is not yet written | gpt-6.1-sol, high |
 | `oracle` | second opinion on a plan, a proposal, a design, or a decision already on the table | claude-opus-5-5, medium |
 | `worker` | focused implementation, one or two files, no design choice | gpt-6-luna, medium |
-| `engineer` | multi-file or correctness-critical implementation | gpt-5.6-sol, high |
+| `engineer` | multi-file or correctness-critical implementation | gpt-6-sol, high |
 | `deep-reviewer` | deep review of a diff, PR, or issue; the merge gate | gpt-6.1-sol, medium |
 | `fast-reviewer` | first pass over a diff: local defects only | DeepSeek-V4.1-Flash, high |
 | `verifier` | reproduce a bug, run the tests, exercise the real surface | claude-sonnet-5, high |

@@ -3,7 +3,7 @@ name: worker
 description: Implementation agent for focused coding tasks
 model: azure-openai-responses/gpt-6-luna
 tools: read,grep,find,ls,bash,edit,write
-thinking: medium
+thinking: high 
 spawning: false
 auto-exit: true
 interactive: false
