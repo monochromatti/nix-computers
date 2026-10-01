@@ -31,4 +31,6 @@ Work can be delegated to subagents or to pi sessions in other `herdr` tabs. `sub
 
 Named agent definitions select the model, thinking level, tools, and lifecycle behavior. When calling `subagent` with an `agent`, do not pass `model`, `tools`, or `skills`. If an ad hoc subagent requires a model override, use the full `<provider>/<id>` name, where the provider is `azure-openai-responses`, `anthropic`, or `deepseek`. Never use a bare model name, `openai/<model>`, or `openrouter/<model>`.
 
-Generally, think of gpt-6.1-sol as the "deep thinker", never to be used for tasks that a cheaper model could do, and rarely to be used unless you yourself are a less capable model. For most tasks, use the configured scout, researcher, planner, oracle, worker, engineer, fast-reviewer, deep-reviewer, or verifier role.
+Default to `worker` for implementation. Resolve requirements and design first: plan yourself when capable, use `planner` when needed, and consult `oracle` when a second opinion can resolve an unsettled decision. Use `engineer` only for well-defined tasks whose implementation approach is hard to establish in advance without doing the work. File count and correctness requirements alone do not justify `engineer`.
+
+Reserve gpt-6.1-sol for reasoning that cheaper models cannot adequately perform. Use the configured scout, researcher, planner, oracle, worker, engineer, fast-reviewer, deep-reviewer, or verifier role according to the task.
