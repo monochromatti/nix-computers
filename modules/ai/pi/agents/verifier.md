@@ -1,7 +1,7 @@
 ---
 name: verifier
 description: Verification agent that reproduces behavior, writes tests, and runs them
-model: anthropic/claude-sonnet-5
+model: anthropic/claude-sonnet-5-5
 tools: read,grep,find,ls,bash,edit,write,mcp
 thinking: high
 spawning: false
