@@ -33,9 +33,10 @@ Orchestrate and coordinate work using focused subagents through `pi-herdr-subage
 - Call `subagent` with a distinct display `name`, the exact `agent` role, and a self-contained `task`.
 - Include scope, constraints, expected output, and verification requirements in the task.
 - For named agents, do not pass `model`, `tools`, or `skills`; the agent definition owns them.
-- Prefer named agents over ad hoc agents. If an ad hoc agent requires a model override, use the full `<provider>/<id>` name, where the provider is `azure-openai-responses`, `anthropic`, or `deepseek`. Never use a bare model name, `openai/<model>`, or `openrouter/<model>`.
+- Prefer named agents over adhoc agents. If an adhoc agent requires a model override, use the full `<provider>/<id>` name, where the provider is `azure-openai-responses`, `anthropic`, or `deepseek`. Never use a bare model name, `openai/<model>`, or `openrouter/<model>`.
 - Split broad work into bounded tasks that you can verify. Do not delegate the whole task to one child unless it is already narrow and well specified.
 - Spawn independent tasks in parallel. All children share the working tree, so do not assign overlapping edits concurrently; `worker`, `engineer`, and `verifier` all write files.
+- Stay below 3 concurrent subagents. If your instinct is to spawn more, the tasks are too small.
 
 ## Lifecycle
 
