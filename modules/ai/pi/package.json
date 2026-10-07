@@ -1,7 +1,12 @@
 {
   "name": "monochromatti-pi-agents",
   "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test extensions/*.test.ts"
+  },
   "pi": {
-    "prompts": ["./prompts"]
+    "prompts": ["./prompts"],
+    "extensions": ["./extensions/session-budget.ts"]
   }
 }
