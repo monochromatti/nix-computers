@@ -67,11 +67,22 @@
 
       baseSettingsModule = {
         config = {
-          mcp.enabled = [
-            "grafana-prod"
-            "linear"
-            "azure"
-          ];
+          mcp = {
+            enabled = [
+              "grafana-prod"
+              "linear"
+              "azure"
+              "playwright"
+            ];
+            registry.playwright = {
+              transport = "stdio";
+              command = lib.getExe pkgs.playwright-mcp;
+              args = [
+                "--headless"
+                "--isolated"
+              ];
+            };
+          };
 
           agents.skillSources = [
             "${herdrSkillSource}/skills/herdr"
