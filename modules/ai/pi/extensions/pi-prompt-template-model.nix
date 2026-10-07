@@ -13,7 +13,7 @@
           hash = "sha256-F0GXAqoYdD4ciiDSyNRL2WYqU5w8FVWaJ81yyLwV+jQ=";
         };
 
-        npmDepsHash = "sha256-UA6vYzYDdvJavL9P933lZAAhaqCq7DoJuM4ZCvTGUWA=";
+        npmDepsHash = "sha256-NIDy2/XVOwIjrNW7al47hrwNShag4HUYGyX1YSz9hbE=";
         npmDepsFetcherVersion = 2;
         postPatch = ''
           cp ${./locks/pi-prompt-template-model.json} package-lock.json

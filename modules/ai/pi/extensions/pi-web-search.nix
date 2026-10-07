@@ -9,8 +9,8 @@
         src = pkgs.fetchFromGitHub {
           owner = "ttttmr";
           repo = "pi-web-search";
-          rev = "66e14d30be2fc4b56ef4a0f77efd55cd81f1b5c4";
-          hash = "sha256-IFqctNrbVWG721Bisz0nzKzVgPiDxJc3GZO4J+PMwQo=";
+          rev = "8017f377178bbac28974d6da83fa9ea8b374f644";
+          hash = "sha256-XVVw316rAkGZ1l4qg6VeJN8pQAGK7AVhdoCjOYvZC/k=";
         };
 
         nativeBuildInputs = [ pkgs.jq ];

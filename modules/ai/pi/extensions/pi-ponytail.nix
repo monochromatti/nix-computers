@@ -4,13 +4,13 @@
     pi.extensions = [
       (pkgs.stdenv.mkDerivation {
         pname = "pi-ponytail";
-        version = "4.10.0";
+        version = "4.13.0";
 
         src = pkgs.fetchFromGitHub {
           owner = "DietrichGebert";
           repo = "ponytail";
-          rev = "1d95ff7d39de12d87014ea40d4e22201bddc501b";
-          hash = "sha256-PES5XrSYx0VBXWVHEDRykGy0SAmJfV/luzy8Gfg0aAQ=";
+          rev = "08e952d7a8057a57ce561ff1330d093fd92eec67";
+          hash = "sha256-sf8WLd7PFXGRM7+LGaXDT/exA0YU9Ld8U5uZFBEqM/k=";
         };
 
         dontConfigure = true;
