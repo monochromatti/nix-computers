@@ -2,11 +2,13 @@
 
 You are running on NixOS.
 
-When running commands, try things in this order:
+When running a command, use what the repository declares first, and confirm a tool exists before you run it:
 
-1. Run the command directly (assume it is on `PATH`).
-2. Run the command with `nix develop -c <command>` if you are in a Nix flake.
-3. Run the command with `nix run nixpkgs#<command>`.
+1. A command the repository provides: `nix develop -c <command>` in a flake devshell, or a script in the tree.
+2. A command already on `PATH`.
+3. Otherwise run the package's executable: `nix shell nixpkgs#<package> --command <executable> ...`. The package and the executable can have different names. Use `nix run` only for the package's default application.
+
+Reuse commands already verified in this task. Pass their exact working directory and environment to children. Invoke workspace recipes with an explicit workspace justfile, such as `just --justfile ~/agent-workspace/fornybar/justfile doctor <repo>`.
 
 
 # Writing style
@@ -25,12 +27,17 @@ Put the verbs back: Write "we deferred," not "we made the decision to defer."; w
 Do not leave code comments, let the code speak for itself. Keep docs shorts and succinct, no fluff; every added sentence has a mental cost.
 
 
+# Context discipline
+
+Read enough code to understand the changed behavior, its callers, and relevant invariants. Read the whole file when necessary. Avoid redundant reads of unchanged content; re-read when files may have changed or more context is needed. Save large output outside the conversation and report decisive evidence and its location. Before resetting ongoing work, preserve requirements, decisions, changed files, unresolved issues, and verification commands.
+
+
 # Agent orchestration
 
 Work can be delegated to subagents or to pi sessions in other `herdr` tabs. `subagent` launches asynchronously. Do not poll or inspect session files for completion; the result arrives as a steer message. If a child sends a `caller_ping`, reply by resuming the supplied session with `subagent_resume`.
 
 Named agent definitions select the model, thinking level, tools, and lifecycle behavior. When calling `subagent` with an `agent`, do not pass `model`, `tools`, or `skills`. If an ad hoc subagent requires a model override, use the full `<provider>/<id>` name, where the provider is `azure-openai-responses`, `anthropic`, or `deepseek`. Never use a bare model name, `openai/<model>`, or `openrouter/<model>`.
 
-Default to `worker` for implementation. Resolve requirements and design first: plan yourself when capable, use `planner` when needed, and consult `oracle` when a second opinion can resolve an unsettled decision. Use `engineer` only for well-defined tasks whose implementation approach is hard to establish in advance without doing the work. File count and correctness requirements alone do not justify `engineer`.
+Implement directly when the task is small and its context is already available. Delegate when context isolation, independent parallel work, or specialized tools provide a concrete benefit. For delegated, settled implementation, default to `worker`. Resolve requirements and design first: plan yourself when capable, use `planner` when needed, and consult `oracle` when a second opinion can resolve an unsettled decision. Use `engineer` only for well-defined tasks whose implementation approach is hard to establish in advance without doing the work. File count and correctness requirements alone do not justify `engineer`.
 
-Reserve gpt-6.1-sol for reasoning that cheaper models cannot adequately perform. Use the configured scout, researcher, planner, oracle, worker, engineer, fast-reviewer, deep-reviewer, or verifier role according to the task.
+Match roles to tasks. Model routing is a policy to evaluate, not proof that cheaper requests reduce completion cost. Establish a capable baseline for uncertain work, then use cheaper models where they meet the required quality. Measure completed-task cost, corrections, latency, and escaped defects.
