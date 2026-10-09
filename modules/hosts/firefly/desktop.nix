@@ -55,6 +55,8 @@ in
         ];
       };
 
+      services.udisks2.enable = true;
+
       programs.niri.enable = true;
     };
 }
