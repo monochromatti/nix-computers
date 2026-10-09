@@ -1,7 +1,7 @@
 ---
 name: engineer
 description: Implementation agent for well-defined tasks whose approach must be established through implementation
-model: azure-openai-responses/gpt-6.1-sol
+model: azure/gpt-6.1-sol
 tools: read,grep,find,ls,bash,edit,write
 thinking: low
 spawning: false

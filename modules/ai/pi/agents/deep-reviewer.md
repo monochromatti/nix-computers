@@ -1,7 +1,7 @@
 ---
 name: deep-reviewer
 description: Deep read-only review of a diff, PR, or issue; the merge gate
-model: azure-openai-responses/gpt-6.1-sol
+model: azure/gpt-6.1-sol
 tools: read,grep,find,ls,bash
 thinking: medium
 spawning: false

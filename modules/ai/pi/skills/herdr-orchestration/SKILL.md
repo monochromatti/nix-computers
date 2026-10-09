@@ -37,7 +37,7 @@ Each role's model, thinking level, and tools come from its agent definition. Do 
 - Call `subagent` with a distinct display `name`, the exact `agent` role, and a self-contained `task`.
 - Task contract: state the goal, allowed files, required and excluded behavior, acceptance cases, verified commands and working directory, and unresolved decisions. Keep it compact. For algorithms, include real failures, legitimate transitions to preserve, and the metric and threshold used to judge success.
 - Check that the role's tools cover the task before spawning. A read-only role cannot edit. If the tools do not fit, pick another role or narrow the task.
-- Prefer named agents over adhoc agents. If an adhoc agent requires a model override, use the full `<provider>/<id>` name, where the provider is `azure-openai-responses`, `anthropic`, or `deepseek`. Never use a bare model name, `openai/<model>`, or `openrouter/<model>`.
+- Prefer named agents over adhoc agents. If an adhoc agent requires a model override, use the full `<provider>/<id>` name, where the provider is `azure`, `anthropic`, or `deepseek`. Never use a bare model name, `openai/<model>`, or `openrouter/<model>`.
 - MCP tools belong to the parent. A child has them only if its role declares `mcp`; do not add MCP to a child.
 - Split broad work into bounded tasks that you can verify. Do not delegate the whole task to one child unless it is already narrow and well specified.
 - Spawn independent tasks in parallel. All children share the working tree, so do not assign overlapping edits concurrently; `worker`, `engineer`, and `verifier` all write files.

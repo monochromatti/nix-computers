@@ -1,7 +1,7 @@
 ---
 name: researcher
 description: Read-only external research on upstream docs, APIs, releases, and library source
-model: azure-openai-responses/gpt-6-luna
+model: azure/gpt-6-luna
 tools: read,grep,find,ls,bash,web_search,fetch_content,get_search_content
 thinking: high 
 spawning: false

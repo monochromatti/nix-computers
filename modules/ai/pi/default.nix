@@ -90,7 +90,7 @@
           ];
 
           settings = {
-            defaultProvider = "azure-openai-responses";
+            defaultProvider = "azure";
             defaultModel = "gpt-6-luna";
             defaultThinkingLevel = "high";
           };
