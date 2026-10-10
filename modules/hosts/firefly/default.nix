@@ -51,7 +51,11 @@ in
     home-manager.users.monochromatti.fonts.fontconfig.enable = lib.mkForce false;
 
     nix.settings = {
-      experimental-features = lib.mkAfter [ "fetch-tree" "auto-allocate-uids" "cgroups" ];
+      experimental-features = lib.mkAfter [
+        "fetch-tree"
+        "auto-allocate-uids"
+        "cgroups"
+      ];
       auto-allocate-uids = true;
       extra-system-features = [ "uid-range" ];
     };
@@ -68,7 +72,7 @@ in
       desktop = null;
       hostName = "firefly";
       security = {
-        paretosecurity.enable = false;
+        paretosecurity.enable = true;
         secureboot.enable = false;
       };
       users = {
