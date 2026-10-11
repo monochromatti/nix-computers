@@ -47,6 +47,13 @@
         hash = "sha256-empFQ+hrnCh2JhOzQRWSCLV0YoZC3DXW3bY6k8YuJjk=";
       };
 
+      anatomySkillSource = pkgs.fetchFromGitHub {
+        owner = "wheresryan22";
+        repo = "anatomy";
+        rev = "dbf697a527bbf7d358668e1557cb1e35ff725d46";
+        hash = "sha256-YrftHzMQPHrHY/iVnWXGxst+PRwu+PDTqgpZAHhkzDo=";
+      };
+
       typedbSkillsSource = pkgs.fetchFromGitHub {
         owner = "typedb";
         repo = "typedb-skills";
@@ -86,6 +93,7 @@
 
           agents.skillSources = [
             "${herdrSkillSource}/skills/herdr"
+            "${anatomySkillSource}"
             ./skills
           ];
 
