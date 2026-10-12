@@ -26,6 +26,7 @@
       apps.update-pi-extensions = {
         type = "app";
         program = lib.getExe updater;
+        meta.description = "Update pinned Pi extensions and npm dependencies";
       };
     };
 }
