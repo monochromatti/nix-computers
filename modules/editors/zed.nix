@@ -1,5 +1,51 @@
-{ config, ... }:
+{
+  config,
+  inputs,
+  lib,
+  ...
+}:
 let
+  providers = inputs.agents.packages.x86_64-linux.pi.configuration.agents.modelProviders;
+  models = inputs.agents.packages.x86_64-linux.pi.configuration.models.providers;
+  mkFoundryModel =
+    provider: name:
+    let
+      definitions = models.${provider}.models or [ ];
+      matches = builtins.filter (model: model.id == name) definitions;
+      model = if matches == [ ] then { } else builtins.head matches;
+    in
+    {
+      inherit name;
+      max_tokens = model.contextWindow or 128000;
+      capabilities = {
+        tools = true;
+        images = builtins.elem "image" (model.input or [ ]);
+        parallel_tool_calls = false;
+        prompt_cache_key = false;
+        chat_completions = provider != "azure";
+      };
+    }
+    // lib.optionalAttrs (model ? maxTokens) {
+      max_output_tokens = model.maxTokens;
+    };
+  mkZed =
+    { pkgs, upkgs }:
+    inputs.wrappers.lib.wrapPackage {
+      inherit pkgs;
+      package = upkgs.zed-editor;
+      preHook = ''
+        if aienv_exports="$(${
+          lib.getExe inputs.agents.packages.${pkgs.stdenv.hostPlatform.system}.aienv
+        } --azure)"; then
+          eval "$aienv_exports"
+          unset aienv_exports
+          export FOUNDRY_API_KEY="$AZURE_API_KEY"
+          export ANTHROPIC_API_KEY="$AZURE_API_KEY"
+        else
+          echo "Foundry authentication failed; run 'az login' and check keysopenai Key Vault permissions." >&2
+        fi
+      '';
+    };
   theme = config.nixComputers.theme;
   extensionIds = [
     "nord"
@@ -55,10 +101,23 @@ let
       project_panel.dock = "left";
       agent = {
         dock = "right";
-        sidebar_side = "right";
+        default_model = {
+          provider = "foundry";
+          model = providers.openai.default.model;
+        };
+      };
+      language_models = {
+        anthropic.api_url = providers.anthropic.endpoint.root;
+        openai_compatible.foundry = {
+          api_url = providers.openai.endpoint.v1;
+          available_models =
+            map (mkFoundryModel "azure") providers.openai.models
+            ++ map (mkFoundryModel "deepseek") providers.deepseek.models
+            ++ map (mkFoundryModel "azure-xai") providers.xai.models;
+        };
       };
       edit_predictions = {
-        provider = "zed";
+        provider = "copilot";
         mode = "subtle";
       };
       vim_mode = true;
@@ -117,6 +176,12 @@ let
     );
 in
 {
+  perSystem =
+    { pkgs, upkgs, ... }:
+    {
+      packages.zed-editor = mkZed { inherit pkgs upkgs; };
+    };
+
   flake.modules.hjem."feature/zed" =
     {
       config,
@@ -130,7 +195,9 @@ in
         pkgs.package-version-server
         pkgs.just
       ]
-      ++ lib.optionals pkgs.stdenv.isLinux [ upkgs.zed-editor ];
+      ++ lib.optionals pkgs.stdenv.isLinux [
+        (mkZed { inherit pkgs upkgs; })
+      ];
       xdg.config.files."zed/settings.json" = {
         source = settingsFile { inherit lib pkgs; };
         clobber = true;
@@ -141,6 +208,7 @@ in
     {
       lib,
       pkgs,
+      upkgs,
       ...
     }:
     {
@@ -152,7 +220,7 @@ in
       );
       programs.zed-editor = lib.mkIf pkgs.stdenv.isDarwin {
         enable = true;
-        package = pkgs.zed-editor;
+        package = mkZed { inherit pkgs upkgs; };
         mutableUserSettings = false;
         extensions = extensionIds;
         userSettings = mkUserSettings { inherit lib pkgs; };
