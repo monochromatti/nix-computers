@@ -34,6 +34,8 @@ in
       flake.modules.nixos."user/monochromatti"
     ];
 
+    disabledModules = [ "${inputs.pc}/modules/sops.nix" ];
+
     hjem.users.monochromatti = {
       packages = lib.mkBefore [ pkgs.sops ];
       files.".ssh/config" = {
@@ -47,6 +49,8 @@ in
       };
       environment.sessionVariables.SOPS_AGE_KEY_FILE = "/home/monochromatti/.config/sops/age/keys.txt";
     };
+
+    users.mutableUsers = lib.mkForce true;
 
     home-manager.users.monochromatti.fonts.fontconfig.enable = lib.mkForce false;
 
