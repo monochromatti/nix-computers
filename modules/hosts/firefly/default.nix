@@ -77,7 +77,7 @@ in
       hostName = "firefly";
       security = {
         paretosecurity.enable = true;
-        secureboot.enable = false;
+        secureboot.enable = true;
       };
       users = {
         monochromatti = {
