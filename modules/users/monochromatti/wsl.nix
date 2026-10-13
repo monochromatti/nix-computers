@@ -38,7 +38,6 @@ in
 
       imports = [
         inputs.hjem.nixosModules.default
-        flake.modules.nixos."feature/users/userdirs"
       ];
 
       home-manager.sharedModules = [
