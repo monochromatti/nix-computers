@@ -3,7 +3,14 @@
   flake.modules.hjem."feature/ai" =
     { config, lib, ... }:
     lib.mkIf (lib.elem "ai" config.nixComputers.profileFeatures) {
-      files =
+      files = {
+        ".pi/agent/subagent-manager/settings.json" = {
+          type = "copy";
+          source = ./subagent-settings.json;
+          clobber = false;
+        };
+      }
+      //
         lib.mapAttrs
           (_: source: {
             inherit source;

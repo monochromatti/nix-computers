@@ -19,7 +19,9 @@ Orchestrate and coordinate work using focused subagents through `pi-subagent-man
 | `fast-reviewer` | first pass over a diff: local defects only |
 | `verifier` | reproduce a bug, run the tests, exercise the real surface |
 
-Each role's model, thinking level, and tools come from its agent definition. Do not pass them when spawning.
+Prefer these custom roles over bundled roles. Each role's model, thinking level, and tools come from its agent definition. Do not pass them when spawning.
+
+Role model preferences use configured credentials, independently of `/scoped-models`. The main Pi default model remains separate. A role without `models` inherits its parent's model. Use `/agents` to override model selection and `/agents types` to override individual roles.
 
 ## Picking a role
 
