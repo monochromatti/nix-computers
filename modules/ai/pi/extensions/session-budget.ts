@@ -4,8 +4,8 @@ import { measureUsage, crossedThresholds } from "./session-budget-usage.ts";
 export default function (pi: ExtensionAPI) {
   let warned = new Set<string>();
   const limits = {
-    context: Number(process.env.PI_CONTEXT_WARNING_TOKENS ?? 100000),
-    cost: Number(process.env.PI_SESSION_WARNING_USD ?? 10),
+    context: Number(process.env.PI_CONTEXT_WARNING_TOKENS ?? 0),
+    cost: Number(process.env.PI_SESSION_WARNING_USD ?? 20),
   };
 
   pi.on("session_start", () => {
