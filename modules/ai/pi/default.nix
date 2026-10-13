@@ -93,7 +93,8 @@
               args = [
                 "-y"
                 "chrome-devtools-mcp@latest"
-                "--autoConnect"
+                "--browserUrl"
+                "http://127.0.0.1:9222"
               ];
             };
           };
@@ -143,6 +144,24 @@
       options.pi.extensions = lib.mkOption {
         type = lib.types.listOf lib.types.package;
         default = [ ];
+      };
+
+      config.apps.chrome-devtools = {
+        type = "app";
+        program = lib.getExe (
+          pkgs.writeShellScriptBin "chrome-devtools" ''
+            exec ${
+              if pkgs.stdenv.isDarwin then
+                "\"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome\""
+              else
+                "google-chrome"
+            } \
+              --remote-debugging-address=127.0.0.1 \
+              --remote-debugging-port=9222 \
+              --user-data-dir="$HOME/.config/chrome-for-devtools" "$@"
+          ''
+        );
+        meta.description = "Start Chrome for the Pi Chrome DevTools MCP";
       };
 
       config.packages.pi = mkPi {
