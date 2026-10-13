@@ -83,4 +83,5 @@ update packages/pi/extensions/herdr-lazygit.nix Crokily herdr-lazygit 0
 update modules/ai/pi/extensions/pi-impeccable.nix jordi9 pi-impeccable 0
 update modules/ai/pi/extensions/pi-ponytail.nix DietrichGebert ponytail 0
 update modules/ai/pi/extensions/pi-prompt-template-model.nix nicobailon pi-prompt-template-model 1
+update modules/ai/pi/extensions/pi-subagent-manager.nix championswimmer pi-subagent-manager 1
 update modules/ai/pi/extensions/pi-web-search.nix ttttmr pi-web-search 0

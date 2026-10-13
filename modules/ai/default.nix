@@ -53,7 +53,6 @@ in
       herdrPackage = inputs.llm-agents.packages.${system}.herdr;
       herdrLazygit = import ../../packages/pi/extensions/herdr-lazygit.nix { inherit pkgs lib; };
       herdrPlugins = [
-        "${config.packages.pi-herdr-subagents}/herdr-plugin"
         "${herdrLazygit}"
       ];
     in

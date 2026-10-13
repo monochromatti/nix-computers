@@ -34,9 +34,9 @@ Read enough code to understand the changed behavior, its callers, and relevant i
 
 # Agent orchestration
 
-Work can be delegated to subagents or to pi sessions in other `herdr` tabs. `subagent` launches asynchronously. Do not poll or inspect session files for completion; the result arrives as a steer message. If a child sends a `caller_ping`, reply by resuming the supplied session with `subagent_resume`.
+Work can be delegated to subagents or to pi sessions in other `herdr` tabs. `agent_spawn` waits by default. Launch independent agents with `wait: false`, then use `agent_wait`; detached completion also starts a new parent turn. Resume a paused agent with `agent_steer` using its thread path.
 
-Named agent definitions select the model, thinking level, tools, and lifecycle behavior. When calling `subagent` with an `agent`, do not pass `model`, `tools`, or `skills`. If an ad hoc subagent requires a model override, use the full `<provider>/<id>` name, where the provider is `azure`, `anthropic`, or `deepseek`. Never use a bare model name, `openai/<model>`, or `openrouter/<model>`.
+Named agent definitions select the model, thinking level, tools, and lifecycle behavior. Call `agent_spawn` with a distinct task-based `path`, the named role in `type`, and a self-contained `task`. Configure model preferences in agent definitions using full `<provider>/<id>` names, where the provider is `azure`, `anthropic`, or `deepseek`. Never use a bare model name, `openai/<model>`, or `openrouter/<model>`.
 
 Implement directly when the task is small and its context is already available. Delegate when context isolation, independent parallel work, or specialized tools provide a concrete benefit. For delegated, settled implementation, default to `worker`. Resolve requirements and design first: plan yourself when capable, use `planner` when needed, and consult `oracle` when a second opinion can resolve an unsettled decision. Use `engineer` only for well-defined tasks whose implementation approach is hard to establish in advance without doing the work. File count and correctness requirements alone do not justify `engineer`.
 

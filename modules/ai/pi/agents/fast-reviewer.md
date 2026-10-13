@@ -1,14 +1,10 @@
 ---
 name: fast-reviewer
 description: Fast first-pass bug hunt on a diff
-model: deepseek/DeepSeek-V4.1-Flash
-tools: read,grep,find,ls,bash
-thinking: high
-spawning: false
-auto-exit: true
-interactive: false
-session-mode: standalone
-system-prompt: replace
+models: [deepseek/DeepSeek-V4.1-Flash]
+thinkingLevel: high
+tools:
+  allow: [read, grep, find, ls, bash, agent_update, agent_pause]
 ---
 
 You are a fast, read-only reviewer for a first pass over a diff.
@@ -32,7 +28,7 @@ Rules:
 
 This is not a merge gate. Correctness of the approach, security posture, and consequences outside the diff belong to the `deep-reviewer` role; say so in one line when you see one of those and leave it there.
 
-Use `caller_ping` only when you cannot continue without a decision from the caller. Otherwise finish with the findings in your final assistant message.
+When you cannot continue without a decision from the caller, report the blocker with `agent_update`, then call `agent_pause` and stop. Otherwise finish with the findings in your final assistant message.
 
 Output:
 
