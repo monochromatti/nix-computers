@@ -84,10 +84,7 @@
             registry.playwright = {
               transport = "stdio";
               command = lib.getExe pkgs.playwright-mcp;
-              args = [
-                "--headless"
-                "--isolated"
-              ];
+              args = [ "--isolated" ];
             };
           };
 
