@@ -80,11 +80,21 @@
               "linear"
               "azure"
               "playwright"
+              "chrome-devtools"
             ];
             registry.playwright = {
               transport = "stdio";
               command = lib.getExe pkgs.playwright-mcp;
               args = [ "--isolated" ];
+            };
+            registry.chrome-devtools = {
+              transport = "stdio";
+              command = "npx";
+              args = [
+                "-y"
+                "chrome-devtools-mcp@latest"
+                "--autoConnect"
+              ];
             };
           };
 
