@@ -24,68 +24,15 @@ in
       lib,
       ...
     }:
-    let
-      system = pkgs.stdenv.hostPlatform.system;
-      # Declarative herdr config; `theme.name = "terminal"` makes herdr
-      # inherit the host terminal (ghostty) palette instead of its default
-      # catppuccin theme.
-      herdrConfig = (pkgs.formats.toml { }).generate "herdr-config.toml" {
-        onboarding = false;
-        experimental.kitty_graphics = true;
-        ui = {
-          show_agent_labels_on_pane_borders = true;
-          agent_panel_sort = "spaces";
-        };
-        theme.name = "terminal";
-        keys.command = [
-          {
-            key = "prefix+g";
-            type = "plugin_action";
-            command = "herdr-lazygit.open";
-          }
-          {
-            key = "prefix+shift+g";
-            type = "plugin_action";
-            command = "herdr-lazygit.open-tab";
-          }
-        ];
-      };
-      herdrPackage = inputs.llm-agents.packages.${system}.herdr;
-      herdrLazygit = import ../../packages/pi/extensions/herdr-lazygit.nix { inherit pkgs lib; };
-      herdrPlugins = [
-        "${herdrLazygit}"
-      ];
-    in
     {
       packages."delta-duck-query" = pkgs.callPackage ../../packages/delta-duck-query/package.nix {
         uvloom = inputs.uvloom;
       };
-      packages.herdr = inputs.wrappers.lib.wrapPackage {
-        inherit pkgs;
-        package = herdrPackage;
-        env.HERDR_CONFIG_PATH = "${herdrConfig}";
-        runtimeInputs = [
-          pkgs.bash
-          pkgs.git
-          pkgs.jq
-          pkgs.python3
-        ];
-        preHook = ''
-          plugin_list="$(${lib.getExe herdrPackage} plugin list --json 2>/dev/null || true)"
-          for plugin_root in ${lib.escapeShellArgs herdrPlugins}; do
-            if ! printf '%s' "$plugin_list" | ${lib.getExe pkgs.jq} -e --arg plugin_root "$plugin_root" 'any(.result.plugins[]?; .plugin_root == $plugin_root)' >/dev/null; then
-              ${lib.getExe herdrPackage} plugin link "$plugin_root" --enabled >/dev/null
-            fi
-          done
-        '';
-      };
-
       packages.ai = pkgs.buildEnv {
         name = "ai";
         paths = [
           config.packages.pi
           config.packages."delta-duck-query"
-          config.packages.herdr
           pkgs.playwright-test
         ];
       };

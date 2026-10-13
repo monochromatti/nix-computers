@@ -31,13 +31,6 @@
           imports = [ module ];
         }).wrapper;
 
-      herdrSkillSource = pkgs.fetchFromGitHub {
-        owner = "herdrdev";
-        repo = "herdr";
-        rev = "346411fa21afd297f5ed3b3fa56f9e3fbf7654b7";
-        hash = "sha256-empFQ+hrnCh2JhOzQRWSCLV0YoZC3DXW3bY6k8YuJjk=";
-      };
-
       anatomySkillSource = pkgs.fetchFromGitHub {
         owner = "wheresryan22";
         repo = "anatomy";
@@ -91,7 +84,6 @@
           };
 
           agents.skillSources = [
-            "${herdrSkillSource}/skills/herdr"
             "${anatomySkillSource}"
             ./skills
           ];

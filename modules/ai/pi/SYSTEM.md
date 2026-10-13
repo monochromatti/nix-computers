@@ -34,7 +34,7 @@ Read enough code to understand the changed behavior, its callers, and relevant i
 
 # Agent orchestration
 
-Work can be delegated to subagents or to pi sessions in other `herdr` tabs. `agent_spawn` waits by default. Launch independent agents with `wait: false`, then use `agent_wait`; detached completion also starts a new parent turn. Resume a paused agent with `agent_steer` using its thread path.
+Work can be delegated to subagents. `agent_spawn` waits by default. Launch independent agents with `wait: false`, then use `agent_wait`; detached completion also starts a new parent turn. Resume a paused agent with `agent_steer` using its thread path.
 
 Named agent definitions select the model, thinking level, tools, and lifecycle behavior. Call `agent_spawn` with a distinct task-based `path`, the named role in `type`, and a self-contained `task`. Configure model preferences in agent definitions using full `<provider>/<id>` names, where the provider is `azure`, `anthropic`, or `deepseek`. Never use a bare model name, `openai/<model>`, or `openrouter/<model>`.
 

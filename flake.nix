@@ -28,7 +28,6 @@
     agents = {
       url = "github:fornybar/agents";
     };
-    llm-agents.follows = "agents/llm-agents";
 
     nix-darwin = {
       url = "github:LnL7/nix-darwin/nix-darwin-26.05";
