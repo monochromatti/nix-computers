@@ -41,7 +41,6 @@ in
     };
 
   flake.modules.homeManager."feature/development" = { pkgs, upkgs, ... }: {
-    imports = [ flake.modules.homeManager."feature/development/hunk" ];
     home.packages = packages { inherit pkgs upkgs; };
   };
 }

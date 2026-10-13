@@ -16,7 +16,6 @@ in
     { config, lib, ... }:
     {
       imports = [
-        flake.modules.hjem."feature/development/hunk"
         flake.modules.hjem."feature/development"
         flake.modules.hjem."feature/gtk"
         flake.modules.hjem."feature/qt"
@@ -42,7 +41,6 @@ in
       config.nixComputers.profileFeatures =
         if config.nixComputers.profile == "workstation" then
           [
-            "development/hunk"
             "development"
             "gtk"
             "qt"
@@ -66,7 +64,6 @@ in
           ]
         else if config.nixComputers.profile == "wsl" then
           [
-            "development/hunk"
             "development"
             "terminal"
             "documents"
@@ -88,7 +85,6 @@ in
       options.nixComputers.profileFeatures = lib.mkOption {
         type = lib.types.listOf (
           lib.types.enum [
-            "development/hunk"
             "development"
             "gtk"
             "qt"

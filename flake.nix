@@ -56,12 +56,6 @@
       url = "github:fornybar/linear-notification-daemon/setup";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    hunk = {
-      url = "github:modem-dev/hunk";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # NixOS-specific inputs
     pc = {
       url = "github:fornybar/pc";
