@@ -18,6 +18,7 @@
         npmDepsFetcherVersion = 2;
         postPatch = ''
           cp ${./locks/pi-subagent-manager.json} package-lock.json
+          rm -f agents/*.md
           cp ${../agents}/*.md agents/
           chmod u+w agents/*.md
           for role in engineer verifier worker; do
@@ -35,9 +36,10 @@
         checkPhase = ''
           node --input-type=module <<'JS'
           import assert from 'node:assert/strict';
-          import { readFileSync, lstatSync } from 'node:fs';
+          import { readFileSync, lstatSync, readdirSync } from 'node:fs';
           import { parse } from 'yaml';
           const roles = ['deep-reviewer', 'engineer', 'fast-reviewer', 'oracle', 'planner', 'researcher', 'scout', 'verifier', 'worker'];
+          assert.deepEqual(readdirSync('agents').filter((name) => name.endsWith('.md')).sort(), roles.map((role) => `''${role}.md`).sort());
           for (const role of roles) {
             const path = `agents/''${role}.md`;
             assert(lstatSync(path).isFile());
