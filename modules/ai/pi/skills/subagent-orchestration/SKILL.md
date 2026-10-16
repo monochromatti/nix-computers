@@ -10,6 +10,7 @@ Orchestrate and coordinate work using focused subagents through `pi-subagent-man
 | Role | Use for |
 | --- | --- |
 | `scout` | codebase reconnaissance: entry points, call paths, tests, conventions |
+| `visual-scout` | reconnaissance that requires inspecting images |
 | `researcher` | external facts: upstream docs, release notes, API references, issue threads |
 | `planner` | implementation plan for work that is not yet written |
 | `oracle` | second opinion on a plan, a proposal, a design, or a decision already on the table |
@@ -26,6 +27,7 @@ Role model preferences use configured credentials, independently of `/scoped-mod
 ## Picking a role
 
 - Implement small tasks directly when their context is already available. Delegate only for a concrete benefit: context isolation, independent parallel work, or specialized tools.
+- Check `agent_types` before choosing a role. Image, screenshot, diagram, and visual-layout inspection require a vision-capable resolved model and suitable tools. DeepSeek roles (`scout`, `worker`, `fast-reviewer`) are text-only by default. Use `visual-scout` for visual reconnaissance, inspect the images yourself and pass a complete text specification, or choose another vision-capable role; this takes precedence over default role preferences. Do not infer vision support from a role name or provider alone.
 - Evaluate model routing against task quality and total completion cost. Establish a capable baseline for uncertain work, then substitute cheaper models where they meet acceptance criteria.
 - Need facts about this repository: `scout`. Need facts outside it: `researcher`.
 - Resolve requirements and design before delegating implementation. Plan yourself when capable; use `planner` when you need implementation planning, and `oracle` when a second opinion can resolve an unsettled decision. Code exists and needs judgement: `deep-reviewer`.

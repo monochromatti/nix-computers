@@ -1,6 +1,6 @@
 ---
 name: scout
-description: Fast read-only codebase reconnaissance
+description: Fast read-only codebase reconnaissance; text-only, no image or screenshot inspection
 models: [deepseek/DeepSeek-V4.1-Flash]
 thinkingLevel: low
 tools:

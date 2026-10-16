@@ -1,6 +1,6 @@
 ---
 name: fast-reviewer
-description: Fast first-pass bug hunt on a diff
+description: Fast first-pass bug hunt on a diff; text-only, no image or screenshot inspection
 models: [deepseek/DeepSeek-V4.1-Flash]
 thinkingLevel: high
 tools:

@@ -1,6 +1,6 @@
 ---
 name: worker
-description: Default implementation agent for tasks with settled requirements and design
+description: Default implementation agent for tasks with settled requirements and design; text-only, no image or screenshot inspection
 models: [deepseek/DeepSeek-V4.1-Flash]
 thinkingLevel: high
 tools:
