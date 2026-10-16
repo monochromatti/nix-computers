@@ -98,9 +98,13 @@ let
         ];
       };
       load_direnv = "shell_hook";
-      project_panel.dock = "left";
+      project_panel.dock = "right";
+      git_panel.dock = "right";
+      outline_panel.dock = "right";
+      collaboration_panel.dock = "right";
       agent = {
-        dock = "right";
+        dock = "left";
+        threads_sidebar.position = "left";
         default_model = {
           provider = "foundry";
           model = providers.openai.default.model;
@@ -166,6 +170,70 @@ let
         };
       };
     };
+  tasksFile =
+    { lib, pkgs }:
+    let
+      createWorktree = pkgs.writeShellApplication {
+        name = "zed-create-worktree";
+        runtimeInputs = [
+          pkgs.coreutils
+          pkgs.gh
+          pkgs.git
+        ];
+        text = ''
+          read -r -p "GitHub repository (owner/name): " repository
+          read -r -p "Branch to check out or create: " branch
+
+          if ! checked_branch="$(git check-ref-format --branch "$branch" 2>/dev/null)" || [[ "$checked_branch" != "$branch" ]]; then
+            printf 'Invalid branch name: %s\n' "$branch" >&2
+            exit 1
+          fi
+
+          repository_root="$(git rev-parse --show-toplevel)"
+          current_repository="$(gh repo view --json nameWithOwner --jq .nameWithOwner)"
+          if [[ "''${repository,,}" != "''${current_repository,,}" ]]; then
+            printf 'This Zed project is %s, not %s. Run the task from the requested repository.\n' "$current_repository" "$repository" >&2
+            exit 1
+          fi
+          repository="$current_repository"
+
+          git -C "$repository_root" fetch --quiet --prune origin
+
+          worktree_path="$HOME/Projects/$repository/$branch"
+          case "$worktree_path/" in
+            "$repository_root/"*)
+              worktree_path="$HOME/Projects/''${repository%/*}/''${repository##*/}-worktrees/$branch"
+              ;;
+          esac
+
+          if [[ -e "$worktree_path" || -L "$worktree_path" ]]; then
+            printf 'Worktree path already exists: %s\n' "$worktree_path" >&2
+            exit 1
+          fi
+
+          mkdir -p "$(dirname "$worktree_path")"
+          if git -C "$repository_root" show-ref --verify --quiet "refs/heads/$branch"; then
+            git -C "$repository_root" worktree add "$worktree_path" "$branch"
+          elif git -C "$repository_root" show-ref --verify --quiet "refs/remotes/origin/$branch"; then
+            git -C "$repository_root" worktree add --track -b "$branch" "$worktree_path" "origin/$branch"
+          else
+            git -C "$repository_root" worktree add -b "$branch" "$worktree_path" HEAD
+          fi
+
+          printf '\nCreated worktree: %s\nSelect the worktree in Zed to start a thread there.\n' "$worktree_path"
+        '';
+      };
+    in
+    (pkgs.formats.json { }).generate "zed-tasks" [
+      {
+        label = "Create branch worktree";
+        command = lib.getExe createWorktree;
+        cwd = "$ZED_WORKTREE_ROOT";
+        use_new_terminal = true;
+        reveal = "always";
+        hide = "never";
+      }
+    ];
   settingsFile =
     { lib, pkgs }:
     (pkgs.formats.json { }).generate "zed-user-settings" (
@@ -202,6 +270,10 @@ in
         source = settingsFile { inherit lib pkgs; };
         clobber = true;
       };
+      xdg.config.files."zed/tasks.json" = {
+        source = tasksFile { inherit lib pkgs; };
+        clobber = true;
+      };
     };
 
   flake.modules.homeManager."feature/zed" =
@@ -225,5 +297,6 @@ in
         extensions = extensionIds;
         userSettings = mkUserSettings { inherit lib pkgs; };
       };
+      xdg.configFile."zed/tasks.json".source = tasksFile { inherit lib pkgs; };
     };
 }
