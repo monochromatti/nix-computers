@@ -5,16 +5,16 @@
     let
       package = pkgs.buildNpmPackage {
         pname = "pi-subagent-manager";
-        version = "0.29.0";
+        version = "0.29.3";
 
         src = pkgs.fetchFromGitHub {
           owner = "championswimmer";
           repo = "pi-subagent-manager";
-          rev = "092627be6f3696b3897767d896ef7309c01e48ca";
-          hash = "sha256-Sk/N8Quz1Q6FyV2BlSW5k5s3u8wWMeZ4xzQBVNw/7Ew=";
+          rev = "297051e0454f0e9e7e27b3ef7018f6ebad950756";
+          hash = "sha256-efj1Z8zFEz6EWKbKhnhOLZCMDhs6kYhdkSKQUk3KfY4=";
         };
 
-        npmDepsHash = "sha256-ApxzbXdzCq7JVOAVhJH7dV6Yra+VSSMgDnkZy4XdkJw=";
+        npmDepsHash = "sha256-uZVtPU0O2p43eh+s7AmtZ+J7hI3mTixcnTZe8ZSXpNM=";
         npmDepsFetcherVersion = 2;
         postPatch = ''
           cp ${./locks/pi-subagent-manager.json} package-lock.json
