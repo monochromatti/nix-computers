@@ -234,6 +234,22 @@ let
         hide = "never";
       }
     ];
+  keymap = [
+    {
+      context = "Terminal";
+      bindings = {
+        "ctrl-j" = [
+          "terminal::SendKeystroke"
+          "ctrl-j"
+        ];
+        "ctrl-k" = [
+          "terminal::SendKeystroke"
+          "ctrl-k"
+        ];
+      };
+    }
+  ];
+  keymapFile = pkgs: (pkgs.formats.json { }).generate "zed-keymap" keymap;
   settingsFile =
     { lib, pkgs }:
     (pkgs.formats.json { }).generate "zed-user-settings" (
@@ -274,6 +290,10 @@ in
         source = tasksFile { inherit lib pkgs; };
         clobber = true;
       };
+      xdg.config.files."zed/keymap.json" = {
+        source = keymapFile pkgs;
+        clobber = true;
+      };
     };
 
   flake.modules.homeManager."feature/zed" =
@@ -294,8 +314,10 @@ in
         enable = true;
         package = mkZed { inherit pkgs upkgs; };
         mutableUserSettings = false;
+        mutableUserKeymaps = false;
         extensions = extensionIds;
         userSettings = mkUserSettings { inherit lib pkgs; };
+        userKeymaps = keymap;
       };
       xdg.configFile."zed/tasks.json".source = tasksFile { inherit lib pkgs; };
     };
