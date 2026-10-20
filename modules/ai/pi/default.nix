@@ -57,6 +57,16 @@
         hash = "sha256-Q0ojRsyV4xOw02fUd92i4jumQt0hgXV0FaCVAGZK8QA=";
       };
 
+      enabledFornybarSkills = [
+        "ast-grep"
+        "atomic-history"
+        "create-plan"
+        "create-spec"
+        "good-code"
+        "microsoft-decision"
+        "teach-me"
+      ];
+
       typedbSkills = pkgs.linkFarm "typedb-skills" [
         {
           name = "typedb-modeling.md";
@@ -97,8 +107,12 @@
 
           agents.skillSources = [
             "${anatomySkillSource}"
+            "${self}/.agents/skills"
             ./skills
           ];
+          agents.skills = lib.genAttrs enabledFornybarSkills (_: {
+            enable = true;
+          });
 
           settings = {
             defaultProvider = "azure";
@@ -109,9 +123,6 @@
       };
 
       skills = [
-        "~/.agents/skills"
-        "${inputs.agents}/.agents/skills"
-        "${self}/.agents/skills"
         "${typedbSkills}/typedb-modeling.md"
         "${typedbSkills}/typedb-typeql.md"
         "${showMeSkill}"
@@ -133,6 +144,7 @@
 
       piAgentsPackage = {
         source = "${./.}";
+        skills = [ ];
       };
 
     in
