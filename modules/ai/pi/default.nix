@@ -52,6 +52,11 @@
         hash = "sha256-DKyKI1OeCC55bJxLBwae5sg2ngtfabjIaNp80Syl3kw=";
       };
 
+      showMeSkill = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/humanlayer/skills/653b6411c1f70c275a18e37673b042ff99f67ceb/plugins/show-me/skills/show-me/SKILL.md";
+        hash = "sha256-Q0ojRsyV4xOw02fUd92i4jumQt0hgXV0FaCVAGZK8QA=";
+      };
+
       typedbSkills = pkgs.linkFarm "typedb-skills" [
         {
           name = "typedb-modeling.md";
@@ -109,6 +114,7 @@
         "${self}/.agents/skills"
         "${typedbSkills}/typedb-modeling.md"
         "${typedbSkills}/typedb-typeql.md"
+        "${showMeSkill}"
       ];
 
       piExtensionsPackage = {
