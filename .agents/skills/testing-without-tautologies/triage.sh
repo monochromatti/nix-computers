@@ -1,11 +1,10 @@
-#!/usr/bin/env bash
-# Usage: triage.sh FILE...  Scores each test with Decision-1; prints score, label, location, highest first.
-set -euo pipefail
+# Usage: tautology-triage FILE...   Scores each test with Decision-1; prints score, label, location, highest first.
+# tautology-triage --rubric          Prints the grading rubric (SKILL.md).
 : "${AZURE_API_KEY:?}" "${AZURE_RESOURCE_NAME:?}"
-skill="$(dirname "$(readlink -f "$0")")/SKILL.md"
-py=python3; command -v python3 >/dev/null || py="nix shell nixpkgs#python3 --command python3"
+skill="${TAUTOLOGY_SKILL:-$(dirname "$(readlink -f "$0")")/SKILL.md}"
+if [ "${1:-}" = --rubric ]; then cat "$skill"; exit; fi
 
-$py - "$@" <<'EOF' |
+python3 - "$@" <<'PY' |
 import ast, json, sys
 for f in sys.argv[1:]:
     src = open(f).read()
@@ -14,7 +13,7 @@ for f in sys.argv[1:]:
     for n in ast.walk(ast.parse(src)):
         if isinstance(n, (ast.FunctionDef, ast.AsyncFunctionDef)) and n.name.startswith("test"):
             print(json.dumps({"loc": f"{f}:{n.lineno}:{n.name}", "code": ast.get_source_segment(src, n)}))
-EOF
+PY
 while read -r t; do
   jq -n --rawfile skill "$skill" --argjson t "$t" '{model:"Decision-1",
     state:("RUBRIC:\n"+$skill+"\nTEST UNDER REVIEW ("+$t.loc+"):\n"+$t.code),

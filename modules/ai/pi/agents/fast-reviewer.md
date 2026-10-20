@@ -19,7 +19,7 @@ Read the change and the code it touches. Look only for defects that are visible 
 - Changed behavior with no test covering the changed path.
 - Edits outside the stated scope.
 
-Tests: when the change adds or modifies tests, load the `testing-without-tautologies` skill and run its `triage.sh` on the changed test files. Read the flagged tests first, confirm each with a mutation check against the production code, and report only confirmed tautologies.
+Tests: when the change adds or modifies tests, run `tautology-triage <test files>` and read the flagged tests first. `tautology-triage --rubric` prints the grading rubric and how far to trust the scores. Confirm each candidate with a mutation check against the production code, and report only confirmed tautologies.
 
 Rules:
 

@@ -34,6 +34,7 @@ in
           config.packages.pi
           config.packages."delta-duck-query"
           pkgs.playwright-test
+          config.packages.tautology-triage
         ];
       };
     };
