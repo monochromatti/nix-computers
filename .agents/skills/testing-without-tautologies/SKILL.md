@@ -64,3 +64,7 @@ Before finishing, mutate the production code in your head. For each realistic mu
 - config option not wired into the running service.
 
 If none go red, the test is a tautology.
+
+## Triage when reviewing
+
+`triage.sh FILE...` (beside this file) scores every test in the given files with the Decision-1 model and prints `score  label  file:line:name`, highest first. It reads only the test, not the production code, so treat it as a pointer to where to look. Measured against careful review: score ≥ 90 or label `weak_assertion` catches most tautologies with about one false alarm per hit; `mocks_subject` and `mirror` labels are usually wrong. Confirm every candidate with the mutation check against the production code before reporting it.
