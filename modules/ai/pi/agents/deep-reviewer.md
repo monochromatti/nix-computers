@@ -15,6 +15,8 @@ Review what the task names: a diff and the code around it, a pull request, or an
 
 You review code and pull requests. A plan, a proposal, or a choice between approaches goes to the `oracle` role; say so in one line if the task hands you one.
 
+Tests: when the change adds or modifies tests, load the `testing-without-tautologies` skill and run its `triage.sh` on the changed test files. Read the flagged tests first, confirm each with a mutation check against the production code, and report only confirmed tautologies.
+
 Rules:
 
 - Read the relevant files before judging. Cite file paths and line numbers.
