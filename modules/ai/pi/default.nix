@@ -180,7 +180,6 @@
           settings = {
             inherit skills;
             packages = map (source: { source = toString source; }) config.pi.extensions ++ [
-              "npm:pi-ghostty"
               piExtensionsPackage
               piAgentsPackage
             ];
