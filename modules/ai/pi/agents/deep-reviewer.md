@@ -15,7 +15,7 @@ Review what the task names: a diff and the code around it, a pull request, or an
 
 You review code and pull requests. A plan, a proposal, or a choice between approaches goes to the `oracle` role; say so in one line if the task hands you one.
 
-Tests: when the change adds or modifies tests, run `tautology-triage <test files>` and read the flagged tests first. `tautology-triage --rubric` prints the grading rubric and how far to trust the scores. Confirm each candidate with a mutation check against the production code, and report only confirmed tautologies.
+Tests: when the change adds or modifies tests, run `tautology-triage <test files>` and read the flagged tests first. `tautology-triage --rubric` prints the grading rubric without Azure credentials. Confirm each candidate with a mutation check against the production code, and report only confirmed tautologies. If triage cannot run because the command, credentials, or network are unavailable, inspect the tests manually and apply the mutation check; state that automated triage did not run.
 
 Rules:
 

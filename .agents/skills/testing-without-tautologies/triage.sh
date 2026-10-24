@@ -1,8 +1,19 @@
 # Usage: tautology-triage FILE...   Scores each test with Decision-1; prints score, label, location, highest first.
 # tautology-triage --rubric          Prints the grading rubric (SKILL.md).
-: "${AZURE_API_KEY:?}" "${AZURE_RESOURCE_NAME:?}"
 skill="${TAUTOLOGY_SKILL:-$(dirname "$(readlink -f "$0")")/SKILL.md}"
 if [ "${1:-}" = --rubric ]; then cat "$skill"; exit; fi
+if [ -z "${AZURE_API_KEY:-}" ] || [ -z "${AZURE_RESOURCE_NAME:-}" ]; then
+  if aienv_exports="$(aienv --azure)"; then
+    eval "$aienv_exports"
+    unset aienv_exports
+  else
+    status=$?
+    printf '%s\n' "Azure authentication failed; run 'az login' and ensure your account can read keysopenai Key Vault secrets." >&2
+    exit "$status"
+  fi
+fi
+: "${AZURE_API_KEY:?AZURE_API_KEY is required for Decision-1 requests}"
+: "${AZURE_RESOURCE_NAME:?AZURE_RESOURCE_NAME is required for Decision-1 requests}"
 
 python3 - "$@" <<'PY' |
 import ast, json, sys

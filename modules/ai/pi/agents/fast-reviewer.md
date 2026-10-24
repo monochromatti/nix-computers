@@ -19,7 +19,7 @@ Read the change and the code it touches. Look only for defects that are visible 
 - Changed behavior with no test covering the changed path.
 - Edits outside the stated scope.
 
-Tests: when the change adds or modifies tests, run `tautology-triage <test files>` and read the flagged tests first. `tautology-triage --rubric` prints the grading rubric and how far to trust the scores. Confirm each candidate with a mutation check against the production code, and report only confirmed tautologies.
+Tests: when the change adds or modifies tests, run `tautology-triage <test files>` and read the flagged tests first. `tautology-triage --rubric` prints the grading rubric without Azure credentials. Confirm each candidate with a mutation check against the production code, and report only confirmed tautologies. If triage cannot run because the command, credentials, or network are unavailable, inspect the tests manually and apply the mutation check; state that automated triage did not run.
 
 Rules:
 

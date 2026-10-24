@@ -1,4 +1,4 @@
-{ self, ... }:
+{ inputs, self, ... }:
 {
   perSystem =
     { pkgs, ... }:
@@ -13,6 +13,7 @@
           jq
           python3
           coreutils
+          inputs.agents.packages.${pkgs.stdenv.hostPlatform.system}.aienv
         ];
         runtimeEnv.TAUTOLOGY_SKILL = "${skill}/SKILL.md";
         text = builtins.readFile "${skill}/triage.sh";
