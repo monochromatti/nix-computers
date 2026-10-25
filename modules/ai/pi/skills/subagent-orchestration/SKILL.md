@@ -39,6 +39,7 @@ Role model preferences use configured credentials, independently of `/scoped-mod
 ## Spawn rules
 
 - Call `agent_spawn` with a distinct task-based `path`, the exact role in `type`, and a self-contained `task`.
+- Use fresh paths (`/task-name`) by default. Fork (`/root/task-name`) only when the child needs conversation history that a task description cannot carry. A fresh child sees only its task, so it stays focused, costs fewer tokens, and judges without inheriting the parent's assumptions.
 - State scope, acceptance checks, file ownership, verified commands, and unresolved decisions before spawning.
 - Launch independent siblings with `wait: false`, then use `agent_wait`. Agents share the working directory; do not assign overlapping edits.
 - Custom roles cannot spawn children because their tool allowlists omit delegation tools.
