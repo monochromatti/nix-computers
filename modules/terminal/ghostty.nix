@@ -2,7 +2,10 @@
 let
   theme = config.nixComputers.theme;
   sharedSettings = {
-    font-family = theme.font.fixed;
+    font-family = [
+      theme.font.fixed
+      "DroidSansM Nerd Font Mono"
+    ];
     window-padding-x = 8;
     window-padding-y = 8;
     cursor-style = "block";

@@ -1,6 +1,7 @@
 ---
 name: engineer
 description: Implementation agent for well-defined tasks whose approach must be established through implementation
+icon: ""
 models: [azure/gpt-6.1-sol]
 thinkingLevel: low
 tools:

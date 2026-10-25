@@ -1,6 +1,7 @@
 ---
 name: deep-reviewer
 description: Deep read-only review of a diff, PR, or issue; the merge gate
+icon: ""
 models: [azure/gpt-6.1-sol]
 thinkingLevel: medium
 tools:

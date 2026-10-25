@@ -1,6 +1,7 @@
 ---
 name: planner
 description: Read-only implementation planning agent
+icon: ""
 models: [azure/gpt-6.1-sol]
 thinkingLevel: high
 tools:

@@ -1,6 +1,7 @@
 ---
 name: verifier
 description: Verification agent that reproduces behavior, writes tests, and runs them
+icon: ""
 models: [anthropic/claude-sonnet-5-5]
 thinkingLevel: high
 tools:

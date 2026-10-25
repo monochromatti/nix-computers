@@ -1,6 +1,7 @@
 ---
 name: oracle
 description: Read-only second opinion on decisions, architecture, and difficult tradeoffs
+icon: ""
 models: [anthropic/claude-opus-5-5]
 thinkingLevel: medium
 tools:

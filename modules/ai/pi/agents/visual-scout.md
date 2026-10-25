@@ -1,6 +1,7 @@
 ---
 name: visual-scout
 description: Read-only reconnaissance that requires inspecting images; vision-capable
+icon: ""
 models: [azure/gpt-6-luna]
 thinkingLevel: low
 tools:

@@ -1,3 +1,4 @@
 {
-  "modelSelection": "pick-first-available"
+  "modelSelection": "pick-first-available",
+  "nerdFontIcons": true
 }

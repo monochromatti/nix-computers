@@ -1,6 +1,7 @@
 ---
 name: researcher
 description: Read-only external research on upstream docs, APIs, releases, and library source
+icon: ""
 models: [azure/gpt-6-luna]
 thinkingLevel: high
 tools:
