@@ -24,4 +24,6 @@ Follow this structure:
 
 Remarks and References are optional. Construct a descriptive PR --title following Conventional Commits style.
 
+If the PR changes UI, the body must include screenshots of the changed UI (before/after where useful). `gh` cannot upload image attachments. Either ask the user to drag the images into the PR description in the web UI after creation, or commit them to the branch (e.g. `docs/screenshots/`) and embed with `![alt](https://github.com/<owner>/<repo>/blob/<branch>/<path>?raw=true)`. Prefer the first; do not commit screenshots without the user's consent.
+
 $1
