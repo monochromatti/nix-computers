@@ -9,6 +9,13 @@
           source = ./subagent-settings.json;
           clobber = false;
         };
+        ".pi/agent/web-search.json" = {
+          text = builtins.toJSON {
+            provider = "azure";
+            model = "gpt-6-luna";
+          };
+          clobber = true;
+        };
       }
       //
         lib.mapAttrs
