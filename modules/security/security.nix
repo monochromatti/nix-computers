@@ -2,12 +2,11 @@
 {
   flake.modules.hjem."feature/security" =
     {
-      config,
       lib,
       pkgs,
       ...
     }:
-    lib.mkIf (lib.elem "security" config.nixComputers.profileFeatures) {
+    {
       packages = lib.optionals pkgs.stdenv.isLinux [ pkgs.bitwarden-desktop ];
     };
 

@@ -1,6 +1,5 @@
 {
   config,
-  inputs,
   ...
 }:
 let
@@ -43,10 +42,6 @@ in
       home-manager.sharedModules = [
         flake.modules.homeManager."user/${username}-wsl"
       ];
-
-      hjem.extraModules = [
-        flake.modules.hjem."internal/hjem-profile-schema"
-      ];
       hjem.specialArgs = {
         inherit inputs upkgs;
       };
@@ -54,7 +49,7 @@ in
       hjem.users.${username} = {
         user = username;
         directory = "/home/${username}";
-        nixComputers.profile = "wsl";
+        imports = [ flake.modules.hjem."profile/wsl" ];
       };
 
       home-manager.users.${username}.home.homeDirectory = "/home/${username}";

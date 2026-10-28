@@ -10,7 +10,7 @@ in
       pkgs,
       ...
     }:
-    lib.mkIf (lib.elem "gtk" config.nixComputers.profileFeatures) {
+    {
       packages = [
         pkgs.adw-gtk3
         pkgs.papirus-icon-theme

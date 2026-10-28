@@ -3,7 +3,6 @@ let
   flake = config.flake;
   desktopConfig = config.nixComputers.desktop;
   theme = config.nixComputers.theme;
-  lib = inputs.nixpkgs.lib;
 in
 {
   config.perSystem =
@@ -111,7 +110,6 @@ in
 
   config.flake.modules.hjem."feature/noctalia" =
     {
-      config,
       lib,
       pkgs,
       ...
@@ -212,7 +210,7 @@ in
         // extra;
       };
     in
-    lib.mkIf (lib.elem "noctalia" config.nixComputers.profileFeatures) {
+    {
       packages = [
         flake.packages.${system}.noctalia-shell
         pkgs.nwg-look

@@ -56,7 +56,6 @@ in
 {
   flake.modules.nixos."feature/ghostty" =
     {
-      config,
       pkgs,
       ...
     }:
@@ -66,12 +65,11 @@ in
 
   flake.modules.hjem."feature/ghostty" =
     {
-      config,
       lib,
       pkgs,
       ...
     }:
-    lib.mkIf (lib.elem "ghostty" config.nixComputers.profileFeatures) {
+    {
       packages = lib.mkBefore [ (mkWrapper pkgs).wrapper ];
       xdg.config.files = ghosttyFiles { inherit pkgs; };
     };

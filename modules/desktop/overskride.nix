@@ -1,16 +1,11 @@
-{ config, ... }:
-let
-  flake = config.flake;
-in
+{ ... }:
 {
   flake.modules.hjem."feature/overskride" =
     {
-      config,
-      lib,
       pkgs,
       ...
     }:
-    lib.mkIf (lib.elem "overskride" config.nixComputers.profileFeatures) {
+    {
       packages = [ pkgs.overskride ];
       systemd.services.overskride = {
         description = "Overskride Bluetooth manager";

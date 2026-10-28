@@ -1,8 +1,8 @@
 { inputs, self, ... }:
 {
   flake.modules.hjem."feature/ai" =
-    { config, lib, ... }:
-    lib.mkIf (lib.elem "ai" config.nixComputers.profileFeatures) {
+    { lib, ... }:
+    {
       files = {
         ".pi/agent/subagent-manager/settings.json" = {
           type = "copy";

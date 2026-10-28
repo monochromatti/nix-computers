@@ -2,12 +2,10 @@
 {
   flake.modules.hjem."feature/applications" =
     {
-      config,
-      lib,
       pkgs,
       ...
     }:
-    lib.mkIf (lib.elem "apps" config.nixComputers.profileFeatures) {
+    {
       packages = with pkgs; [
         # Terminal
         wl-clipboard

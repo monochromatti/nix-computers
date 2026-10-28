@@ -268,13 +268,12 @@ in
 
   flake.modules.hjem."feature/zed" =
     {
-      config,
       lib,
       pkgs,
       upkgs,
       ...
     }:
-    lib.mkIf (lib.elem "zed" config.nixComputers.profileFeatures) {
+    {
       packages = [
         pkgs.package-version-server
         pkgs.just

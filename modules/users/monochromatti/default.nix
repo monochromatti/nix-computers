@@ -10,109 +10,33 @@ let
   users = flake.lib.users;
 in
 {
-  # Hjem extraModules are global, so import feature modules once and gate
-  # each feature through typed profile membership per user.
-  flake.modules.hjem."internal/hjem-profile-schema" =
-    { config, lib, ... }:
-    {
-      imports = [
-        flake.modules.hjem."feature/development"
-        flake.modules.hjem."feature/gtk"
-        flake.modules.hjem."feature/qt"
-        flake.modules.hjem."feature/noctalia"
-        flake.modules.hjem."feature/vicinae"
-        flake.modules.hjem."feature/overskride"
-        flake.modules.hjem."feature/security"
-        flake.modules.hjem."feature/virtualization"
-        flake.modules.hjem."feature/documents/diagrams"
-        flake.modules.hjem."feature/documents/publishing"
-        flake.modules.hjem."feature/development/cloud"
-        flake.modules.hjem."feature/virtualization/containers"
-        flake.modules.hjem."feature/shell/terminal"
-        flake.modules.hjem."feature/shell/direnv"
-        flake.modules.hjem."feature/documents"
-        flake.modules.hjem."feature/desktop"
-        flake.modules.hjem."feature/ghostty"
-        flake.modules.hjem."feature/monstar"
-        flake.modules.hjem."feature/zed"
-        flake.modules.hjem."feature/applications"
-        flake.modules.hjem."feature/ai"
-      ];
-      config.nixComputers.profileFeatures =
-        if config.nixComputers.profile == "workstation" then
-          [
-            "development"
-            "gtk"
-            "qt"
-            "noctalia"
-            "vicinae"
-            "overskride"
-            "security"
-            "virtualization"
-            "diagrams"
-            "publishing"
-            "cloud"
-            "containers"
-            "terminal"
-            "documents"
-            "desktop"
-            "ghostty"
-            "monstar"
-            "zed"
-            "apps"
-            "ai"
-          ]
-        else if config.nixComputers.profile == "wsl" then
-          [
-            "development"
-            "terminal"
-            "documents"
-            "ai"
-          ]
-        else
-          [ ];
-      options.nixComputers.profile = lib.mkOption {
-        type = lib.types.nullOr (
-          lib.types.enum [
-            "workstation"
-            "wsl"
-          ]
-        );
-        default = null;
-        description = "Personal Hjem package profile selected for this user.";
-      };
+  flake.modules.hjem."profile/wsl".imports = [
+    flake.modules.hjem."feature/development"
+    flake.modules.hjem."feature/shell/terminal"
+    flake.modules.hjem."feature/shell/direnv"
+    flake.modules.hjem."feature/documents"
+    flake.modules.hjem."feature/ai"
+  ];
 
-      options.nixComputers.profileFeatures = lib.mkOption {
-        type = lib.types.listOf (
-          lib.types.enum [
-            "development"
-            "gtk"
-            "qt"
-            "noctalia"
-            "vicinae"
-            "overskride"
-            "security"
-            "virtualization"
-            "diagrams"
-            "publishing"
-            "cloud"
-            "containers"
-            "terminal"
-            "documents"
-            "desktop"
-            "ghostty"
-            "monstar"
-            "zed"
-            "apps"
-            "ai"
-          ]
-        );
-        default = [ ];
-        internal = true;
-        description = "Feature membership supplied by selected profile.";
-      };
-
-    };
+  flake.modules.hjem."profile/workstation".imports = [
+    flake.modules.hjem."profile/wsl"
+    flake.modules.hjem."feature/gtk"
+    flake.modules.hjem."feature/qt"
+    flake.modules.hjem."feature/noctalia"
+    flake.modules.hjem."feature/vicinae"
+    flake.modules.hjem."feature/overskride"
+    flake.modules.hjem."feature/security"
+    flake.modules.hjem."feature/virtualization"
+    flake.modules.hjem."feature/documents/diagrams"
+    flake.modules.hjem."feature/documents/publishing"
+    flake.modules.hjem."feature/development/cloud"
+    flake.modules.hjem."feature/virtualization/containers"
+    flake.modules.hjem."feature/desktop"
+    flake.modules.hjem."feature/ghostty"
+    flake.modules.hjem."feature/monstar"
+    flake.modules.hjem."feature/zed"
+    flake.modules.hjem."feature/applications"
+  ];
 
   flake.modules.homeManager."profile/darwin" = {
     imports = [
@@ -171,10 +95,6 @@ in
       home-manager.sharedModules = [
         flake.modules.homeManager."user/${username}"
       ];
-
-      hjem.extraModules = [
-        flake.modules.hjem."internal/hjem-profile-schema"
-      ];
       hjem.specialArgs = {
         inherit inputs upkgs;
       };
@@ -182,7 +102,7 @@ in
       hjem.users.${username} = {
         user = username;
         directory = users.${username}.home.linux;
-        nixComputers.profile = "workstation";
+        imports = [ flake.modules.hjem."profile/workstation" ];
       };
 
       home-manager.users.${username}.home.homeDirectory = users.${username}.home.linux;

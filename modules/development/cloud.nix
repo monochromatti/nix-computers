@@ -2,12 +2,10 @@
 {
   flake.modules.hjem."feature/development/cloud" =
     {
-      config,
-      lib,
       pkgs,
       ...
     }:
-    lib.mkIf (lib.elem "cloud" config.nixComputers.profileFeatures) {
+    {
       packages = [ pkgs.azure-cli ];
     };
 

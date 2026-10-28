@@ -6,12 +6,10 @@ in
 {
   flake.modules.hjem."feature/desktop" =
     {
-      config,
-      lib,
       pkgs,
       ...
     }:
-    lib.mkIf (lib.elem "desktop" config.nixComputers.profileFeatures) {
+    {
       packages = [ (package { inherit pkgs; }) ];
     };
 

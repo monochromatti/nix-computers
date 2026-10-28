@@ -6,11 +6,10 @@ in
   flake.modules.hjem."feature/qt" =
     {
       config,
-      lib,
       pkgs,
       ...
     }:
-    lib.mkIf (lib.elem "qt" config.nixComputers.profileFeatures) {
+    {
       packages = [ pkgs.qt6Packages.qt6ct ];
       environment.sessionVariables.QT_QPA_PLATFORMTHEME = "qt6ct";
       xdg.config.files."qt6ct/qt6ct.conf" = {

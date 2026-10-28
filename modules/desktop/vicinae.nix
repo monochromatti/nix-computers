@@ -6,8 +6,6 @@ in
 {
   flake.modules.hjem."feature/vicinae" =
     {
-      config,
-      lib,
       pkgs,
       upkgs,
       ...
@@ -18,7 +16,7 @@ in
       niri = "${pkgs.niri}/bin/niri";
       systemctl = "${pkgs.systemd}/bin/systemctl";
     in
-    lib.mkIf (lib.elem "vicinae" config.nixComputers.profileFeatures) {
+    {
       packages = [ upkgs.vicinae ];
       xdg.config.files."vicinae/settings.json" = {
         source = (pkgs.formats.json { }).generate "vicinae-settings.json" {

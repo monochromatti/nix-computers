@@ -1,6 +1,5 @@
-{ config, inputs, ... }:
+{ inputs, ... }:
 let
-  flake = config.flake;
   packages =
     { pkgs, upkgs }:
     let
@@ -30,13 +29,11 @@ in
 {
   flake.modules.hjem."feature/development" =
     {
-      config,
-      lib,
       pkgs,
       upkgs,
       ...
     }:
-    lib.mkIf (lib.elem "development" config.nixComputers.profileFeatures) {
+    {
       packages = packages { inherit pkgs upkgs; };
     };
 
