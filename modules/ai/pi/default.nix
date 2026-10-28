@@ -183,7 +183,6 @@
         imports = [ baseSettingsModule ];
         config = {
           binName = "pi";
-          env.PI_OFFLINE = "1";
           settings = {
             inherit skills;
             packages = map (source: { source = toString source; }) config.pi.extensions ++ [
