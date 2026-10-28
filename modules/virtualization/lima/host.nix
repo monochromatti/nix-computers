@@ -216,7 +216,7 @@ in
     );
   };
 
-  config = lib.mkIf (cfg != { }) {
+  config = {
     perSystem =
       {
         pkgs,

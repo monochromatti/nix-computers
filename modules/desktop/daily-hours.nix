@@ -1,21 +1,17 @@
-{ config, inputs, ... }:
-let
-  flake = config.flake;
-in
+{ inputs, ... }:
 {
   flake.modules.nixos."feature/desktop/daily-hours" =
     {
       config,
-      lib,
       pkgs,
       ...
     }:
     let
       dailyHours = inputs.daily-hours.packages.${pkgs.stdenv.hostPlatform.system}.default;
       user = config.nixComputers.primaryUser;
-      home = if user == null then null else lib.attrByPath [ "users" "users" user "home" ] null config;
+      home = config.users.users.${user}.home;
     in
-    lib.mkIf (user != null && home != null) {
+    {
       systemd.services.daily-hours-work-session = {
         description = "daily-hours work session marker";
         wantedBy = [ "graphical.target" ];
