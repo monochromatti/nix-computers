@@ -277,8 +277,6 @@ in
       packages = [
         pkgs.package-version-server
         pkgs.just
-      ]
-      ++ lib.optionals pkgs.stdenv.isLinux [
         (mkZed { inherit pkgs upkgs; })
       ];
       xdg.config.files."zed/settings.json" = {
@@ -303,13 +301,11 @@ in
       ...
     }:
     {
-      home.packages = lib.mkBefore (
-        lib.optionals pkgs.stdenv.isDarwin [
-          pkgs.package-version-server
-          pkgs.just
-        ]
-      );
-      programs.zed-editor = lib.mkIf pkgs.stdenv.isDarwin {
+      home.packages = lib.mkBefore [
+        pkgs.package-version-server
+        pkgs.just
+      ];
+      programs.zed-editor = {
         enable = true;
         package = mkZed { inherit pkgs upkgs; };
         mutableUserSettings = false;

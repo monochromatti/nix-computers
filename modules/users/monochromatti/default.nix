@@ -1,7 +1,6 @@
 {
   config,
   inputs,
-  lib,
   ...
 }:
 let
@@ -49,27 +48,16 @@ in
       flake.modules.homeManager."feature/virtualization"
       flake.modules.homeManager."feature/documents/publishing"
       flake.modules.homeManager."feature/development"
-
+      flake.modules.homeManager."feature/ghostty"
       flake.modules.homeManager."feature/zed"
     ];
   };
 
   flake.modules.homeManager."user/${username}" =
+    { config, ... }:
     {
-      config,
-      pkgs,
-      ...
-    }:
-    {
-      imports = [ flake.modules.homeManager."feature/ghostty" ];
-
       programs = {
         home-manager.enable = true;
-        ssh = lib.mkIf pkgs.stdenv.isDarwin {
-          enable = true;
-          enableDefaultConfig = false;
-          settings."*".WarnWeakCrypto = "no";
-        };
         zsh.dotDir = config.home.homeDirectory;
       };
 
@@ -130,6 +118,10 @@ in
       directory = users.${username}.home.darwin;
     };
 
-    home-manager.users.${username} = { };
+    home-manager.users.${username}.programs.ssh = {
+      enable = true;
+      enableDefaultConfig = false;
+      settings."*".WarnWeakCrypto = "no";
+    };
   };
 }

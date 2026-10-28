@@ -5,62 +5,79 @@ let
   nixAccessTokensPath = "/etc/nix/access-tokens.conf";
   users = flake.lib.users;
 
-  secretsModule =
+  mkSecretsModule =
+    {
+      primaryUser,
+      userHome,
+      tokensGroup,
+    }:
     {
       config,
-      lib,
       pkgs,
+      lib,
       ...
     }:
-    with lib;
-    let
-      primaryUser =
-        if pkgs.stdenv.isDarwin then config.system.primaryUser else config.nixComputers.primaryUser;
-      userHome =
-        if pkgs.stdenv.isDarwin then users.${primaryUser}.home.darwin else users.${primaryUser}.home.linux;
-    in
     {
-      config = {
-        environment.systemPackages = [ pkgs.secretspec ];
+      environment.systemPackages = [ pkgs.secretspec ];
 
-        home-manager.sharedModules = lib.optional pkgs.stdenv.isDarwin {
-          home.packages = [ pkgs.sops ];
-        };
-
-        environment.variables = lib.mkIf pkgs.stdenv.isDarwin {
-          SOPS_AGE_KEY_FILE = "${userHome}/.config/sops/age/keys.txt";
-        };
-
-        sops.secrets.chatgpt-api-key = {
-          key = "monochromatti/chatgpt-api-key";
-          owner = primaryUser;
-          mode = "0400";
-          path = "/run/secrets/chatgpt-api-key";
-        };
-
-        sops = {
-          age.keyFile = mkForce "${userHome}/.config/sops/age/keys.txt";
-          age.sshKeyPaths = [ ];
-          gnupg.sshKeyPaths = [ ];
-          defaultSopsFile = mkForce secretsFile;
-
-          templates."nix-access-tokens" = {
-            content = ''
-              access-tokens = github.com=${config.sops.placeholder.github-token}
-            '';
-            path = nixAccessTokensPath;
-            owner = "root";
-            group = if pkgs.stdenv.isDarwin then "staff" else "root";
-            mode = "0640";
-          };
-        };
-        nix.extraOptions = ''
-          !include ${nixAccessTokensPath}
-        '';
+      sops.secrets.chatgpt-api-key = {
+        key = "monochromatti/chatgpt-api-key";
+        owner = primaryUser;
+        mode = "0400";
+        path = "/run/secrets/chatgpt-api-key";
       };
+
+      sops = {
+        age.keyFile = lib.mkForce "${userHome}/.config/sops/age/keys.txt";
+        age.sshKeyPaths = [ ];
+        gnupg.sshKeyPaths = [ ];
+        defaultSopsFile = lib.mkForce secretsFile;
+
+        templates."nix-access-tokens" = {
+          content = ''
+            access-tokens = github.com=${config.sops.placeholder.github-token}
+          '';
+          path = nixAccessTokensPath;
+          owner = "root";
+          group = tokensGroup;
+          mode = "0640";
+        };
+      };
+      nix.extraOptions = ''
+        !include ${nixAccessTokensPath}
+      '';
     };
 in
 {
-  flake.modules.darwin."feature/secrets" = secretsModule;
-  flake.modules.nixos."feature/secrets" = secretsModule;
+  flake.modules.darwin."feature/secrets" =
+    { config, pkgs, ... }:
+    let
+      primaryUser = config.system.primaryUser;
+      userHome = users.${primaryUser}.home.darwin;
+    in
+    {
+      imports = [
+        (mkSecretsModule {
+          inherit primaryUser userHome;
+          tokensGroup = "staff";
+        })
+      ];
+      home-manager.sharedModules = [ { home.packages = [ pkgs.sops ]; } ];
+      environment.variables.SOPS_AGE_KEY_FILE = "${userHome}/.config/sops/age/keys.txt";
+    };
+
+  flake.modules.nixos."feature/secrets" =
+    { config, ... }:
+    let
+      primaryUser = config.nixComputers.primaryUser;
+    in
+    {
+      imports = [
+        (mkSecretsModule {
+          inherit primaryUser;
+          userHome = users.${primaryUser}.home.linux;
+          tokensGroup = "root";
+        })
+      ];
+    };
 }

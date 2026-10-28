@@ -1,31 +1,30 @@
 { ... }:
 let
-  mkDirenvPackage =
+  darwinDirenvPackage =
     pkgs:
-    if pkgs.stdenv.isDarwin then
-      pkgs.direnv.overrideAttrs (_: {
-        checkPhase = ''
-          runHook preCheck
-          make test-go test-bash test-zsh
-          runHook postCheck
-        '';
-      })
-    else
-      pkgs.direnv;
+    pkgs.direnv.overrideAttrs (_: {
+      checkPhase = ''
+        runHook preCheck
+        make test-go test-bash test-zsh
+        runHook postCheck
+      '';
+    });
 
-  direnvModule =
-    { pkgs, ... }:
-    {
-      programs.direnv = {
-        enable = true;
-        package = mkDirenvPackage pkgs;
-        nix-direnv.enable = true;
-        silent = true;
-      };
+  direnvModule = {
+    programs.direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+      silent = true;
     };
+  };
 in
 {
-  flake.modules.darwin."feature/shell/direnv" = direnvModule;
+  flake.modules.darwin."feature/shell/direnv" =
+    { pkgs, ... }:
+    {
+      imports = [ direnvModule ];
+      programs.direnv.package = darwinDirenvPackage pkgs;
+    };
   flake.modules.nixos."feature/shell/direnv" = direnvModule;
   flake.modules.hjem."feature/shell/direnv" = {
     xdg.config.files."direnv/direnv.toml".text = ''
