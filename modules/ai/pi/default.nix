@@ -123,8 +123,8 @@
 
           settings = {
             defaultProvider = "azure";
-            defaultModel = "gpt-6-luna";
-            defaultThinkingLevel = "high";
+            defaultModel = "gpt-6.1-terra";
+            defaultThinkingLevel = "medium";
           };
         };
       };
