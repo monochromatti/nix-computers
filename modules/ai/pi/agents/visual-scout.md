@@ -2,8 +2,8 @@
 name: visual-scout
 description: Read-only reconnaissance that requires inspecting images; vision-capable
 icon: ""
-models: [azure/gpt-6-luna]
-thinkingLevel: low
+models: [azure/gpt-6.1-terra]
+thinkingLevel: medium
 tools:
   allow: [read, grep, find, ls, bash, agent_update, agent_pause]
 ---
