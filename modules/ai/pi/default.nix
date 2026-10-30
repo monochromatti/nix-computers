@@ -4,10 +4,12 @@
     { lib, ... }:
     {
       files = {
-        ".pi/agent/subagent-manager/settings.json" = {
-          type = "copy";
-          source = ./subagent-settings.json;
-          clobber = false;
+        ".pi/agent/extensions/subagent/config.json" = {
+          text = builtins.toJSON {
+            maxSubagentDepth = 1;
+            defaultSubagentContext = "fresh";
+          };
+          clobber = true;
         };
         ".pi/agent/web-search.json" = {
           text = builtins.toJSON {
@@ -25,9 +27,9 @@
           })
           {
             ".pi/agent/SYSTEM.md" = ./SYSTEM.md;
+            ".pi/agent/APPEND_SYSTEM.md" = ./APPEND_SYSTEM.md;
             ".pi/agent/keybindings.json" = ./keybindings.json;
           };
-            ".pi/agent/APPEND_SYSTEM.md" = ./APPEND_SYSTEM.md;
     };
 
   perSystem =
@@ -40,9 +42,6 @@
     let
       system = pkgs.stdenv.hostPlatform.system;
 
-      mkPi =
-        module:
-        (inputs.agents.packages.${system}.pi.configuration.apply {
       manualOnly =
         src: pattern:
         pkgs.runCommand (src.name or "manual-only") { } ''
@@ -50,6 +49,9 @@
           find $out -type f -path "${pattern}" -exec sed -i "0,/^---$/s//---\ndisable-model-invocation: true/" {} +
         '';
 
+      mkPi =
+        module:
+        (inputs.agents.packages.${system}.pi.configuration.apply {
           imports = [ module ];
         }).wrapper;
 
