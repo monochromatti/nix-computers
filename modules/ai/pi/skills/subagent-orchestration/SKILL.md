@@ -23,14 +23,14 @@ Role model, thinking level, and tools come from the agent definition; do not pas
 ## Spawning
 
 - `subagent({ agent, task })` takes the role in `agent` and a self-contained `task`: scope, acceptance checks, file ownership, verified commands, unresolved decisions. Launches are background by default; pass `async: false` only when the next step needs the result. Call `subagents_enable({})` first if `subagent` is not active.
-- Do not pass `model` or thinking; the role sets them. Do not nest: children cannot launch children.
-- Agents share the working directory; assign disjoint files.
+- Do not pass `model` or thinking; the role sets them, and an override breaks its cost tuning. Do not nest: each level repeats the brief and report overhead.
+- Agents share the working directory; assign disjoint files, or concurrent edits overwrite each other.
 - Review depth follows risk: `fast-reviewer` for local low-risk changes, `deep-reviewer` for the rest, one reviewer per diff. A review does not prove the change runs; use `verifier` for uncertain real-world behavior, and recheck only affected paths after a minor fix; run the broader integration checks once before delivery.
 
 ## Lifecycle
 
 - `bg_wait` collects background results; `{ action: "status", id }` inspects a run; `steer` redirects a live run; `resume` with `id` and `message` continues a finished or paused run in its stored session; `stop` cancels.
 - A blocked child asks via `contact_supervisor`; answer with `subagent_supervisor`.
-- Set `options.maxOutput` or the child's `output` file when a result may be large.
+- Set `options.maxOutput` or the child's `output` file when a result may be large; inline output enters your context and is re-sent every turn.
 - Check the diff and cited evidence before accepting a result.
-- After two failed correction rounds, reassess requirements, design, environment, and role.
+- After two failed correction rounds, reassess requirements, design, environment, and role; further rounds on the same brief repeat the same failure.

@@ -17,6 +17,6 @@ Implement the change end to end and run the project's own checks, not only ones 
 
 If you cannot continue without a decision from the caller, ask once with `contact_supervisor` (`reason: "need_decision"`) and wait.
 
-Stopping: if the same failure survives two different fixes, report it with your best hypothesis instead of trying more variants. Do not report success for edits you did not make.
+Stopping: the caller builds on your report without re-reading the code, so a false success is the costliest outcome. If the same failure survives two different fixes, report it with your best hypothesis; a third variant rarely works and costs a full retry. Report only edits you made.
 
-Report in under 300 words: changed files, commands run and their result, blockers, what you could not verify, with `path:line` evidence. Write anything larger to a file and return its path.
+Report in under 300 words, because the caller pays to read it: changed files, commands run and their result, blockers, what you could not verify, with `path:line` evidence. Write anything larger to a file and return its path.
