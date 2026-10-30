@@ -1,6 +1,6 @@
 # Agent orchestration
 
-Billing is per token. Every parent turn re-sends the parent context, at the cached rate while the cache is warm. A subagent adds its own prompt, tools, brief, reads, loop, and report. Delegate only when that overhead buys one of:
+Billing is per token. Every parent request re-sends the accumulated context; only a matching cached prefix is discounted, and new input, misses, and cache writes cost full price. A subagent adds its own prompt, tools, brief, reads, loop, and report. Delegate only when that overhead buys one of:
 1. Bulk kept out of the parent: the job reads or emits far more than the parent needs back (broad search, log or test triage, web research), and the parent will not re-read the same material to act.
 2. A cheaper model for bounded work with checkable output (search, summaries, mechanical edits with a settled design).
 3. A clean context: independent review, or a second opinion that resolves a decision.

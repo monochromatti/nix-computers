@@ -25,7 +25,7 @@ Role model, thinking level, and tools come from the agent definition; do not pas
 - `subagent({ agent, task })` takes the role in `agent` and a self-contained `task`: scope, acceptance checks, file ownership, verified commands, unresolved decisions. Launches are background by default; pass `async: false` only when the next step needs the result. Call `subagents_enable({})` first if `subagent` is not active.
 - Do not pass `model` or thinking; the role sets them. Do not nest: children cannot launch children.
 - Agents share the working directory; assign disjoint files.
-- Review depth follows risk: `fast-reviewer` for local low-risk changes, `deep-reviewer` for the rest, one reviewer per diff. A review does not prove the change runs; use `verifier` for uncertain real-world behavior, and recheck only affected paths after a minor fix.
+- Review depth follows risk: `fast-reviewer` for local low-risk changes, `deep-reviewer` for the rest, one reviewer per diff. A review does not prove the change runs; use `verifier` for uncertain real-world behavior, and recheck only affected paths after a minor fix; run the broader integration checks once before delivery.
 
 ## Lifecycle
 
