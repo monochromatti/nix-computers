@@ -42,15 +42,22 @@
       mkPi =
         module:
         (inputs.agents.packages.${system}.pi.configuration.apply {
+      manualOnly =
+        src: pattern:
+        pkgs.runCommand (src.name or "manual-only") { } ''
+          cp -rL --no-preserve=mode ${src} $out
+          find $out -type f -path "${pattern}" -exec sed -i "0,/^---$/s//---\ndisable-model-invocation: true/" {} +
+        '';
+
           imports = [ module ];
         }).wrapper;
 
-      anatomySkillSource = pkgs.fetchFromGitHub {
+      anatomySkillSource = manualOnly (pkgs.fetchFromGitHub {
         owner = "wheresryan22";
         repo = "anatomy";
         rev = "dbf697a527bbf7d358668e1557cb1e35ff725d46";
         hash = "sha256-YrftHzMQPHrHY/iVnWXGxst+PRwu+PDTqgpZAHhkzDo=";
-      };
+      }) "*/SKILL.md";
 
       typedbSkillsSource = pkgs.fetchFromGitHub {
         owner = "typedb";
@@ -59,10 +66,10 @@
         hash = "sha256-DKyKI1OeCC55bJxLBwae5sg2ngtfabjIaNp80Syl3kw=";
       };
 
-      showMeSkill = pkgs.fetchurl {
+      showMeSkill = manualOnly (pkgs.fetchurl {
         url = "https://raw.githubusercontent.com/humanlayer/skills/653b6411c1f70c275a18e37673b042ff99f67ceb/plugins/show-me/skills/show-me/SKILL.md";
         hash = "sha256-Q0ojRsyV4xOw02fUd92i4jumQt0hgXV0FaCVAGZK8QA=";
-      };
+      }) "*";
 
       enabledFornybarSkills = [
         "ast-grep"
@@ -74,7 +81,7 @@
         "teach-me"
       ];
 
-      typedbSkills = pkgs.linkFarm "typedb-skills" [
+      typedbSkills = manualOnly (pkgs.linkFarm "typedb-skills" [
         {
           name = "typedb-modeling.md";
           path = "${typedbSkillsSource}/modeling.md";
@@ -83,7 +90,7 @@
           name = "typedb-typeql.md";
           path = "${typedbSkillsSource}/typeql.md";
         }
-      ];
+      ]) "*.md";
 
       baseSettingsModule = {
         config = {

@@ -19,6 +19,9 @@
         installPhase = ''
           mkdir -p "$out"
           cp -R ./. "$out/"
+          for f in "$out"/skills/ponytail-*/SKILL.md; do
+            sed -i "0,/^---$/s//---\ndisable-model-invocation: true/" "$f"
+          done
         '';
 
         meta = {

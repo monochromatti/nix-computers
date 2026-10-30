@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: straight-prose 
 description: "Use to avoid obscure and annoying language, to help keep text clear and comprensible."
 license: MIT

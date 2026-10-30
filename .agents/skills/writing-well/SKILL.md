@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: writing-well
 description: "Use for drafting or editing articles, essays, documentation, reports, emails, product copy, and other prose that must be clear and worth reading. Apply when prose feels generic, inflated, repetitive, hard to follow, or like AI slop."
 license: MIT
