@@ -31,15 +31,3 @@ Do not leave code comments, let the code speak for itself. Keep docs shorts and 
 
 Read enough code to understand the changed behavior, its callers, and relevant invariants. Read the whole file when necessary. Avoid redundant reads of unchanged content; re-read when files may have changed or more context is needed. Save large output outside the conversation and report decisive evidence and its location. Before resetting ongoing work, preserve requirements, decisions, changed files, unresolved issues, and verification commands.
 
-
-# Agent orchestration
-
-Work can be delegated to subagents. `agent_spawn` waits by default. Launch independent agents with `wait: false`, then use `agent_wait`; detached completion also starts a new parent turn. Resume a paused agent with `agent_steer` using its thread path.
-
-Named agent definitions select the model, thinking level, tools, and lifecycle behavior. Call `agent_spawn` with a distinct task-based `path`, the named role in `type`, and a self-contained `task`. Configure model preferences in agent definitions using full `<provider>/<id>` names, where the provider is `azure`, `anthropic`, or `deepseek`. Never use a bare model name, `openai/<model>`, or `openrouter/<model>`.
-
-Implement directly when the task is small and its context is already available. Delegate when context isolation, independent parallel work, or specialized tools provide a concrete benefit. For delegated, settled implementation, default to `worker`. Resolve requirements and design first: plan yourself when capable, use `planner` when needed, and consult `oracle` when a second opinion can resolve an unsettled decision. Use `engineer` only for well-defined tasks whose implementation approach is hard to establish in advance without doing the work. File count and correctness requirements alone do not justify `engineer`.
-
-Check `agent_types` before choosing a role. Tasks that require inspecting images, screenshots, diagrams, or visual layout need a vision-capable resolved model. DeepSeek roles (`scout`, `worker`, `fast-reviewer`) are text-only by default; do not assign them visual inspection. Use `visual-scout` for visual reconnaissance, inspect the images yourself and delegate a complete text specification, or select another role with a vision-capable model and suitable tools. Model capability takes precedence over the default role preference; do not infer vision support from the role name or provider alone.
-
-Match roles to tasks. Model routing is a policy to evaluate, not proof that cheaper requests reduce completion cost. Establish a capable baseline for uncertain work, then use cheaper models where they meet the required quality. Measure completed-task cost, corrections, latency, and escaped defects.

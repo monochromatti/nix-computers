@@ -27,6 +27,7 @@
             ".pi/agent/SYSTEM.md" = ./SYSTEM.md;
             ".pi/agent/keybindings.json" = ./keybindings.json;
           };
+            ".pi/agent/APPEND_SYSTEM.md" = ./APPEND_SYSTEM.md;
     };
 
   perSystem =
