@@ -25,6 +25,13 @@
           };
           clobber = true;
         };
+        ".pi-home/agent/web-search.json" = {
+          text = builtins.toJSON {
+            provider = "opencode-go";
+            model = "gpt-6-luna";
+          };
+          clobber = true;
+        };
       }
       //
         lib.mapAttrs
