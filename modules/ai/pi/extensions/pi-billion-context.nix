@@ -1,5 +1,15 @@
 { ... }:
 {
+  flake.modules.hjem."feature/ai".files.".pi/acp.json" = {
+    text = builtins.toJSON {
+      compress = {
+        maxContextLimit = "85%";
+        nudgeGrowthTokens = 100000;
+      };
+    };
+    clobber = true;
+  };
+
   perSystem =
     { pkgs, lib, ... }:
     {
