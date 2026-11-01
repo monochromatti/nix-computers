@@ -10,7 +10,6 @@ let
     window-padding-x = 8;
     window-padding-y = 8;
     cursor-style = "block";
-    background-opacity = theme.opacity;
     background-opacity-cells = true;
   };
   linuxSettings = sharedSettings // {
@@ -86,8 +85,6 @@ in
         settings = sharedSettings // {
           # Keep macOS Ghostty text larger than shared desktop font size.
           font-size = 16;
-          background-blur = "macos-glass-regular";
-          macos-titlebar-style = "transparent";
         };
       };
     };
