@@ -32,6 +32,7 @@ in
         name = "ai";
         paths = [
           config.packages.pi
+          config.packages.pi-home
           config.packages."delta-duck-query"
           pkgs.playwright-test
           config.packages.tautology-triage

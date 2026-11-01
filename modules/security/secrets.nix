@@ -20,6 +20,13 @@ let
     {
       environment.systemPackages = [ pkgs.secretspec ];
 
+      sops.secrets.opencode-api-key = {
+        key = "monochromatti/opencode-api-key";
+        owner = primaryUser;
+        mode = "0400";
+        path = "/run/secrets/opencode-api-key";
+      };
+
       sops.secrets.chatgpt-api-key = {
         key = "monochromatti/chatgpt-api-key";
         owner = primaryUser;

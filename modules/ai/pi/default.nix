@@ -11,6 +11,13 @@
           };
           clobber = true;
         };
+        ".pi-home/agent/extensions/subagent/config.json" = {
+          text = builtins.toJSON {
+            maxSubagentDepth = 1;
+            defaultSubagentContext = "fresh";
+          };
+          clobber = true;
+        };
         ".pi/agent/web-search.json" = {
           text = builtins.toJSON {
             provider = "azure";
@@ -29,6 +36,9 @@
             ".pi/agent/SYSTEM.md" = ./SYSTEM.md;
             ".pi/agent/APPEND_SYSTEM.md" = ./APPEND_SYSTEM.md;
             ".pi/agent/keybindings.json" = ./keybindings.json;
+            ".pi-home/agent/SYSTEM.md" = ./SYSTEM.md;
+            ".pi-home/agent/APPEND_SYSTEM.md" = ./APPEND_SYSTEM.md;
+            ".pi-home/agent/keybindings.json" = ./keybindings.json;
           };
     };
 
@@ -164,6 +174,10 @@
         skills = [ ];
       };
 
+      piPackages = map (source: { source = toString source; }) config.pi.extensions ++ [
+        piExtensionsPackage
+        piAgentsPackage
+      ];
     in
     {
       options.pi.extensions = lib.mkOption {
@@ -189,16 +203,76 @@
         meta.description = "Start Chrome for the Pi Chrome DevTools MCP";
       };
 
+      config.packages.pi-home = mkPi (
+        { config, ... }:
+        {
+          binName = "pi-home";
+          filesToExclude = [ "bin/pi" ];
+          models.providers = lib.mkForce {
+            opencode-go.apiKey = "!cat /run/secrets/opencode-api-key";
+          };
+          mcp.enabled = lib.mkForce [ ];
+          agents.skills = lib.mkForce { };
+          settings = {
+            defaultProvider = "opencode-go";
+            defaultModel = "deepseek-v4.1-flash";
+            defaultThinkingLevel = "medium";
+            enabledModels = [
+              "opencode-go/deepseek-v4.1-flash"
+              "opencode-go/*"
+            ];
+            inherit skills;
+            packages = piPackages;
+            subagents.modelScope = {
+              enforce = true;
+              strict = true;
+              allow = [ "opencode-go/*" ];
+            };
+            subagents.agentOverrides =
+              lib.genAttrs
+                [
+                  "scout"
+                  "planner"
+                  "oracle"
+                  "engineer"
+                  "visual-scout"
+                  "verifier"
+                  "worker"
+                  "deep-reviewer"
+                  "researcher"
+                  "fast-reviewer"
+                ]
+                (_: {
+                  model = "inherit";
+                });
+          };
+          preHook = lib.mkForce ''
+            unset AZURE_API_KEY AZURE_OPENAI_API_KEY AZURE_OPENAI_BASE_URL AZURE_OPENAI_RESOURCE_NAME
+            export PI_CODING_AGENT_DIR="$HOME/.pi-home/agent"
+            if [ "$(id -u)" -eq 0 ]; then
+              echo "pi-home must not run as root" >&2
+              exit 1
+            fi
+            npm_prefix="''${XDG_DATA_HOME:-$HOME/.local/share}/npm"
+            npm_cache="''${XDG_CACHE_HOME:-$HOME/.cache}/npm"
+            npm_userconfig="''${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc"
+            mkdir -p "$npm_prefix" "$npm_cache" "$(dirname "$npm_userconfig")" "$PI_CODING_AGENT_DIR"
+            export NPM_CONFIG_PREFIX="$npm_prefix" NPM_CONFIG_CACHE="$npm_cache" NPM_CONFIG_USERCONFIG="$npm_userconfig"
+            export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
+            install -m 644 ${toString config."models.json".path} "$PI_CODING_AGENT_DIR/models.json"
+            install -m 644 ${toString config."settings.json".path} "$PI_CODING_AGENT_DIR/settings.json"
+            install -m 644 ${toString config."mcp.json".path} "$PI_CODING_AGENT_DIR/mcp.json"
+          '';
+        }
+      );
+
       config.packages.pi = mkPi {
         imports = [ baseSettingsModule ];
         config = {
           binName = "pi";
           settings = {
             inherit skills;
-            packages = map (source: { source = toString source; }) config.pi.extensions ++ [
-              piExtensionsPackage
-              piAgentsPackage
-            ];
+            packages = piPackages;
           };
         };
       };
