@@ -55,6 +55,7 @@ let
     "basher"
     "log"
     "html"
+    "graphql"
     "sql"
     "just"
     "rainbow-csv"
