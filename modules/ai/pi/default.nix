@@ -168,11 +168,9 @@
           "packages/pi-tree-map/index.ts"
           "packages/pi-answer/index.ts"
           "packages/pi-zed-context/index.ts"
-          "packages/pi-canvas/index.ts"
         ];
         skills = [
           "packages/pi-zed-context/skills/**"
-          "packages/pi-canvas/skills/**"
         ];
       };
 
