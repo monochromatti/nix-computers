@@ -142,7 +142,6 @@
           agents.skillSources = [
             "${anatomySkillSource}"
             "${self}/.agents/skills"
-            ./skills
           ];
           agents.skills = lib.genAttrs enabledFornybarSkills (_: {
             enable = true;
@@ -209,8 +208,15 @@
       };
 
       config.packages.pi-home = mkPi (
-        { config, ... }:
+        { ... }:
         {
+          imports = [
+            {
+              preHook = lib.mkBefore ''
+                export PI_CODING_AGENT_DIR="$HOME/.pi-home/agent"
+              '';
+            }
+          ];
           binName = "pi-home";
           filesToExclude = [ "bin/pi" ];
           models.providers = lib.mkForce {
@@ -233,40 +239,9 @@
               strict = true;
               allow = [ "opencode-go/*" ];
             };
-            subagents.agentOverrides =
-              lib.genAttrs
-                [
-                  "scout"
-                  "planner"
-                  "oracle"
-                  "engineer"
-                  "visual-scout"
-                  "verifier"
-                  "worker"
-                  "deep-reviewer"
-                  "researcher"
-                  "fast-reviewer"
-                ]
-                (_: {
-                  model = "inherit";
-                });
           };
-          preHook = lib.mkForce ''
+          preHook = lib.mkOrder 700 ''
             unset AZURE_API_KEY AZURE_OPENAI_API_KEY AZURE_OPENAI_BASE_URL AZURE_OPENAI_RESOURCE_NAME
-            export PI_CODING_AGENT_DIR="$HOME/.pi-home/agent"
-            if [ "$(id -u)" -eq 0 ]; then
-              echo "pi-home must not run as root" >&2
-              exit 1
-            fi
-            npm_prefix="''${XDG_DATA_HOME:-$HOME/.local/share}/npm"
-            npm_cache="''${XDG_CACHE_HOME:-$HOME/.cache}/npm"
-            npm_userconfig="''${XDG_CONFIG_HOME:-$HOME/.config}/npm/npmrc"
-            mkdir -p "$npm_prefix" "$npm_cache" "$(dirname "$npm_userconfig")" "$PI_CODING_AGENT_DIR"
-            export NPM_CONFIG_PREFIX="$npm_prefix" NPM_CONFIG_CACHE="$npm_cache" NPM_CONFIG_USERCONFIG="$npm_userconfig"
-            export PATH="$NPM_CONFIG_PREFIX/bin:$PATH"
-            install -m 644 ${toString config."models.json".path} "$PI_CODING_AGENT_DIR/models.json"
-            install -m 644 ${toString config."settings.json".path} "$PI_CODING_AGENT_DIR/settings.json"
-            install -m 644 ${toString config."mcp.json".path} "$PI_CODING_AGENT_DIR/mcp.json"
           '';
         }
       );

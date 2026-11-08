@@ -13,4 +13,4 @@ A brief states the goal, paths, constraints, scope limit, stop condition, and a 
 
 Give agents a self-contained brief and `context: "fresh"`. Fork only when the brief would need most of a short conversation and the child uses the parent's model; a fork on another model re-bills that conversation uncached. Send follow-ups with `resume` or `steer` to the run that already holds the context. Treat cited findings as done; verify only what decides the outcome.
 
-Plan yourself; use `planner` for unsettled multi-step design and `oracle` only to resolve a decision. Choose roles by cost per accepted result, not price per token: retries and corrections can make a cheap model dearer.
+Plan yourself; consult `oracle` only to challenge a consequential decision. Choose roles by cost per accepted result, not price per token: retries and corrections can make a cheap model dearer.
