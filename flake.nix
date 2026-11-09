@@ -1,12 +1,19 @@
 {
   description = "Unified nix-darwin and NixOS configuration";
 
-  nixConfig.flake-registry = "https://raw.githubusercontent.com/fornybar/registry/nixos-26.05/registry.json";
+  nixConfig = {
+    flake-registry = "https://raw.githubusercontent.com/fornybar/registry/nixos-26.05/registry.json";
+    extra-substituters = [ "https://noctalia.cachix.org" ];
+    extra-trusted-public-keys = [
+      "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+    ];
+  };
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
+    noctalia.url = "github:noctalia-dev/noctalia/cachix";
 
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";

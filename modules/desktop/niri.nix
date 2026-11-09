@@ -114,6 +114,12 @@ in
 
         # Noctalia Battery widget reads device state via UPower.
         services.upower.enable = true;
+        nix.settings = {
+          extra-substituters = [ "https://noctalia.cachix.org" ];
+          extra-trusted-public-keys = [
+            "noctalia.cachix.org-1:pCOR47nnMEo5thcxNDtzWpOxNFQsBRglJzxWPp3dkU4="
+          ];
+        };
       };
     };
 
@@ -125,23 +131,17 @@ in
         "toggle"
       ];
       "Mod+L".spawn = [
-        "noctalia-shell"
-        "ipc"
-        "--any-display"
-        "-n"
-        "call"
-        "sessionMenu"
+        "noctalia"
+        "msg"
+        "session"
         "lock"
       ];
       "Mod+Shift+S".screenshot = null;
       "Super+Shift+S".screenshot = null;
       "XF86ScreenSaver".spawn = [
-        "noctalia-shell"
-        "ipc"
-        "--any-display"
-        "-n"
-        "call"
-        "sessionMenu"
+        "noctalia"
+        "msg"
+        "session"
         "lock"
       ];
       "Print".screenshot = null;

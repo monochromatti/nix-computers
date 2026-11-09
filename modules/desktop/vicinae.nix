@@ -1,6 +1,5 @@
-{ config, ... }:
+{ config, inputs, ... }:
 let
-  flake = config.flake;
   theme = config.nixComputers.theme;
 in
 {
@@ -12,7 +11,14 @@ in
     }:
     let
       system = pkgs.stdenv.hostPlatform.system;
-      noctaliaShell = "${flake.packages.${system}.noctalia-shell}/bin/noctalia-shell";
+      noctalia = "${inputs.noctalia.packages.${system}.default}/bin/noctalia";
+      guardedSuspend = pkgs.writeShellApplication {
+        name = "noctalia-lock-and-suspend";
+        runtimeInputs = [ pkgs.jq ];
+        text = ''
+          exec ${pkgs.bash}/bin/bash ${./noctalia-lock-and-suspend.sh} ${noctalia}
+        '';
+      };
       niri = "${pkgs.niri}/bin/niri";
       systemctl = "${pkgs.systemd}/bin/systemctl";
     in
@@ -27,15 +33,15 @@ in
           launcher_window.layer_shell.enabled = false;
           providers.power.entrypoints = {
             lock.preferences = {
-              customProgram = "${noctaliaShell} ipc --any-display -n call sessionMenu lock";
+              customProgram = "${noctalia} msg session lock";
               confirm = false;
             };
             suspend.preferences = {
-              customProgram = "${noctaliaShell} ipc --any-display -n call sessionMenu lockAndSuspend";
+              customProgram = "${guardedSuspend}/bin/noctalia-lock-and-suspend";
               confirm = true;
             };
             sleep.preferences = {
-              customProgram = "${noctaliaShell} ipc --any-display -n call sessionMenu lockAndSuspend";
+              customProgram = "${guardedSuspend}/bin/noctalia-lock-and-suspend";
               confirm = true;
             };
             hibernate.preferences = {

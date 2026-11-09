@@ -1,194 +1,121 @@
 { config, inputs, ... }:
 let
-  flake = config.flake;
   desktopConfig = config.nixComputers.desktop;
   theme = config.nixComputers.theme;
 in
 {
-  config.perSystem =
-    { pkgs, upkgs, ... }:
-    {
-      packages = pkgs.lib.optionalAttrs pkgs.stdenv.isLinux {
-        noctalia-shell =
-          let
-            noctaliaQsFixed = upkgs.noctalia-qs.overrideAttrs (_: rec {
-              version = "0.0.12";
-              src = pkgs.fetchFromGitHub {
-                owner = "noctalia-dev";
-                repo = "noctalia-qs";
-                tag = "v${version}";
-                hash = "sha256-79JP2QTdvp1jg7HGxAW+xzhzhLnlKUi8yGXq9nDCeH0=";
-              };
-              patches = [ ];
-            });
-          in
-          inputs.wrappers.lib.wrapPackage {
-            inherit pkgs;
-            package = upkgs.noctalia-shell.override { noctalia-qs = noctaliaQsFixed; };
-          };
-      };
-    };
-
   config.nixComputers.desktop.noctalia.settings = {
-    settingsVersion = 59;
-    general = {
-      radiusRatio = 1.0;
-      iRadiusRatio = 1.0;
+    shell = {
+      font_family = theme.font.sans;
+      setup_wizard_enabled = false;
+      corner_radius_scale = 1.0;
+      launch_apps_as_systemd_services = true;
+      panel.transparency_mode = "soft";
     };
-    bar = {
-      showCapsule = false;
-      backgroundOpacity = 0.9;
-      frameRadius = 12;
-      widgetSpacing = 6;
-      widgets = {
-        left = [
-          {
-            id = "CustomButton";
-            icon = "rocket";
-            leftClickExec = "vicinae toggle";
-            generalTooltipText = "Open launcher";
-          }
-          { id = "Clock"; }
-          { id = "SystemMonitor"; }
-          { id = "ActiveWindow"; }
-          { id = "MediaMini"; }
-        ];
-        center = [ { id = "Workspace"; } ];
-        right = [
-          { id = "Tray"; }
-          { id = "NotificationHistory"; }
-          { id = "Battery"; }
-          { id = "Volume"; }
-          { id = "Brightness"; }
-          { id = "ControlCenter"; }
-        ];
-      };
+    bar.default = {
+      background_opacity = 0.9;
+      radius = 12;
+      widget_spacing = 6;
+      capsule = false;
+      start = [
+        "vicinae"
+        "clock"
+        "sysmon"
+        "active_window"
+        "media"
+      ];
+      center = [ "workspaces" ];
+      end = [
+        "work"
+        "tray"
+        "notifications"
+        "battery"
+        "volume"
+        "brightness"
+        "control-center"
+      ];
     };
-    ui = {
-      fontDefault = theme.font.sans;
-      fontFixed = theme.font.fixed;
-      panelBackgroundOpacity = 0.92;
+    widget.vicinae = {
+      type = "custom_button";
+      glyph = "rocket";
+      tooltip = "Open launcher";
+      actions.left = "exec vicinae toggle";
     };
-    location.weatherEnabled = false;
     dock.enabled = false;
+    lockscreen = {
+      enabled = true;
+      lock_before_suspend = true;
+    };
     wallpaper = {
       enabled = true;
-      overviewEnabled = false;
-      directory = toString ../../dotfiles/wallpapers;
-      setWallpaperOnAllMonitors = true;
-      linkLightAndDarkWallpapers = true;
-      fillMode = "crop";
-      useOriginalImages = true;
-      useSolidColor = false;
-      skipStartupTransition = true;
-      automationEnabled = false;
-      sortOrder = "name";
+      fill_mode = "crop";
+      transition_on_startup = false;
+      automation.enabled = false;
     };
-    colorSchemes = {
-      darkMode = true;
-      useWallpaperColors = false;
-      predefinedScheme = theme.colorScheme;
-      syncGsettings = true;
-    };
-    templates.activeTemplates =
-      map
-        (id: {
-          inherit id;
-          enabled = true;
-        })
-        [
+    theme = {
+      mode = "dark";
+      source = "builtin";
+      builtin = theme.colorScheme;
+      templates = {
+        enable_builtin_templates = true;
+        builtin_ids = [
           "ghostty"
-          "gtk"
+          "gtk3"
+          "gtk4"
           "qt"
           "kcolorscheme"
           "niri"
-          "vicinae"
-          "zed"
-          "zenBrowser"
         ];
+      };
+    };
   };
 
   config.flake.modules.hjem."feature/noctalia" =
     {
-      lib,
+      config,
       pkgs,
+      lib,
       ...
     }:
     let
       system = pkgs.stdenv.hostPlatform.system;
-      noctaliaShell = "${flake.packages.${system}.noctalia-shell}/bin/noctalia-shell";
+      wallpaperName = builtins.baseNameOf desktopConfig.noctalia.wallpaper;
+      dataDir = toString config.xdg.data.directory;
       dailyHours = inputs.daily-hours.packages.${system}.default;
-      dailyHoursWorkStatus = pkgs.writeShellScript "daily-hours-work-status" ''
-        state="$(${dailyHours}/bin/daily-hours work status 2>/dev/null || printf off)"
-        state="''${state%%[[:space:]]*}"
-        case "$state" in
-          on) printf '%s\n' '{"text":"Work","icon":"briefcase","tooltip":"Work time tracking is on","color":"primary"}' ;;
-          *) printf '%s\n' '{"text":"Off","icon":"briefcase-off","tooltip":"Work time tracking is off","color":"error"}' ;;
-        esac
+      plugin = pkgs.runCommand "noctalia-plugins" { } ''
+        mkdir -p "$out/daily-hours"
+        cat > "$out/daily-hours/plugin.toml" <<'EOF'
+        id = "monochromatti/daily-hours"
+        name = "Daily Hours"
+        version = "1.0.0"
+        plugin_api = 3
+        author = "monochromatti"
+
+        [[widget]]
+        id = "work"
+        entry = "widget.luau"
+        EOF
+        cat > "$out/daily-hours/widget.luau" <<'EOF'
+        noctalia.setUpdateInterval(3000)
+
+        function update()
+          noctalia.runAsync("${dailyHours}/bin/daily-hours work status", function(result)
+            local on = result.exitCode == 0 and result.stdout:match("^%s*(%S+)") == "on"
+            barWidget.setText(on and "Work" or "Off")
+            barWidget.setGlyph(on and "briefcase" or "briefcase-off")
+            barWidget.setTooltip(on and "Work time tracking is on" or "Work time tracking is off")
+            barWidget.setColor(on and "primary" or "error")
+            barWidget.setGlyphColor(on and "primary" or "error")
+          end)
+        end
+
+        function onClick()
+          noctalia.runAsync("${dailyHours}/bin/daily-hours work toggle --source noctalia", function(result)
+            if result.exitCode == 0 then update() end
+          end)
+        end
+        EOF
       '';
-      settingsFile =
-        let
-          base = desktopConfig.noctalia.settings;
-          settings = lib.recursiveUpdate base {
-            bar.widgets.right = [
-              {
-                id = "CustomButton";
-                ipcIdentifier = "daily-hours-work";
-                showIcon = true;
-                icon = "briefcase";
-                textCommand = dailyHoursWorkStatus;
-                textIntervalMs = 3000;
-                parseJson = true;
-                leftClickExec = "${dailyHours}/bin/daily-hours work toggle --source noctalia && ${noctaliaShell} ipc --any-display -n call cb refresh daily-hours-work";
-                leftClickUpdateText = false;
-                generalTooltipText = "Toggle work time tracking";
-                showExecTooltip = false;
-                maxTextLength = {
-                  horizontal = 4;
-                  vertical = 0;
-                };
-              }
-            ]
-            ++ base.bar.widgets.right;
-          };
-        in
-        pkgs.writeText "noctalia-settings.json" (builtins.toJSON settings);
-      wallpaperFile = pkgs.writeText "noctalia-wallpapers.json" ''
-        {"wallpapers":{},"defaultWallpaper":"${toString desktopConfig.noctalia.wallpaper}","usedRandomWallpapers":{}}
-      '';
-      safeDirectoryLogic = ''
-        ensure_directory() { if [ -L "$1" ]; then printf 'Refusing symlink directory: %s\n' "$1" >&2; exit 1; fi; if [ -e "$1" ] && [ ! -d "$1" ]; then printf 'Expected directory: %s\n' "$1" >&2; exit 1; fi; mkdir -p "$1"; }
-      '';
-      settingsSetup = pkgs.writeShellApplication {
-        name = "noctalia-settings-setup";
-        runtimeInputs = [
-          pkgs.coreutils
-          pkgs.jq
-        ];
-        text = ''
-              ${safeDirectoryLogic}
-              config_dir="$HOME/.config/noctalia"; settings_file="$config_dir/settings.json"; tmp_file=""
-              cleanup() { if [ -n "$tmp_file" ]; then rm -f "$tmp_file"; fi; }; trap cleanup EXIT
-              ensure_directory "$HOME"; ensure_directory "$HOME/.config"; ensure_directory "$config_dir"; tmp_file=$(mktemp "$config_dir/.settings.json.XXXXXX")
-          install -m 0644 "${settingsFile}" "$tmp_file"; jq -e . "$tmp_file" >/dev/null; mv -fT "$tmp_file" "$settings_file"; tmp_file=""
-          test -f "$settings_file"; test ! -L "$settings_file"; test -w "$settings_file"
-        '';
-      };
-      wallpaperSetup = pkgs.writeShellApplication {
-        name = "noctalia-wallpaper-cache-setup";
-        runtimeInputs = [
-          pkgs.coreutils
-          pkgs.jq
-        ];
-        text = ''
-              ${safeDirectoryLogic}
-              cache_dir="$HOME/.cache/noctalia"; cache_file="$cache_dir/wallpapers.json"; tmp_file=""
-              cleanup() { if [ -n "$tmp_file" ]; then rm -f "$tmp_file"; fi; }; trap cleanup EXIT
-              ensure_directory "$HOME"; ensure_directory "$HOME/.cache"; ensure_directory "$cache_dir"; tmp_file=$(mktemp "$cache_dir/.wallpapers.json.XXXXXX")
-          install -m 0644 "${wallpaperFile}" "$tmp_file"; jq -e . "$tmp_file" >/dev/null; mv -fT "$tmp_file" "$cache_file"; tmp_file=""
-          test -f "$cache_file"; test ! -L "$cache_file"; test -w "$cache_file"
-        '';
-      };
       themeStubs = pkgs.writeShellApplication {
         name = "noctalia-theme-stubs";
         runtimeInputs = [ pkgs.coreutils ];
@@ -200,74 +127,62 @@ in
           qt_theme="$HOME/.config/qt6ct/colors/noctalia.conf"; ensure_file "$qt_theme"; if [ ! -e "$qt_theme" ]; then : > "$qt_theme"; fi
         '';
       };
-      service = name: description: setup: extra: {
-        inherit description;
+    in
+    {
+      imports = [ inputs.noctalia.hjemModules.default ];
+      packages = [ pkgs.nwg-look ];
+      programs.noctalia = {
+        enable = true;
+        systemd.enable = true;
+        settings = lib.recursiveUpdate desktopConfig.noctalia.settings {
+          plugins = {
+            enabled = [ "monochromatti/daily-hours" ];
+            source = [
+              {
+                name = "daily-hours";
+                kind = "path";
+                location = toString plugin;
+                enabled = true;
+              }
+            ];
+          };
+          widget.work.type = "monochromatti/daily-hours:work";
+          wallpaper = {
+            directory = "${dataDir}/noctalia-wallpapers";
+            default.path = "${dataDir}/noctalia-default-wallpaper/${wallpaperName}";
+          };
+        };
+      };
+      xdg.data.files = {
+        "noctalia-wallpapers".source = ../../dotfiles/wallpapers;
+        "noctalia-default-wallpaper/${wallpaperName}".source = desktopConfig.noctalia.wallpaper;
+      };
+      systemd.services.noctalia-theme-stubs = {
+        description = "Create Noctalia theme stub files";
         before = [ "noctalia.service" ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${setup}/bin/${name}";
-        }
-        // extra;
-      };
-    in
-    {
-      packages = [
-        flake.packages.${system}.noctalia-shell
-        pkgs.nwg-look
-      ];
-      systemd.services = {
-        noctalia-settings-setup =
-          service "noctalia-settings-setup" "Install Noctalia settings" settingsSetup {
-            RemainAfterExit = true;
-          }
-          // {
-            restartTriggers = [ settingsFile ];
-          };
-        noctalia-theme-stubs =
-          service "noctalia-theme-stubs" "Create Noctalia theme stub files" themeStubs
-            { };
-        noctalia-wallpaper-cache =
-          service "noctalia-wallpaper-cache-setup" "Install Noctalia wallpaper cache" wallpaperSetup {
-            RemainAfterExit = true;
-          }
-          // {
-            restartTriggers = [ wallpaperFile ];
-          };
-        noctalia = {
-          description = "Noctalia shell";
-          enableDefaultPath = false;
-          partOf = [ "graphical-session.target" ];
-          requires = [
-            "noctalia-settings-setup.service"
-            "noctalia-theme-stubs.service"
-            "noctalia-wallpaper-cache.service"
-          ];
-          after = [
-            "graphical-session.target"
-            "noctalia-settings-setup.service"
-            "noctalia-theme-stubs.service"
-            "noctalia-wallpaper-cache.service"
-          ];
-          serviceConfig = {
-            ExecStart = "${flake.packages.${system}.noctalia-shell}/bin/noctalia-shell";
-            Restart = "on-failure";
-            RestartSec = 2;
-          };
-          restartTriggers = [ (pkgs.writeText "noctalia-settings-hjem-enabled" "1") ];
-          wantedBy = [ "graphical-session.target" ];
+          ExecStart = "${themeStubs}/bin/noctalia-theme-stubs";
         };
+      };
+      systemd.services.noctalia = {
+        requires = [ "noctalia-theme-stubs.service" ];
+        after = [ "noctalia-theme-stubs.service" ];
       };
       xdg.config.files =
         lib.genAttrs
           [
-            "systemd/user/noctalia-settings-setup.service"
             "systemd/user/noctalia-theme-stubs.service"
-            "systemd/user/noctalia-wallpaper-cache.service"
             "systemd/user/noctalia.service"
             "systemd/user/graphical-session.target.wants/noctalia.service"
           ]
           (_: {
             clobber = true;
-          });
+          })
+        // {
+          "gtk-4.0/gtk.css".text = lib.mkAfter ''
+            @import url("noctalia.css");
+          '';
+        };
     };
 }
