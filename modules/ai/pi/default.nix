@@ -287,6 +287,7 @@
           settings = {
             inherit skills;
             packages = piPackages;
+            subagents.agentScanDirs = [ "${./agents}" ];
           };
         };
       };
