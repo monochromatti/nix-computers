@@ -46,6 +46,7 @@ in
     lockscreen = {
       enabled = true;
       lock_before_suspend = true;
+      transition = [ ];
     };
     wallpaper = {
       enabled = true;
