@@ -25,6 +25,7 @@ in
       flake.modules.nixos."host/firefly/tailscale"
       flake.modules.nixos."host/firefly/work"
 
+      inputs.determinate.nixosModules.default
       inputs.linear-notification-daemon.nixosModules.default
       inputs.pc.nixosModules.hdw-hp-zbook-firefly_g11
       inputs.pc.nixosModules.default
@@ -57,7 +58,11 @@ in
 
     home-manager.users.monochromatti.fonts.fontconfig.enable = lib.mkForce false;
 
+    nix.gc.automatic = lib.mkForce false;
+
     nix.settings = {
+      eval-cores = 0;
+      lazy-trees = true;
       experimental-features = lib.mkAfter [
         "fetch-tree"
         "auto-allocate-uids"

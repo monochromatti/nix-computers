@@ -18,6 +18,7 @@
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
     treefmt-nix.url = "github:numtide/treefmt-nix";
+    determinate.url = "https://flakehub.com/f/DeterminateSystems/determinate/3";
 
     uvloom = {
       url = "github:fornybar/uvloom";
