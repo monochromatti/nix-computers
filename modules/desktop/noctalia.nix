@@ -41,7 +41,11 @@ in
       tooltip = "Open launcher";
       actions.left = "exec vicinae toggle";
     };
-    widget.tray.hidden = [ "vicinae" ];
+    widget.tray.hidden = [
+      "vicinae"
+      "Pareto Security"
+      "Bitwarden_status_icon_1"
+    ];
     dock.enabled = false;
     lockscreen = {
       enabled = true;
