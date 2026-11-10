@@ -15,7 +15,7 @@ in
     bar.default = {
       background_opacity = 0.9;
       radius = 12;
-      widget_spacing = 6;
+      widget_spacing = 10;
       capsule = false;
       start = [
         "vicinae"
@@ -41,6 +41,7 @@ in
       tooltip = "Open launcher";
       actions.left = "exec vicinae toggle";
     };
+    widget.tray.hidden = [ "vicinae" ];
     dock.enabled = false;
     lockscreen = {
       enabled = true;
@@ -101,11 +102,10 @@ in
         function update()
           noctalia.runAsync("${dailyHours}/bin/daily-hours work status", function(result)
             local on = result.exitCode == 0 and result.stdout:match("^%s*(%S+)") == "on"
-            barWidget.setText(on and "Work" or "Off")
+            barWidget.setText("")
             barWidget.setGlyph(on and "briefcase" or "briefcase-off")
             barWidget.setTooltip(on and "Work time tracking is on" or "Work time tracking is off")
-            barWidget.setColor(on and "primary" or "error")
-            barWidget.setGlyphColor(on and "primary" or "error")
+            barWidget.setGlyphColor(on and "#5cc14c" or "#ff756e")
           end)
         end
 
