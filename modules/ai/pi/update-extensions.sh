@@ -79,33 +79,6 @@ open(path, 'w').write(s)
 PY
 }
 
-update_billion_context() {
-  local file="$root/modules/ai/pi/extensions/pi-billion-context.nix"
-  local lock="$extensions/locks/billion-context.json"
-  local dir="$tmp/billion-context" version integrity npmhash
-  version=$(npm view billion-context version)
-  integrity=$(npm view "billion-context@$version" dist.integrity)
-  mkdir "$dir"
-  curl --fail --location --silent --show-error \
-    "https://registry.npmjs.org/billion-context/-/billion-context-$version.tgz" |
-    tar -xz -C "$dir" --strip-components=1
-  (cd "$dir" && npm pkg delete devDependencies scripts &&
-    npm install --package-lock-only --ignore-scripts --no-audit --no-fund)
-  cp "$dir/package-lock.json" "$lock"
-  npmhash=$(NPM_FETCHER_VERSION=2 prefetch-npm-deps "$lock")
-  python3 - "$file" "$version" "$integrity" "$npmhash" <<'PY'
-import re
-import sys
-path, version, integrity, npmhash = sys.argv[1:]
-s = open(path).read()
-s = re.sub(r'(version = )"[^"]+";', rf'\1"{version}";', s, count=1)
-s = re.sub(r'(hash = )"[^"]+";', rf'\1"{integrity}";', s, count=1)
-s = re.sub(r'(npmDepsHash = )"[^"]+";', rf'\1"{npmhash}";', s, count=1)
-open(path, 'w').write(s)
-PY
-}
-
-update_billion_context
 update modules/ai/pi/extensions/pi-impeccable.nix jordi9 pi-impeccable 0
 update modules/ai/pi/extensions/pi-ponytail.nix DietrichGebert ponytail 0
 update modules/ai/pi/extensions/pi-prompt-template-model.nix nicobailon pi-prompt-template-model 1
