@@ -34,7 +34,10 @@ in
       flake.modules.nixos."user/monochromatti"
     ];
 
-    disabledModules = [ "${inputs.pc}/modules/sops.nix" ];
+    disabledModules = [
+      "${inputs.pc}/modules/sops.nix"
+      "${inputs.pc}/modules/systemPackagesGui.nix"
+    ];
 
     hjem.users.monochromatti = {
       packages = lib.mkBefore [ pkgs.sops ];
