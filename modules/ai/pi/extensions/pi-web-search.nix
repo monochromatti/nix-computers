@@ -4,13 +4,13 @@
     pi.extensions = [
       (pkgs.stdenv.mkDerivation {
         pname = "pi-web-search";
-        version = "1.6.0";
+        version = "1.7.0";
 
         src = pkgs.fetchFromGitHub {
           owner = "ttttmr";
           repo = "pi-web-search";
-          rev = "8017f377178bbac28974d6da83fa9ea8b374f644";
-          hash = "sha256-XVVw316rAkGZ1l4qg6VeJN8pQAGK7AVhdoCjOYvZC/k=";
+          rev = "44bb62e22a6aab5a38451d863577cdb983cdf933";
+          hash = "sha256-q5F7zahwAhYNBwTxa7PgzMtdhqJUamvjhmZM7qhIUec=";
         };
 
         nativeBuildInputs = [ pkgs.jq ];

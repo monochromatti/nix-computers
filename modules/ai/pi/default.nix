@@ -66,10 +66,44 @@
           find $out -type f -path "${pattern}" -exec sed -i "0,/^---$/s//---\ndisable-model-invocation: true/" {} +
         '';
 
+      agentsPi = inputs.agents.packages.${system}.pi.configuration;
+      oldSubagents = inputs.agents.packages.${system}.pi-subagents;
+      subagents = pkgs.buildNpmPackage {
+        pname = "pi-subagents";
+        version = "0.87.0";
+        src = pkgs.fetchFromGitHub {
+          owner = "nicobailon";
+          repo = "pi-subagents";
+          rev = "52e68e9ef0e563d5c97b28519f9999f1b5fbbbea";
+          hash = "sha256-jjumBpE2OrUmeut7M3wZDlLjEA9mbA7Q21NepUYHU5s=";
+        };
+        npmDepsHash = "sha256-aGw6EkTn6zIf29rx69B/6lEjHjxF6ZZCHbslXhy4ITg=";
+        npmBuildScript = "build:pkg";
+        installPhase = ''
+          runHook preInstall
+          npm prune --omit=dev --ignore-scripts --offline
+          mkdir -p "$out"
+          cp -r dist-pkg/. "$out/"
+          cp -r node_modules "$out/"
+          runHook postInstall
+        '';
+      };
+
       mkPi =
         module:
-        (inputs.agents.packages.${system}.pi.configuration.apply {
-          imports = [ module ];
+        let
+          original = agentsPi.apply { imports = [ module ]; };
+          replaceSubagents = lib.replaceStrings [ (toString oldSubagents) ] [ (toString subagents) ];
+        in
+        (agentsPi.apply {
+          imports = [
+            module
+            {
+              bundledExtensions = lib.mkForce (map replaceSubagents original.bundledExtensions);
+              settings.skills = lib.mkForce (map replaceSubagents original.settings.skills);
+              settings.prompts = lib.mkForce (map replaceSubagents original.settings.prompts);
+            }
+          ];
         }).wrapper;
 
       anatomySkillSource = manualOnly (pkgs.fetchFromGitHub {
