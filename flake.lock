@@ -11,11 +11,11 @@
         "wrappers": "wrappers"
       },
       "locked": {
-        "lastModified": 1793969195,
-        "narHash": "sha256-HaxkV/5F45mrgSCfzs+GNhcDFLSozhwQYh/iCGkzWRI=",
+        "lastModified": 1794432377,
+        "narHash": "sha256-7AHcNPmMTsSXatkRFaivAuGOGvd9gSMDIqNpSR+jR2g=",
         "owner": "fornybar",
         "repo": "agents",
-        "rev": "b60e0d6c62a4aec506422e7b220b86fb0f420f40",
+        "rev": "de5c598c901c672a374f1f17d7c9eee9e9691a57",
         "type": "github"
       },
       "original": {
