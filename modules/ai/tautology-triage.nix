@@ -3,7 +3,7 @@
   perSystem =
     { pkgs, ... }:
     let
-      skill = "${self}/.agents/skills/testing-without-tautologies";
+      skill = "${self}/modules/ai/pi/skills/testing-without-tautologies";
     in
     {
       packages.tautology-triage = pkgs.writeShellApplication {

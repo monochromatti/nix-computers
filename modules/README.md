@@ -9,7 +9,7 @@ This tree uses flake-parts with `import-tree`. Organize modules by semantic feat
 3. Profiles are import-only composition aspects. Hjem selector schema is internal config because extraModules are global; it is not a profile. Hosts are final composition aspects; host fragments stay explicit.
 4. Aggregates are inheritance aspects with minimal direct config.
 5. Use `config.flake` (often aliased as `flake`) for public flake outputs such as `flake.modules`, `flake.packages`, and `flake.lib`.
-6. Use private module configuration through `config.<namespace>`; public values belong in `config.flake` outputs. Use `self` only for source-tree paths, for example `${self}/.agents/skills`.
+6. Use private module configuration through `config.<namespace>`; public values belong in `config.flake` outputs. Use `self` only for source-tree paths, for example `${self}/modules/ai/pi/skills`.
 7. Prefer small, semantically named feature files over target-oriented names such as `home.nix` or `default.nix`.
 8. Keep package expressions and other non-feature code outside `modules/`; every imported `.nix` file under `modules/` should be a flake-parts module.
 9. Platform folders are only for true platform foundation code; cross-platform concerns belong with their semantic feature.

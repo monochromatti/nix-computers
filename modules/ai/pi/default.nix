@@ -175,7 +175,7 @@
 
           agents.skillSources = [
             "${anatomySkillSource}"
-            "${self}/.agents/skills"
+            "${./skills}"
           ];
           agents.skills = lib.genAttrs enabledFornybarSkills (_: {
             enable = true;
