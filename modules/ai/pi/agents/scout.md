@@ -2,7 +2,7 @@
 name: scout
 description: Fast read-only codebase reconnaissance; text-only, no image or screenshot inspection
 tools: read, grep, find, ls, bash
-model: azure-deepseek/DeepSeek-V4.1-Flash
+model: azure-deepseek/DeepSeek-V4.1-Flash-1017
 thinking: low
 acceptanceRole: read-only
 systemPromptMode: replace

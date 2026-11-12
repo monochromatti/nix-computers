@@ -1,6 +1,6 @@
 ---
 description: Create GitHub pull request
-model: azure-deepseek/DeepSeek-V4.1-Flash, opencode-go/deepseek-v4.1-flash
+model: azure-deepseek/DeepSeek-V4.1-Flash-1017, opencode-go/deepseek-v4.1-flash
 argument-hint: "Additional instructions"
 ---
 

@@ -2,7 +2,7 @@
 name: fast-reviewer
 description: Fast first-pass bug hunt on a diff; text-only, no image or screenshot inspection
 tools: read, grep, find, ls, bash
-model: azure-deepseek/DeepSeek-V4.1-Flash
+model: azure-deepseek/DeepSeek-V4.1-Flash-1017
 thinking: high
 acceptanceRole: read-only
 systemPromptMode: replace

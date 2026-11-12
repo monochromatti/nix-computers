@@ -2,7 +2,7 @@
 name: worker
 description: Default implementation agent for tasks with settled requirements and design; text-only, no image or screenshot inspection
 tools: read, grep, find, ls, bash, edit, write
-model: azure-deepseek/DeepSeek-V4.1-Flash
+model: azure-deepseek/DeepSeek-V4.1-Flash-1017
 thinking: high
 acceptanceRole: writer
 systemPromptMode: replace
