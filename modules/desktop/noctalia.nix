@@ -175,6 +175,7 @@ in
           vicinae = {
             input_path = "${inputs.noctalia-templates}/vicinae/vicinae.toml";
             output_path = "$XDG_DATA_HOME/vicinae/themes/noctalia.toml";
+            post_hook = "vicinae theme set noctalia";
           };
           niri = {
             input_path = "${./paper-niri.kdl}";
