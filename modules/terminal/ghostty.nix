@@ -13,6 +13,8 @@ let
     background-opacity-cells = true;
   };
   linuxSettings = sharedSettings // {
+    theme = "noctalia";
+    app-notifications = "no-config-reload";
     font-size = theme.font.size;
   };
   mkWrapper =

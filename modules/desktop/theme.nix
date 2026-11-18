@@ -37,7 +37,7 @@ let
       };
       colorScheme = lib.mkOption {
         type = lib.types.str;
-        description = "Desktop color scheme name.";
+        description = "Noctalia custom palette name.";
       };
     };
   };
@@ -51,7 +51,7 @@ in
   };
 
   config.nixComputers.theme = {
-    opacity = lib.mkDefault 0.95;
+    opacity = lib.mkDefault 1.0;
     font = {
       sans = lib.mkDefault "IBM Plex Sans";
       fixed = lib.mkDefault "IBM Plex Mono";
@@ -62,6 +62,6 @@ in
       size = lib.mkDefault 32;
     };
     iconTheme = lib.mkDefault "Papirus-Dark";
-    colorScheme = lib.mkDefault "Nord";
+    colorScheme = lib.mkDefault "Paper";
   };
 }

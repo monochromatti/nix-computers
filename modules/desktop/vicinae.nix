@@ -26,10 +26,10 @@ in
       packages = [ upkgs.vicinae ];
       xdg.config.files."vicinae/settings.json" = {
         source = (pkgs.formats.json { }).generate "vicinae-settings.json" {
-          theme.dark = {
-            name = "nord";
+          theme = pkgs.lib.genAttrs [ "light" "dark" ] (_: {
+            name = "noctalia";
             icon_theme = theme.iconTheme;
-          };
+          });
           launcher_window.layer_shell.enabled = false;
           providers.power.entrypoints = {
             lock.preferences = {

@@ -18,10 +18,8 @@ in
         window-padding-x = 8
         window-padding-y = 8
 
-        # Use the Nord variants already used by the desktop and editor themes.
-        theme = light:Nord Light,dark:Nord
+        theme = noctalia
         background-opacity = ${toString theme.opacity}
-        background-blur = true
         background-opacity-cells = true
 
         mouse-scroll-multiplier = precision:1,discrete:3

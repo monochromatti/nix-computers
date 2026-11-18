@@ -256,6 +256,14 @@ let
     (pkgs.formats.json { }).generate "zed-user-settings" (
       (mkUserSettings { inherit lib pkgs; })
       // {
+        theme = {
+          mode = "system";
+          light = "Noctalia Light";
+          dark = "Noctalia Dark";
+        };
+        theme_overrides = { };
+        buffer_font_family = theme.font.fixed;
+        ui_font_family = theme.font.sans;
         auto_install_extensions = lib.genAttrs extensionIds (_: true);
       }
     );

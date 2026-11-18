@@ -2,50 +2,150 @@
 let
   desktopConfig = config.nixComputers.desktop;
   theme = config.nixComputers.theme;
+  oklch =
+    hue: lightness: chroma:
+    "oklch(${toString lightness} ${toString chroma} ${toString hue})";
+  grey = oklch 90;
+  red = oklch 33;
+  paper = {
+    day = {
+      ground = grey 0.918 0.010;
+      paper = grey 0.952 0.008;
+      ink = grey 0.222 0.004;
+      ink2 = grey 0.449 0.010;
+      rule = grey 0.823 0.013;
+      selection = grey 0.885 0.011;
+      error = red 0.456 0.114;
+    };
+    night = {
+      ground = grey 0.196 0.004;
+      paper = grey 0.231 0.006;
+      ink = grey 0.873 0.013;
+      ink2 = grey 0.677 0.015;
+      rule = grey 0.341 0.009;
+      selection = grey 0.289 0.007;
+      error = red 0.700 0.090;
+    };
+  };
+  noctaliaPalette =
+    c:
+    {
+      black,
+      white,
+      brightWhite,
+    }:
+    let
+      ansi = {
+        inherit black white;
+        red = c.error;
+        green = c.ink;
+        yellow = c.ink2;
+        blue = c.ink;
+        magenta = c.ink2;
+        cyan = c.ink2;
+      };
+    in
+    {
+      primary = c.ink;
+      on_primary = c.paper;
+      secondary = c.ink2;
+      on_secondary = c.paper;
+      tertiary = c.ink2;
+      on_tertiary = c.paper;
+      error = c.error;
+      on_error = c.paper;
+      surface = c.ground;
+      on_surface = c.ink;
+      surface_container = c.paper;
+      on_surface_variant = c.ink2;
+      outline_variant = c.rule;
+      shadow = c.ground;
+      hover = c.selection;
+      on_hover = c.ink;
+      terminal = {
+        foreground = c.ink;
+        background = c.paper;
+        cursor = c.ink;
+        cursor_text = c.paper;
+        selection_fg = c.paper;
+        selection_bg = c.ink;
+        normal = ansi;
+        bright = ansi // {
+          black = c.ink2;
+          white = brightWhite;
+        };
+      };
+    };
+  paperPalette = {
+    version = 2;
+    light = noctaliaPalette paper.day {
+      black = paper.day.ink;
+      white = paper.day.rule;
+      brightWhite = paper.day.selection;
+    };
+    dark = noctaliaPalette paper.night {
+      black = paper.night.rule;
+      white = paper.night.ink;
+      brightWhite = paper.day.paper;
+    };
+  };
 in
 {
   config.nixComputers.desktop.noctalia.settings = {
     shell = {
       font_family = theme.font.sans;
       setup_wizard_enabled = false;
-      corner_radius_scale = 1.0;
+      corner_radius_scale = 0.5;
       launch_apps_as_systemd_services = true;
-      panel.transparency_mode = "soft";
+      panel = {
+        transparency_mode = "solid";
+        shadow = false;
+      };
     };
     bar.default = {
-      background_opacity = 0.9;
-      radius = 12;
-      widget_spacing = 10;
+      thickness = 34;
+      background_opacity = 1.0;
+      compositor_blur = false;
+      radius = 0;
+      margin_ends = 0;
+      margin_edge = 0;
+      padding = 16;
+      widget_spacing = 16;
+      shadow = false;
       capsule = false;
       start = [
-        "vicinae"
-        "clock"
-        "sysmon"
+        "workspaces"
         "active_window"
-        "media"
       ];
-      center = [ "workspaces" ];
+      center = [ "clock" ];
       end = [
         "work"
         "tray"
         "notifications"
-        "battery"
+        "network"
         "volume"
-        "brightness"
+        "battery"
+        "theme_mode"
         "control-center"
       ];
     };
-    widget.vicinae = {
-      type = "custom_button";
-      glyph = "rocket";
-      tooltip = "Open launcher";
-      actions.left = "exec vicinae toggle";
+    widget.clock.format = "{:%a %d %b   %H:%M}";
+    widget.network = {
+      show_glyph = false;
+      custom_label = "wifi";
+    };
+    widget.volume = {
+      show_glyph = false;
+      show_label = true;
+      custom_label = "vol";
     };
     widget.tray.hidden = [
       "vicinae"
       "Pareto Security"
       "Bitwarden_status_icon_1"
     ];
+    notification.background_opacity = 1.0;
+    osd.background_opacity = 1.0;
     dock.enabled = false;
     lockscreen = {
       enabled = true;
@@ -53,15 +153,15 @@ in
       transition = [ ];
     };
     wallpaper = {
-      enabled = true;
+      enabled = false;
       fill_mode = "crop";
       transition_on_startup = false;
       automation.enabled = false;
     };
     theme = {
-      mode = "dark";
-      source = "builtin";
-      builtin = theme.colorScheme;
+      mode = "light";
+      source = "custom";
+      custom_palette = theme.colorScheme;
       templates = {
         enable_builtin_templates = true;
         builtin_ids = [
@@ -70,8 +170,21 @@ in
           "gtk4"
           "qt"
           "kcolorscheme"
-          "niri"
         ];
+        user = {
+          vicinae = {
+            input_path = "${inputs.noctalia-templates}/vicinae/vicinae.toml";
+            output_path = "$XDG_DATA_HOME/vicinae/themes/noctalia.toml";
+          };
+          niri = {
+            input_path = "${./paper-niri.kdl}";
+            output_path = "$XDG_CONFIG_HOME/niri/noctalia.kdl";
+          };
+          monstar = {
+            input_path = "${inputs.noctalia}/assets/templates/ghostty/ghostty";
+            output_path = "$XDG_CONFIG_HOME/monstar/themes/noctalia";
+          };
+        };
       };
     };
   };
@@ -110,7 +223,7 @@ in
             barWidget.setText("")
             barWidget.setGlyph(on and "briefcase" or "briefcase-off")
             barWidget.setTooltip(on and "Work time tracking is on" or "Work time tracking is off")
-            barWidget.setGlyphColor(on and "#5cc14c" or "#ff756e")
+            barWidget.setGlyphColor(on and "primary" or "error")
           end)
         end
 
@@ -120,6 +233,23 @@ in
           end)
         end
         EOF
+      '';
+      palette = pkgs.runCommand "paper-palette.json" { } ''
+        ${pkgs.python3}/bin/python3 ${./oklch-to-hex.py} \
+          < ${pkgs.writeText "paper-palette-oklch.json" (builtins.toJSON paperPalette)} > $out
+      '';
+      zedTemplate = pkgs.runCommand "noctalia-zed-paper.json" { } ''
+        sed -E \
+          -e 's/"terminal\.(background|foreground)": "\{\{colors\.[a-z_]+\./"terminal.\1": "{{colors.terminal_\1./' \
+          -e 's/"terminal\.ansi\.bright_([a-z]+)": "\{\{colors\.[a-z_]+\./"terminal.ansi.bright_\1": "{{colors.terminal_bright_\1./' \
+          -e 's/"terminal\.ansi\.(dim_)?([a-z]+)": "\{\{colors\.[a-z_]+\./"terminal.ansi.\1\2": "{{colors.terminal_normal_\2./' \
+          -e 's/colors\.surface_dim\./colors.surface./g' \
+          -e 's/colors\.(on_)?[a-z]+_fixed(_dim|_variant)?\./colors.secondary./g' \
+          ${inputs.noctalia-templates}/zed/zed.json > $out
+        if grep -qE 'fixed|surface_dim|inverse' $out; then
+          echo "zed template still uses HSL-derived Noctalia colours" >&2
+          exit 1
+        fi
       '';
       themeStubs = pkgs.writeShellApplication {
         name = "noctalia-theme-stubs";
@@ -152,6 +282,10 @@ in
             ];
           };
           widget.work.type = "monochromatti/daily-hours:work";
+          theme.templates.user.zed = {
+            input_path = "${zedTemplate}";
+            output_path = "$XDG_CONFIG_HOME/zed/themes/noctalia.json";
+          };
           wallpaper = {
             directory = "${dataDir}/noctalia-wallpapers";
             default.path = "${dataDir}/noctalia-default-wallpaper/${wallpaperName}";
@@ -185,9 +319,13 @@ in
             clobber = true;
           })
         // {
-          "gtk-4.0/gtk.css".text = lib.mkAfter ''
-            @import url("noctalia.css");
-          '';
+          "noctalia/palettes/${theme.colorScheme}.json".source = palette;
+          "gtk-4.0/gtk.css" = {
+            text = ''
+              @import url("noctalia.css");
+            '';
+            clobber = true;
+          };
         };
     };
 }

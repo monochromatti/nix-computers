@@ -14,6 +14,10 @@
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     nixpkgs-master.url = "github:NixOS/nixpkgs/master";
     noctalia.url = "github:noctalia-dev/noctalia/cachix";
+    noctalia-templates = {
+      url = "github:noctalia-dev/community-templates";
+      flake = false;
+    };
 
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";

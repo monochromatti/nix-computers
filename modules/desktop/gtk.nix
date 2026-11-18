@@ -64,13 +64,6 @@ in
               gtk-icon-theme-name=${theme.iconTheme}
           gtk-theme-name=adw-gtk3-dark
         '';
-        "gtk-4.0/gtk.css".text = ''
-          /**
-           * GTK 4 reads the theme configured by gtk-theme-name, but ignores it.
-           * It does however respect user CSS, so import the theme from here.
-          **/
-          @import url("file://${pkgs.adw-gtk3}/share/themes/adw-gtk3-dark/gtk-4.0/gtk.css");
-        '';
         "fontconfig/conf.d/10-hm-fonts.conf".text = ''
           <?xml version='1.0'?>
 

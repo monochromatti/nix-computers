@@ -924,6 +924,22 @@
         "type": "github"
       }
     },
+    "noctalia-templates": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794952815,
+        "narHash": "sha256-2WB1D5i/32MWvlNLWC4gXkapSvHOt8mqEj14vDURaCg=",
+        "owner": "noctalia-dev",
+        "repo": "community-templates",
+        "rev": "13c6f56d6d480cfd61726e37f4ff4a8bb4cb8a37",
+        "type": "github"
+      },
+      "original": {
+        "owner": "noctalia-dev",
+        "repo": "community-templates",
+        "type": "github"
+      }
+    },
     "pc": {
       "inputs": {
         "lanzaboote": "lanzaboote",
@@ -1167,6 +1183,7 @@
         "nixpkgs-master": "nixpkgs-master",
         "nixpkgs-unstable": "nixpkgs-unstable_2",
         "noctalia": "noctalia",
+        "noctalia-templates": "noctalia-templates",
         "pc": "pc",
         "python-package-index": "python-package-index",
         "sops-nix": "sops-nix_2",
