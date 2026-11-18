@@ -78,6 +78,7 @@ in
         jetbrains-mono
         noto-fonts
         nerd-fonts.droid-sans-mono
+        ibm-plex
       ];
     };
 }

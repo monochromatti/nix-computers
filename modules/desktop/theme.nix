@@ -53,9 +53,9 @@ in
   config.nixComputers.theme = {
     opacity = lib.mkDefault 0.95;
     font = {
-      sans = lib.mkDefault "Inter";
-      fixed = lib.mkDefault "JetBrains Mono";
-      size = lib.mkDefault 12;
+      sans = lib.mkDefault "IBM Plex Sans";
+      fixed = lib.mkDefault "IBM Plex Mono";
+      size = lib.mkDefault 13;
     };
     cursor = {
       name = lib.mkDefault "Adwaita";

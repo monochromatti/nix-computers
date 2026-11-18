@@ -81,6 +81,8 @@ in
           font-awesome
           inter
           jetbrains-mono
+          ibm-plex
+          literata
           cantarell-fonts
           source-sans-pro
           nerd-fonts.droid-sans-mono
