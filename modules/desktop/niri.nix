@@ -44,6 +44,16 @@ in
         in
         (base.apply {
           env.NIRI_CONFIG = lib.mkForce (toString mainConfig);
+          patchHook = lib.mkForce ''
+            chmod +w $out/share/systemd/user/niri.service
+            cat >> $out/share/systemd/user/niri.service <<EOF
+            [Unit]
+            X-Reload-Triggers=${mainConfig}
+            [Service]
+            ExecReload=$out/bin/niri msg action load-config-file --path ${mainConfig}
+            X-ReloadIfChanged=true
+            EOF
+          '';
         }).wrapper;
     in
     {

@@ -1,9 +1,32 @@
 layout {
     background-color "{{colors.surface.default.hex}}"
 
+    focus-ring {
+        active-color   "{{colors.primary.default.hex}}"
+        inactive-color "{{colors.outline_variant.default.hex}}"
+        urgent-color   "{{colors.error.default.hex}}"
+    }
+
     border {
         active-color   "{{colors.primary.default.hex}}"
         inactive-color "{{colors.outline_variant.default.hex}}"
         urgent-color   "{{colors.error.default.hex}}"
+    }
+
+    tab-indicator {
+        active-color   "{{colors.primary.default.hex}}"
+        inactive-color "{{colors.outline_variant.default.hex}}"
+        urgent-color   "{{colors.error.default.hex}}"
+    }
+
+    insert-hint {
+        color "{{colors.primary.default.hex}}40"
+    }
+}
+
+recent-windows {
+    highlight {
+        active-color "{{colors.primary.default.hex}}"
+        urgent-color "{{colors.error.default.hex}}"
     }
 }
