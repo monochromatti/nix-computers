@@ -1,5 +1,5 @@
 layout {
-    background-color "{{colors.surface.default.hex}}"
+    background-color "{{colors.shadow.default.hex}}"
 
     focus-ring {
         active-color   "{{colors.primary.default.hex}}"

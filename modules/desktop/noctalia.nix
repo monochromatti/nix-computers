@@ -11,6 +11,7 @@ let
     day = {
       ground = grey 0.918 0.010;
       paper = grey 0.952 0.008;
+      card = grey 0.935 0.009;
       ink = grey 0.222 0.004;
       ink2 = grey 0.449 0.010;
       rule = grey 0.823 0.013;
@@ -20,6 +21,7 @@ let
     night = {
       ground = grey 0.196 0.004;
       paper = grey 0.231 0.006;
+      card = grey 0.213 0.005;
       ink = grey 0.873 0.013;
       ink2 = grey 0.677 0.015;
       rule = grey 0.341 0.009;
@@ -54,9 +56,9 @@ let
       on_tertiary = c.paper;
       error = c.error;
       on_error = c.paper;
-      surface = c.ground;
+      surface = c.paper;
       on_surface = c.ink;
-      surface_container = c.paper;
+      surface_container = c.card;
       on_surface_variant = c.ink2;
       outline_variant = c.rule;
       shadow = c.ground;
