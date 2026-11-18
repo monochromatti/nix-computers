@@ -39,63 +39,6 @@ in
             include "${defaultConfig}"
             include "${base."config.kdl".path}"
 
-            layout {
-              background-color "transparent"
-            }
-
-            blur {
-              passes 2
-              offset 3.0
-              noise 0.03
-              saturation 1.0
-            }
-
-            window-rule {
-              match app-id="^com\\.mitchellh\\.ghostty$"
-              draw-border-with-background false
-
-              background-effect {
-                blur true
-              }
-            }
-
-            window-rule {
-              match app-id="^dev\\.rockorager\\.monstar$"
-              draw-border-with-background false
-
-              background-effect {
-                blur true
-              }
-            }
-
-            window-rule {
-              match app-id="^dev\\.zed\\.Zed$"
-              draw-border-with-background false
-
-              background-effect {
-                blur true
-              }
-            }
-
-            layer-rule {
-              match layer="top"
-              match layer="overlay"
-
-              background-effect {
-                xray false
-              }
-            }
-
-            layer-rule {
-              match namespace="^noctalia-wallpaper*"
-              place-within-backdrop true
-            }
-
-            layer-rule {
-              match namespace="^noctalia-overview*"
-              place-within-backdrop true
-            }
-
             include "${userNoctaliaConfig}"
           '';
         in
@@ -160,18 +103,27 @@ in
       touchpad.natural-scroll = null;
     };
 
+    prefer-no-csd = null;
+
     layout = {
-      gaps = 12;
-      focus-ring.width = 2;
-      struts = {
-        left = 20;
-        right = 20;
+      gaps = 16;
+      center-focused-column = "never";
+      default-column-width.proportion = 0.5;
+      focus-ring.off = null;
+      border = {
+        on = null;
+        width = 1;
       };
+    };
+
+    animations.window-open = {
+      duration-ms = 120;
+      curve = "ease-out-quad";
     };
 
     window-rules = [
       {
-        geometry-corner-radius = 12;
+        geometry-corner-radius = 4;
         clip-to-geometry = true;
       }
     ];
