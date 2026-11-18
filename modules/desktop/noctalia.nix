@@ -11,6 +11,14 @@ let
       hue = 33;
       chroma = 0.100;
     };
+    warm = {
+      hue = 33;
+      chroma = 0.050;
+    };
+    ochre = {
+      hue = 75;
+      chroma = 0.050;
+    };
   };
   roles = {
     ground = base.neutral;
@@ -20,7 +28,7 @@ let
     rule = base.neutral;
     ink2 = base.neutral;
     ink = base.neutral;
-    inherit (base) error;
+    inherit (base) error warm ochre;
   };
   shades = builtins.mapAttrs (
     role: lightness:
@@ -36,6 +44,8 @@ let
       ink2 = 0.449;
       ink = 0.222;
       error = 0.456;
+      warm = 0.840;
+      ochre = 0.870;
     };
     night = shades {
       ground = 0.196;
@@ -46,6 +56,8 @@ let
       ink2 = 0.677;
       ink = 0.873;
       error = 0.700;
+      warm = 0.330;
+      ochre = 0.340;
     };
   };
   noctaliaPalette =
@@ -174,7 +186,7 @@ in
       transition = [ ];
     };
     wallpaper = {
-      enabled = false;
+      enabled = true;
       fill_mode = "crop";
       transition_on_startup = false;
       automation.enabled = false;
@@ -220,8 +232,29 @@ in
     }:
     let
       system = pkgs.stdenv.hostPlatform.system;
-      wallpaperName = builtins.baseNameOf desktopConfig.noctalia.wallpaper;
-      dataDir = toString config.xdg.data.directory;
+      wallpaperDir = "${toString config.xdg.data.directory}/noctalia-wallpapers";
+      wallpapers =
+        pkgs.runCommand "paper-wallpapers"
+          {
+            preferLocalBuild = true;
+            nativeBuildInputs = [
+              (pkgs.python3.withPackages (p: [
+                p.numpy
+                p.pillow
+              ]))
+            ];
+          }
+          ''
+            mkdir $out
+            python3 ${./paper-wallpaper.py} ${
+              pkgs.writeText "paper-wallpaper-palette.json" (
+                builtins.toJSON {
+                  light = paper.day;
+                  dark = paper.night;
+                }
+              )
+            } $out
+          '';
       dailyHours = inputs.daily-hours.packages.${system}.default;
       plugin = pkgs.runCommand "noctalia-plugins" { } ''
         mkdir -p "$out/daily-hours"
@@ -309,15 +342,13 @@ in
             output_path = "$XDG_CONFIG_HOME/zed/themes/noctalia.json";
           };
           wallpaper = {
-            directory = "${dataDir}/noctalia-wallpapers";
-            default.path = "${dataDir}/noctalia-default-wallpaper/${wallpaperName}";
+            directory = wallpaperDir;
+            default.path = "${wallpaperDir}/paper-light.jpg";
           };
+          hooks.theme_mode_changed = "noctalia msg wallpaper-set ${wallpaperDir}/paper-\$NOCTALIA_THEME_MODE.jpg";
         };
       };
-      xdg.data.files = {
-        "noctalia-wallpapers".source = ../../dotfiles/wallpapers;
-        "noctalia-default-wallpaper/${wallpaperName}".source = desktopConfig.noctalia.wallpaper;
-      };
+      xdg.data.files."noctalia-wallpapers".source = wallpapers;
       systemd.services.noctalia-theme-stubs = {
         description = "Create Noctalia theme stub files";
         before = [ "noctalia.service" ];
