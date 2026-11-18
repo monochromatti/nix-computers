@@ -4,8 +4,14 @@ let
   theme = config.nixComputers.theme;
   base = {
     neutral = {
-      hue = 90;
-      chroma = 0.010;
+      day = {
+        hue = 86;
+        chroma = 0.013;
+      };
+      night = {
+        hue = 240;
+        chroma = 0.005;
+      };
     };
     error = {
       hue = 33;
@@ -20,41 +26,36 @@ let
       chroma = 0.050;
     };
   };
-  roles = {
-    ground = base.neutral;
-    card = base.neutral;
-    paper = base.neutral;
-    selection = base.neutral;
-    rule = base.neutral;
-    ink2 = base.neutral;
-    ink = base.neutral;
-    inherit (base) error warm ochre;
-  };
-  shades = builtins.mapAttrs (
-    role: lightness:
-    "oklch(${toString lightness} ${toString roles.${role}.chroma} ${toString roles.${role}.hue})"
-  );
+  shades =
+    neutral:
+    builtins.mapAttrs (
+      role: lightness:
+      let
+        b = base.${role} or neutral;
+      in
+      "oklch(${toString lightness} ${toString b.chroma} ${toString b.hue})"
+    );
   paper = {
-    day = shades {
-      ground = 0.918;
-      card = 0.935;
-      paper = 0.952;
-      selection = 0.885;
-      rule = 0.823;
-      ink2 = 0.449;
-      ink = 0.222;
+    day = shades base.neutral.day {
+      ground = 0.907;
+      card = 0.927;
+      paper = 0.947;
+      selection = 0.867;
+      rule = 0.793;
+      ink2 = 0.354;
+      ink = 0.084;
       error = 0.456;
       warm = 0.840;
       ochre = 0.870;
     };
-    night = shades {
-      ground = 0.196;
-      card = 0.213;
-      paper = 0.231;
-      selection = 0.289;
-      rule = 0.341;
-      ink2 = 0.677;
-      ink = 0.873;
+    night = shades base.neutral.night {
+      ground = 0.228;
+      card = 0.246;
+      paper = 0.264;
+      selection = 0.323;
+      rule = 0.376;
+      ink2 = 0.685;
+      ink = 0.885;
       error = 0.700;
       warm = 0.330;
       ochre = 0.340;
