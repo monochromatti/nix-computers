@@ -2,31 +2,50 @@
 let
   desktopConfig = config.nixComputers.desktop;
   theme = config.nixComputers.theme;
-  oklch =
-    hue: lightness: chroma:
-    "oklch(${toString lightness} ${toString chroma} ${toString hue})";
-  grey = oklch 90;
-  red = oklch 33;
-  paper = {
-    day = {
-      ground = grey 0.918 0.010;
-      paper = grey 0.952 0.008;
-      card = grey 0.935 0.009;
-      ink = grey 0.222 0.004;
-      ink2 = grey 0.449 0.010;
-      rule = grey 0.823 0.013;
-      selection = grey 0.885 0.011;
-      error = red 0.456 0.114;
+  base = {
+    neutral = {
+      hue = 90;
+      chroma = 0.010;
     };
-    night = {
-      ground = grey 0.196 0.004;
-      paper = grey 0.231 0.006;
-      card = grey 0.213 0.005;
-      ink = grey 0.873 0.013;
-      ink2 = grey 0.677 0.015;
-      rule = grey 0.341 0.009;
-      selection = grey 0.289 0.007;
-      error = red 0.700 0.090;
+    error = {
+      hue = 33;
+      chroma = 0.100;
+    };
+  };
+  roles = {
+    ground = base.neutral;
+    card = base.neutral;
+    paper = base.neutral;
+    selection = base.neutral;
+    rule = base.neutral;
+    ink2 = base.neutral;
+    ink = base.neutral;
+    inherit (base) error;
+  };
+  shades = builtins.mapAttrs (
+    role: lightness:
+    "oklch(${toString lightness} ${toString roles.${role}.chroma} ${toString roles.${role}.hue})"
+  );
+  paper = {
+    day = shades {
+      ground = 0.918;
+      card = 0.935;
+      paper = 0.952;
+      selection = 0.885;
+      rule = 0.823;
+      ink2 = 0.449;
+      ink = 0.222;
+      error = 0.456;
+    };
+    night = shades {
+      ground = 0.196;
+      card = 0.213;
+      paper = 0.231;
+      selection = 0.289;
+      rule = 0.341;
+      ink2 = 0.677;
+      ink = 0.873;
+      error = 0.700;
     };
   };
   noctaliaPalette =
