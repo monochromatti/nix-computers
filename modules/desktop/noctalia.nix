@@ -43,7 +43,7 @@ let
       selection = 0.867;
       rule = 0.793;
       ink2 = 0.354;
-      ink = 0.084;
+      ink = 0.300;
       error = 0.456;
       warm = 0.840;
       ochre = 0.870;
