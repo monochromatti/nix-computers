@@ -7,7 +7,10 @@
         ".pi/agent/extensions/subagent/config.json" = {
           text = builtins.toJSON {
             maxSubagentDepth = 1;
-            defaultSubagentContext = "fresh";
+            forkContext = {
+              mode = "pruned";
+              model = "azure/gpt-6-luna";
+            };
           };
           clobber = true;
         };
