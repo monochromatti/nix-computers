@@ -133,7 +133,7 @@ in
 
     window-rules = [
       {
-        geometry-corner-radius = 4;
+        geometry-corner-radius = 8;
         clip-to-geometry = true;
         draw-border-with-background = false;
       }

@@ -307,6 +307,7 @@ in
           exit 1
         fi
       '';
+      gtk3Window = "window.background:not(.solid-csd):not(.maximized):not(.fullscreen):not(.tiled):not(.tiled-top):not(.tiled-right):not(.tiled-bottom):not(.tiled-left)";
       themeStubs = pkgs.writeShellApplication {
         name = "noctalia-theme-stubs";
         runtimeInputs = [ pkgs.coreutils ];
@@ -374,9 +375,31 @@ in
           })
         // {
           "noctalia/palettes/${theme.colorScheme}.json".source = palette;
+          "gtk-3.0/gtk.css" = {
+            text = ''
+              @import url("noctalia.css");
+
+              ${gtk3Window} .titlebar,
+              ${gtk3Window} > decoration {
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+              }
+
+              ${gtk3Window}.csd.unified,
+              ${gtk3Window}.csd.unified > decoration,
+              ${gtk3Window}.csd.unified > decoration-overlay {
+                border-radius: 8px;
+              }
+            '';
+            clobber = true;
+          };
           "gtk-4.0/gtk.css" = {
             text = ''
               @import url("noctalia.css");
+
+              :root {
+                --window-radius: 8px;
+              }
             '';
             clobber = true;
           };
