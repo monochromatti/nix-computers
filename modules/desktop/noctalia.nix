@@ -138,7 +138,7 @@ let
         white = if dark then "#eee8d5" else "#073642";
       };
       bright = {
-        black = if dark then "#002b36" else "#fdf6e3";
+        black = if dark then "#93a1a1" else "#586e75";
         red = a.orange;
         green = if dark then "#586e75" else "#93a1a1";
         yellow = if dark then "#657b83" else "#839496";
