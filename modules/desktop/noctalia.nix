@@ -61,67 +61,98 @@ let
       ochre = 0.340;
     };
   };
-  noctaliaPalette =
-    c:
-    {
-      black,
-      white,
-      brightWhite,
-    }:
-    let
-      ansi = {
-        inherit black white;
-        red = c.error;
-        green = c.ink;
-        yellow = c.ink2;
-        blue = c.ink;
-        magenta = c.ink2;
-        cyan = c.ink2;
+  accentLightness = {
+    day = 0.62;
+    night = 0.62;
+  };
+  accents =
+    lightness:
+    builtins.mapAttrs (_: a: "oklch(${toString lightness} ${toString a.chroma} ${toString a.hue})") {
+      red = {
+        hue = 27;
+        chroma = 0.206;
       };
-    in
-    {
-      primary = c.ink;
-      on_primary = c.paper;
-      secondary = c.ink2;
-      on_secondary = c.paper;
-      tertiary = c.ink2;
-      on_tertiary = c.paper;
-      error = c.error;
-      on_error = c.paper;
-      surface = c.paper;
-      on_surface = c.ink;
-      surface_container = c.card;
-      on_surface_variant = c.ink2;
-      outline_variant = c.rule;
-      shadow = c.ground;
-      hover = c.selection;
-      on_hover = c.ink;
-      terminal = {
-        foreground = c.ink;
-        background = c.paper;
-        cursor = c.ink;
-        cursor_text = c.paper;
-        selection_fg = c.paper;
-        selection_bg = c.ink;
-        normal = ansi;
-        bright = ansi // {
-          black = c.ink2;
-          white = brightWhite;
-        };
+      orange = {
+        hue = 40;
+        chroma = 0.173;
+      };
+      yellow = {
+        hue = 86;
+        chroma = 0.134;
+      };
+      green = {
+        hue = 119;
+        chroma = 0.151;
+      };
+      cyan = {
+        hue = 187;
+        chroma = 0.102;
+      };
+      blue = {
+        hue = 245;
+        chroma = 0.139;
+      };
+      violet = {
+        hue = 279;
+        chroma = 0.126;
+      };
+      magenta = {
+        hue = 356;
+        chroma = 0.202;
       };
     };
+  noctaliaPalette = c: dark: a: {
+    primary = c.ink;
+    on_primary = c.paper;
+    secondary = c.ink2;
+    on_secondary = c.paper;
+    tertiary = c.ink2;
+    on_tertiary = c.paper;
+    error = c.error;
+    on_error = c.paper;
+    surface = c.paper;
+    on_surface = c.ink;
+    surface_container = c.card;
+    on_surface_variant = c.ink2;
+    outline_variant = c.rule;
+    shadow = c.ground;
+    hover = c.selection;
+    on_hover = c.ink;
+    terminal = {
+      foreground = c.ink;
+      background = c.paper;
+      cursor = c.ink;
+      cursor_text = c.paper;
+      selection_fg = c.paper;
+      selection_bg = c.ink;
+      normal = {
+        black = if dark then "#073642" else "#eee8d5";
+        inherit (a)
+          red
+          green
+          yellow
+          blue
+          magenta
+          cyan
+          ;
+        white = if dark then "#eee8d5" else "#073642";
+      };
+      bright = {
+        black = if dark then "#002b36" else "#fdf6e3";
+        red = a.orange;
+        green = if dark then "#586e75" else "#93a1a1";
+        yellow = if dark then "#657b83" else "#839496";
+        blue = if dark then "#839496" else "#657b83";
+        magenta = a.violet;
+        cyan = if dark then "#93a1a1" else "#586e75";
+        white = if dark then "#fdf6e3" else "#002b36";
+      };
+    };
+  };
   paperPalette = {
     version = 2;
-    light = noctaliaPalette paper.day {
-      black = paper.day.ink;
-      white = paper.day.rule;
-      brightWhite = paper.day.selection;
-    };
-    dark = noctaliaPalette paper.night {
-      black = paper.night.rule;
-      white = paper.night.ink;
-      brightWhite = paper.day.paper;
-    };
+    light = noctaliaPalette paper.day false (accents accentLightness.day);
+    dark = noctaliaPalette paper.night true (accents accentLightness.night);
   };
 in
 {
@@ -291,7 +322,7 @@ in
         EOF
       '';
       palette = pkgs.runCommand "paper-palette.json" { } ''
-        ${pkgs.python3}/bin/python3 ${./oklch-to-hex.py} \
+        ${pkgs.python3.withPackages (p: [ p.coloraide ])}/bin/python3 ${./oklch-to-hex.py} \
           < ${pkgs.writeText "paper-palette-oklch.json" (builtins.toJSON paperPalette)} > $out
       '';
       zedTemplate = pkgs.runCommand "noctalia-zed-paper.json" { } ''
