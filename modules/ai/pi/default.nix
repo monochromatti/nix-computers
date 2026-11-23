@@ -186,6 +186,11 @@
             defaultModel = "gpt-6.1-terra";
             defaultThinkingLevel = "medium";
           };
+
+          preHook = ''
+            export PI_CACHE_RETENTION="''${PI_CACHE_RETENTION:-long}"
+            export PI_SUBAGENT_CACHE_RETENTION="''${PI_SUBAGENT_CACHE_RETENTION:-short}"
+          '';
         };
       };
 
