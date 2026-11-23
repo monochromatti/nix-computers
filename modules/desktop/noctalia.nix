@@ -6,7 +6,7 @@ let
     neutral = {
       day = {
         hue = 86;
-        chroma = 0.013;
+        chroma = 0.005;
       };
       night = {
         hue = 240;
