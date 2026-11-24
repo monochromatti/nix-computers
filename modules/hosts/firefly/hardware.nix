@@ -16,7 +16,7 @@
         "sd_mod"
       ];
       boot.kernelModules = [ "kvm-intel" ];
-      boot.kernelPackages = lib.mkForce pkgs.linuxPackages_7_2;
+      boot.kernelPackages = lib.mkForce pkgs.linuxPackages_latest;
 
       # Unlock encrypted root and swap
       boot.initrd.luks.devices = {
